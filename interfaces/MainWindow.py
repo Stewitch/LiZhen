@@ -1,5 +1,5 @@
 from qfluentwidgets import *
-from interfaces.TestInterface import TestInterface
+from interfaces.Test import TestInterface
 
 class MainWindow(FluentWindow):
     def __init__(self):

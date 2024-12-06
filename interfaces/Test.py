@@ -1,4 +1,4 @@
-from interfaces.ui.Ui_test import Ui_Test
+from interfaces.ui.Ui_Test import Ui_Test
 from PySide6.QtWidgets import QWidget
 
 class TestInterface(QWidget, Ui_Test):
