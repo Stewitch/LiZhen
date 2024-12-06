@@ -1,7 +1,6 @@
 from interfaces.ui.Ui_Test import Ui_Test
-from PySide6.QtWidgets import QWidget
+from interfaces.Interface import Interface
 
-class TestInterface(QWidget, Ui_Test):
+class TestInterface(Interface, Ui_Test):
     def __init__(self, parent=None):
-        super().__init__(parent=parent)
-        self.setupUi(self)
+        super().__init__(parent)
