@@ -12,7 +12,7 @@ class MainWindow(FluentWindow):
         self.infoInterface = InfoInterface(self)
         
         self.addSubInterface(self.infoInterface, FluentIcon.INFO, "信息")
-        self.addSubInterface(self.testInterface, FluentIcon.DEVELOPER_TOOLS, "测试")
+        self.addSubInterface(self.testInterface, FluentIcon.DEVELOPER_TOOLS, "测试", NavigationItemPosition.BOTTOM)
         
         self.testInterface.pushButton.clicked.connect(common.toggleTheme)
         

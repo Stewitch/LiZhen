@@ -17,8 +17,7 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QPalette, QPixmap, QRadialGradient, QTransform)
 from PySide6.QtWidgets import (QApplication, QSizePolicy, QVBoxLayout, QWidget)
 
-from qfluentwidgets import (DisplayLabel, ScrollArea)
-import resources_rc
+from qfluentwidgets import (DisplayLabel, SmoothScrollArea)
 
 class Ui_Info(object):
     def setupUi(self, Info):
@@ -27,21 +26,25 @@ class Ui_Info(object):
         Info.resize(789, 414)
         self.verticalLayout = QVBoxLayout(Info)
         self.verticalLayout.setObjectName(u"verticalLayout")
-        self.scrollArea = ScrollArea(Info)
+        self.scrollArea = SmoothScrollArea(Info)
         self.scrollArea.setObjectName(u"scrollArea")
         self.scrollArea.setWidgetResizable(True)
         self.scrollArea.setAlignment(Qt.AlignmentFlag.AlignLeading|Qt.AlignmentFlag.AlignLeft|Qt.AlignmentFlag.AlignVCenter)
-        self.scrollAreaWidgetContents = QWidget()
-        self.scrollAreaWidgetContents.setObjectName(u"scrollAreaWidgetContents")
-        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 757, 1900))
-        self.scrollAreaWidgetContents.setMinimumSize(QSize(0, 1900))
-        self.label = DisplayLabel(self.scrollAreaWidgetContents)
+        self.view = QWidget()
+        self.view.setObjectName(u"view")
+        self.view.setGeometry(QRect(0, 0, 757, 1900))
+        self.view.setMinimumSize(QSize(0, 1900))
+        self.label = DisplayLabel(self.view)
         self.label.setObjectName(u"label")
-        self.label.setGeometry(QRect(220, 90, 85, 25))
+        self.label.setGeometry(QRect(50, 10, 85, 31))
         font = QFont()
         font.setPointSize(14)
         self.label.setFont(font)
-        self.scrollArea.setWidget(self.scrollAreaWidgetContents)
+        self.ico_info = DisplayLabel(self.view)
+        self.ico_info.setObjectName(u"ico_info")
+        self.ico_info.setGeometry(QRect(10, 10, 31, 31))
+        self.ico_info.setFont(font)
+        self.scrollArea.setWidget(self.view)
 
         self.verticalLayout.addWidget(self.scrollArea)
 
@@ -54,5 +57,6 @@ class Ui_Info(object):
     def retranslateUi(self, Info):
         Info.setWindowTitle(QCoreApplication.translate("Info", u"Form", None))
         self.label.setText(QCoreApplication.translate("Info", u"TextLabel", None))
+        self.ico_info.setText(QCoreApplication.translate("Info", u"Icon", None))
     # retranslateUi
 
