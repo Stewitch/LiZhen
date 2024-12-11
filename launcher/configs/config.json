@@ -1,0 +1,22 @@
+{
+    "Material": {
+        "AcrylicBlurRadius": 15
+    },
+    "Update": {
+        "CheckUpdateAtStartUp": true
+    },
+    "Folders": {
+        "Download": "C:/Users/SunKSugaR/Downloads/examples/gallery/app/download",
+        "LocalMusic": [
+            "C:/Users/SunKSugaR/Music"
+        ]
+    },
+    "MainWindow": {
+        "DpiScale": 2,
+        "Language": "Auto"
+    },
+    "QFluentWidgets": {
+        "ThemeColor": "#ff009faa",
+        "ThemeMode": "Light"
+    }
+}
