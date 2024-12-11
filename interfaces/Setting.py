@@ -1,6 +1,6 @@
 # coding:utf-8
 from qfluentwidgets import (SettingCardGroup, OptionsSettingCard, ScrollArea,
-                            ComboBoxSettingCard, ExpandLayout, setTheme)
+                            ComboBoxSettingCard, ExpandLayout, setTheme, SwitchSettingCard)
 from qfluentwidgets import FluentIcon as FIF
 from qfluentwidgets import InfoBar
 from PySide6.QtCore import Qt
@@ -23,12 +23,11 @@ class SettingInterface(ScrollArea):
         self.view = QWidget()
         self.expandLayout = ExpandLayout(self.view)
 
-        # setting label
         self.settingLabel = QLabel(self.tr("设置"), self)
 
         # 界面设置
-        self.uiGroup = SettingCardGroup(
-            self.tr('界面设置'), self.view)
+        self.uiGroup = SettingCardGroup(self.tr('界面设置'), self.view)
+        
         self.themeCard = ComboBoxSettingCard(
             cfg.themeMode,
             FIF.BRUSH,
@@ -51,16 +50,16 @@ class SettingInterface(ScrollArea):
             ],
             parent=self.uiGroup
         )
-        self.languageCard = ComboBoxSettingCard(
-            cfg.language,
-            FIF.LANGUAGE,
-            self.tr('语言'),
-            self.tr('选择 UI 语言'),
-            texts=['简体中文', '繁體中文', 'English', self.tr('使用系统设置')],
-            parent=self.uiGroup
-        )
-
-
+        
+        
+        # 镜像源设置
+        self.mirrorsGroup = SettingCardGroup(self.tr('镜像源设置'), self.view)
+        self.pipMirrorEnabledCard = SwitchSettingCard(
+            FIF.CLOUD_DOWNLOAD, self.tr("启用 pip 镜像源"), configItem=cfg.pipMirrorEnabled, parent=self.mirrorsGroup)
+        self.anacondaMirrorEnabledCard = SwitchSettingCard(
+            FIF.CLOUD_DOWNLOAD, self.tr("启用 Anaconda 镜像源"), configItem=cfg.anacondaMirrorEnabled, parent=self.mirrorsGroup)
+        self.hfMirrorEnabledCard = SwitchSettingCard(
+            FIF.CLOUD_DOWNLOAD, self.tr("启用 Hugging Face 镜像源"), configItem=cfg.hfMirrorEnabled, parent=self.mirrorsGroup)
 
         self.__initWidget()
 
@@ -88,13 +87,17 @@ class SettingInterface(ScrollArea):
         # add cards to group
         self.uiGroup.addSettingCard(self.themeCard)
         self.uiGroup.addSettingCard(self.zoomCard)
-        self.uiGroup.addSettingCard(self.languageCard)
+        
+        self.mirrorsGroup.addSettingCard(self.pipMirrorEnabledCard)
+        self.mirrorsGroup.addSettingCard(self.anacondaMirrorEnabledCard)
+        self.mirrorsGroup.addSettingCard(self.hfMirrorEnabledCard)
 
 
         # add setting card group to layout
         self.expandLayout.setSpacing(28)
         self.expandLayout.setContentsMargins(36, 10, 36, 0)
         self.expandLayout.addWidget(self.uiGroup)
+        self.expandLayout.addWidget(self.mirrorsGroup)
 
 
     def __showRestartTooltip(self):

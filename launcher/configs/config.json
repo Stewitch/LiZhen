@@ -1,7 +1,11 @@
 {
+    "Mirrors": {
+        "anacondaEnabled": false,
+        "hfEnabled": false,
+        "pipEnabled": false
+    },
     "MainWindow": {
-        "DpiScale": "Auto",
-        "Language": "zh_CN"
+        "DpiScale": "Auto"
     },
     "QFluentWidgets": {
         "ThemeColor": "#ff009faa",

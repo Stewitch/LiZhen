@@ -1,4 +1,4 @@
-from qfluentwidgets import FluentIcon, FluentWindow, NavigationItemPosition, common, SplashScreen
+from qfluentwidgets import FluentIcon, FluentWindow, NavigationItemPosition, SplashScreen
 from PySide6.QtGui import QIcon
 from PySide6.QtWidgets import QApplication
 from PySide6.QtCore import QSize, QEventLoop, QTimer
