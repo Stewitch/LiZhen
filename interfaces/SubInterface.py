@@ -4,8 +4,8 @@ class SubInterface:
 from qfluentwidgets import *
 from PySide6.QtWidgets import QWidget, QLabel
 from PySide6.QtCore import Qt
-from utils.config import cfg
-from utils.style import StyleSheet
+from utils.configs import cfg
+from utils.styles import StyleSheet
 
 class SettingInterface(ScrollArea):
     def __init__(self, parent=None):

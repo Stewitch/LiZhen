@@ -7,8 +7,8 @@ from PySide6.QtCore import Qt
 from PySide6.QtWidgets import QWidget, QLabel
 
 
-from utils.style import StyleSheet
-from utils.config import cfg, isWin11
+from utils.styles import StyleSheet
+from utils.configs import cfg
 
 HELP_URL = ""
 FEEDBACK_URL = ""
@@ -33,7 +33,7 @@ class SettingInterface(ScrollArea):
             cfg.themeMode,
             FIF.BRUSH,
             self.tr('主题'),
-            self.tr("选择亮色/暗色主题"),
+            self.tr("选择 亮色/暗色 主题"),
             texts=[
                 self.tr('亮色'), self.tr('暗色'),
                 self.tr('跟随系统')
@@ -44,7 +44,7 @@ class SettingInterface(ScrollArea):
             cfg.dpiScale,
             FIF.ZOOM,
             self.tr("界面缩放"),
-            self.tr("更改界面缩放比例"),
+            self.tr("更改文字、控件的缩放比例"),
             texts=[
                 "100%", "125%", "150%", "175%", "200%",
                 self.tr("使用系统设置")
@@ -55,7 +55,7 @@ class SettingInterface(ScrollArea):
             cfg.language,
             FIF.LANGUAGE,
             self.tr('语言'),
-            self.tr('选择UI语言'),
+            self.tr('选择 UI 语言'),
             texts=['简体中文', '繁體中文', 'English', self.tr('使用系统设置')],
             parent=self.uiGroup
         )

@@ -9,4 +9,6 @@ class InfoInterface(QWidget, Ui_Info):
         self.infoHeaderImg.setImage("./launcher/assets/images/infoHeader.png")
         self.toGithub.setIcon(FluentIcon.GITHUB)
         self.toGithub.setUrl("https://github.com/SunKSugaR/LiZhen")
+        self.toLicense.setIcon(FluentIcon.DICTIONARY)
+        self.toLicense.setUrl("https://www.gnu.org/licenses/gpl-3.0.html")
         
