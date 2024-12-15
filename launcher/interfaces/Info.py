@@ -1,4 +1,4 @@
-from interfaces.ui.Ui_Info import Ui_Info
+from .ui.Ui_Info import Ui_Info
 from PySide6.QtWidgets import QWidget
 from qfluentwidgets import FluentIcon
 

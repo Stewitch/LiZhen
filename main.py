@@ -26,8 +26,8 @@ https://www.gnu.org/licenses/gpl-3.0.html
 
 
 from PySide6.QtWidgets import QApplication
-from interfaces.MainWindow import MainWindow
-from utils.configs import cfg
+from launcher.interfaces.MainWindow import MainWindow
+from launcher.utils.configs import cfg
 import os
 
 if cfg.get(cfg.dpiScale) != "Auto":

@@ -1,5 +1,5 @@
 # coding:utf-8
-from qfluentwidgets import (SettingCardGroup, OptionsSettingCard, ScrollArea,
+from qfluentwidgets import (SettingCardGroup, ScrollArea,
                             ComboBoxSettingCard, ExpandLayout, setTheme, SwitchSettingCard)
 from qfluentwidgets import FluentIcon as FIF
 from qfluentwidgets import InfoBar
@@ -7,8 +7,8 @@ from PySide6.QtCore import Qt
 from PySide6.QtWidgets import QWidget, QLabel
 
 
-from utils.styles import StyleSheet
-from utils.configs import cfg
+from ..utils.styles import StyleSheet
+from ..utils.configs import cfg
 
 HELP_URL = ""
 FEEDBACK_URL = ""
@@ -39,7 +39,7 @@ class SettingInterface(ScrollArea):
             ],
             parent=self.uiGroup
         )
-        self.zoomCard = OptionsSettingCard(
+        self.zoomCard = ComboBoxSettingCard(
             cfg.dpiScale,
             FIF.ZOOM,
             self.tr("界面缩放"),
@@ -55,11 +55,14 @@ class SettingInterface(ScrollArea):
         # 镜像源设置
         self.mirrorsGroup = SettingCardGroup(self.tr('镜像源设置'), self.view)
         self.pipMirrorEnabledCard = SwitchSettingCard(
-            FIF.CLOUD_DOWNLOAD, self.tr("启用 pip 镜像源"), configItem=cfg.pipMirrorEnabled, parent=self.mirrorsGroup)
+            FIF.CLOUD_DOWNLOAD, self.tr("启用 pip 镜像源"), self.tr("pip 镜像源可以加速模块下载，建议国内用户开启"),
+            configItem=cfg.pipMirrorEnabled, parent=self.mirrorsGroup)
         self.anacondaMirrorEnabledCard = SwitchSettingCard(
-            FIF.CLOUD_DOWNLOAD, self.tr("启用 Anaconda 镜像源"), configItem=cfg.anacondaMirrorEnabled, parent=self.mirrorsGroup)
+            FIF.CLOUD_DOWNLOAD, self.tr("启用 Anaconda 镜像源"), self.tr("解决 Anaconda 包下载失败等问题，建议国内用户开启"),
+            configItem=cfg.anacondaMirrorEnabled, parent=self.mirrorsGroup)
         self.hfMirrorEnabledCard = SwitchSettingCard(
-            FIF.CLOUD_DOWNLOAD, self.tr("启用 Hugging Face 镜像源"), configItem=cfg.hfMirrorEnabled, parent=self.mirrorsGroup)
+            FIF.CLOUD_DOWNLOAD, self.tr("启用 Hugging Face 镜像源"), self.tr("国内用户大多无法直接连接到 HuggingFace，启用镜像源可解决模型下载问题"),
+            configItem=cfg.hfMirrorEnabled, parent=self.mirrorsGroup)
 
         self.__initWidget()
 
