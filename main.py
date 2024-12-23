@@ -28,11 +28,17 @@ https://www.gnu.org/licenses/gpl-3.0.html
 from PySide6.QtWidgets import QApplication
 from launcher.interfaces.MainWindow import MainWindow
 from launcher.utils.configs import cfg
+from launcher.utils.logger import logger
+
 import os
+
+
 
 if cfg.get(cfg.dpiScale) != "Auto":
     os.environ["QT_ENABLE_HIGHDPI_SCALING"] = "0"
     os.environ["QT_SCALE_FACTOR"] = str(cfg.get(cfg.dpiScale))
+
+
 
 def main():
     import sys
@@ -42,4 +48,5 @@ def main():
     sys.exit(app.exec())
 
 if __name__ == '__main__':
+    logger.info("主程序启动")
     main()

@@ -4,6 +4,7 @@ from PySide6.QtWidgets import QApplication
 from PySide6.QtCore import QSize, QEventLoop, QTimer
 from .Info import InfoInterface
 from .Setting import SettingInterface
+from ..utils.logger import logger
 
 class MainWindow(FluentWindow):
     def __init__(self):
@@ -41,3 +42,4 @@ class MainWindow(FluentWindow):
         self.setWindowTitle(self.tr("离真 启动器"))
         self.setWindowIcon(QIcon("./launcher/assets/images/LZ64.ico"))
         self.resize(1000, 600)
+        logger.info("主窗口初始化完成")

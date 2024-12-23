@@ -1,0 +1,13 @@
+from loguru import logger
+from sys import stderr
+
+logger.remove()
+
+timefmt = "%Y-%m-%d %H:%M:%S"
+datefmt = "%m-%d"
+fmt = "<green>{time:"+ timefmt +"}</green> |[<level>{level}</level>]| <cyan>{name} | line: {line}</cyan> | <level>{message}</level>"
+
+logger.add(sink="./launcher/logs/launcher_{time:"+ datefmt +"}.log", rotation="10 MB", retention="3 days", level="INFO", format=fmt, enqueue=True)
+logger.add(sink=stderr, level="DEBUG", format=fmt)
+
+logger.info("日志系统初始化")
