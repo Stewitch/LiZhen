@@ -7,6 +7,7 @@ from .Setting import SettingInterface
 from ..utils.logger import logger
 
 class MainWindow(FluentWindow):
+    @logger.catch
     def __init__(self):
         super().__init__()
         
@@ -14,6 +15,7 @@ class MainWindow(FluentWindow):
         self.__splash()
         self.__initNavigation()
         
+        logger.info("主窗口初始化完成")
         QApplication.processEvents()
         
     def __initNavigation(self):
@@ -42,4 +44,3 @@ class MainWindow(FluentWindow):
         self.setWindowTitle(self.tr("离真 启动器"))
         self.setWindowIcon(QIcon("./launcher/assets/images/LZ64.ico"))
         self.resize(1000, 600)
-        logger.info("主窗口初始化完成")

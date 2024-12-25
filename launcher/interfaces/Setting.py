@@ -9,22 +9,24 @@ from ..utils.styles import StyleSheet
 from ..utils.configs import cfg
 from ..utils.logger import logger
 
+from .Interfaces import ManagerInterface
 
 
-class SettingInterface(ScrollArea):
 
-    def __init__(self, parent=None):
-        super().__init__(parent=parent)
-        self.view = QWidget()
-        self.expandLayout = ExpandLayout(self.view)
-
-        # 标题标签
-        self.settingLabel = QLabel(self.tr("设置"), self)
-
-        # 界面设置组
-        self.uiGroup = SettingCardGroup(self.tr('界面设置'), self.view)
+class SettingInterface(ManagerInterface):
+    
+    @logger.catch
+    def __init__(self, parent=None, title = "设置"):
+        super().__init__(parent, title)
+        logger.info("设置界面初始化")
         
-        # 界面设置卡片
+    
+    def _setGroups(self):
+        self.uiGroup = SettingCardGroup(self.tr('界面设置'), self.view)
+        self.mirrorsGroup = SettingCardGroup(self.tr('镜像源设置'), self.view)
+    
+    
+    def _setCards(self):
         self.themeCard = ComboBoxSettingCard(
             cfg.themeMode,
             FIF.BRUSH,
@@ -48,8 +50,6 @@ class SettingInterface(ScrollArea):
             parent=self.uiGroup
         )
         
-        # 镜像源设置卡片
-        self.mirrorsGroup = SettingCardGroup(self.tr('镜像源设置'), self.view)
         self.pipMirrorEnabledCard = SwitchSettingCard(
             FIF.CLOUD_DOWNLOAD, self.tr("启用 pip 镜像源"),
             self.tr("pip 镜像源可以加速模块和依赖安装，建议国内用户开启"),
@@ -62,57 +62,33 @@ class SettingInterface(ScrollArea):
             FIF.CLOUD_DOWNLOAD, self.tr("启用 Hugging Face 镜像源"),
             self.tr("国内用户大多无法直接连接到 Hugging Face，启用镜像源可解决模型下载问题"),
             configItem=cfg.hfMirrorEnabled, parent=self.mirrorsGroup)
-
-        self.__initWidget()
-
-        logger.info("设置界面初始化完成")
-
-
-    def __initWidget(self):
-        self.resize(1000, 800)
-        self.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
-        self.setViewportMargins(0, 80, 0, 20)
-        self.setWidget(self.view)
-        self.setWidgetResizable(True)
-        self.setObjectName('settingInterface')
-
-        # 应用样式表
-        self.view.setObjectName('view')
-        self.settingLabel.setObjectName('settingLabel')
-        StyleSheet.SETTING.apply(self)
-
-        # 布局
-        self.__initLayout()
-        self.__connectSignalToSlot()
-
-
-    def __initLayout(self):
-        self.settingLabel.move(36, 30)
-
-        # 组添加卡片
+    
+    
+    def _addCards2Groups(self):
         self.uiGroup.addSettingCard(self.themeCard)
         self.uiGroup.addSettingCard(self.zoomCard)
         
         self.mirrorsGroup.addSettingCard(self.pipMirrorEnabledCard)
         self.mirrorsGroup.addSettingCard(self.anacondaMirrorEnabledCard)
         self.mirrorsGroup.addSettingCard(self.hfMirrorEnabledCard)
-
-        # 布局添加组
-        self.expandLayout.setSpacing(28)
-        self.expandLayout.setContentsMargins(36, 10, 36, 0)
+    
+    
+    def _addGroups2Layout(self):
+        super()._addGroups2Layout()
         self.expandLayout.addWidget(self.uiGroup)
         self.expandLayout.addWidget(self.mirrorsGroup)
-
-
-    def __restartAppNotice(self):
+    
+    
+    def _restartAppNotice(self):
         InfoBar.success(
             self.tr('设置成功'),
             self.tr('重新打开启动器生效'),
             duration=1500,
             parent=self
         )
-
-    def __restartProjectNotice(self):
+    
+    
+    def _restartProjectNotice(self):
         InfoBar.success(
             self.tr("设置成功"),
             self.tr("重启项目后生效"),
@@ -120,11 +96,11 @@ class SettingInterface(ScrollArea):
             parent=self
         )
 
-    def __connectSignalToSlot(self):
-        """ connect signal to slot """
-        cfg.appRestartSig.connect(self.__restartAppNotice)
+    
+    def _SSConnection(self):
+        cfg.appRestartSig.connect(self._restartAppNotice)
         cfg.themeChanged.connect(setTheme)
         
-        cfg.pipChanged.connect(self.__restartProjectNotice)
-        cfg.anacondaChanged.connect(self.__restartProjectNotice)
-        cfg.hfChanged.connect(self.__restartProjectNotice)
+        cfg.pipChanged.connect(self._restartProjectNotice)
+        cfg.anacondaChanged.connect(self._restartProjectNotice)
+        cfg.hfChanged.connect(self._restartProjectNotice)

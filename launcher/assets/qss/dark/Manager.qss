@@ -1,4 +1,4 @@
-SettingInterface, #view {
+ManagerInterface, #View {
     background-color: transparent;
 }
 
@@ -9,7 +9,8 @@ QScrollArea {
 
 
 /* 标签 */
-QLabel#settingLabel {
+QLabel#TitleLabel {
     font: 33px 'Microsoft YaHei Light';
     background-color: transparent;
+    color: white;
 }
