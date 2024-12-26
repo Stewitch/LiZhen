@@ -5,6 +5,7 @@ from .ui.Ui_Start import Ui_Start
 
 from ..utils.styles import StyleSheet
 from ..utils.logger import logger
+from ..utils.configs import pcfg
 
 
 
@@ -21,20 +22,30 @@ class StartInterface(QWidget, Ui_Start):
     
     
     def __initFunctions(self):
-        self.ASR = None
-        self.LLM = None
-        self.TTS = None
+        logger.debug(pcfg.conf)
+        self.ASR = pcfg.get("ASR_MODEL")
+        self.LLM = pcfg.get("LLM_PROVIDER")
+        self.TTS = pcfg.get("TTS_MODEL")
+        self.ASRModel = pcfg.get(f"{self.ASR}.model_name", "详情页查看")
+        self.LLMModel = pcfg.get(f"{self.LLM}.MODEL", "详情页查看")
+        self.TTSModel = pcfg.get(f"{self.TTS}.voice", "详情页查看")
     
     
     def __initWidgets(self):
         self.ASRCard.setIcon("asr_available.png")
-        self.ASRCard.title.setText(f"ASR:\n{self.ASR}")
+        self.ASRCard.title.setText(f"ASR:")
+        self.ASRCard.provider.setText(f"{self.ASR}")
+        self.ASRCard.model.setText(self.ASRModel)
         
         self.LLMCard.setIcon("llm.png")
-        self.LLMCard.title.setText(f"LLM:\n{self.LLM}")
+        self.LLMCard.title.setText(f"LLM:")
+        self.LLMCard.provider.setText(f"{self.LLM}")
+        self.LLMCard.model.setText(f'{self.LLMModel}')
         
-        self.TTSCaed.setIcon("tts_available.png")
-        self.TTSCaed.title.setText(f"TTS:\n{self.TTS}")
+        self.TTSCard.setIcon("tts_available.png")
+        self.TTSCard.title.setText(f"TTS:")
+        self.TTSCard.provider.setText(f"{self.TTS}")
+        self.TTSCard.model.setText(f"{self.TTSModel}")
         
         self.startButton.setIcon(FluentIcon.PLAY)
         
@@ -45,4 +56,7 @@ class StartInterface(QWidget, Ui_Start):
         
         self.setObjectName("StartInterface")
         StyleSheet.START.apply(self)
+    
+    
+    
     

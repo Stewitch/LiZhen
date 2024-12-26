@@ -116,12 +116,12 @@ class Ui_Start(object):
 
         self.pModels.addWidget(self.LLMCard, 0, 1, 1, 1)
 
-        self.TTSCaed = ModelDisplayCard(Start)
-        self.TTSCaed.setObjectName(u"TTSCaed")
-        sizePolicy2.setHeightForWidth(self.TTSCaed.sizePolicy().hasHeightForWidth())
-        self.TTSCaed.setSizePolicy(sizePolicy2)
+        self.TTSCard = ModelDisplayCard(Start)
+        self.TTSCard.setObjectName(u"TTSCard")
+        sizePolicy2.setHeightForWidth(self.TTSCard.sizePolicy().hasHeightForWidth())
+        self.TTSCard.setSizePolicy(sizePolicy2)
 
-        self.pModels.addWidget(self.TTSCaed, 0, 2, 1, 1)
+        self.pModels.addWidget(self.TTSCard, 0, 2, 1, 1)
 
 
         self.pDisplay.addLayout(self.pModels, 1, 0, 1, 1)

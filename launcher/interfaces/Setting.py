@@ -1,4 +1,4 @@
-from qfluentwidgets import (SettingCardGroup, ComboBoxSettingCard, setTheme, setThemeColor, SwitchSettingCard, CustomColorSettingCard)
+from qfluentwidgets import SettingCardGroup, ComboBoxSettingCard, setTheme, setThemeColor, SwitchSettingCard, CustomColorSettingCard
 from qfluentwidgets import FluentIcon as FIF
 from qfluentwidgets import InfoBar
 

@@ -1,9 +1,9 @@
-from qfluentwidgets import (qconfig, QConfig, OptionsConfigItem, OptionsValidator,
-                            Theme, BoolValidator)
-
-from PySide6.QtCore import Signal
+from qfluentwidgets import qconfig, QConfig, OptionsConfigItem, OptionsValidator, Theme, BoolValidator
 
 from ..utils.logger import logger
+from ..utils.bridge import YamlConf
+
+import os.path
 
 
 class LauncherConfig(QConfig):
@@ -21,6 +21,12 @@ class LauncherConfig(QConfig):
     
 
 
+if os.path.exists("conf.yaml"):
+    pcfg = YamlConf("conf.yaml")
+
+
+
 cfg = LauncherConfig()
 cfg.themeMode.value = Theme.AUTO
 qconfig.load('./launcher/configs/launcher.json', cfg)
+logger.info("启动器配置文件载入")

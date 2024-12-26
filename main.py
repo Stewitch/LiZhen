@@ -1,9 +1,9 @@
 """main.py
-=============================================
+==================================================
 Author: SunKSugaR
 EMail: sunksugar@qq.com
 GitHub: https://github.com/SunKSugaR
----------------------------------------------
+--------------------------------------------------
 Description:
 A launcher for Open-LLM-VTuber project.
 Based on PySide6 and QFluentWidgets.
@@ -20,7 +20,12 @@ https://qfluentwidgets.com/
 License:
 GNU General Public License v3.0
 https://www.gnu.org/licenses/gpl-3.0.html
-=============================================
+==================================================
+Build:
+See README.md
+==================================================
+Using Python 3.12.8
+Code with passion, code with love.
 """
 
 

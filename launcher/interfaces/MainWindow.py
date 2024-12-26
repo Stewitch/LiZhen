@@ -9,6 +9,7 @@ from .Start import StartInterface
 from .ASR import ASRInterface
 from .LLM import LLMInterface
 from .TTS import TTSInterface
+from .Persona import PersonaInterface
 
 from ..utils.logger import logger
 
@@ -22,6 +23,7 @@ class MainWindow(FluentWindow):
         self.__initWindow()
         self.__splash()
         self.__initNavigation()
+        self.__SSConnection()
         
         logger.info("主窗口初始化完成")
         QApplication.processEvents()
@@ -35,6 +37,7 @@ class MainWindow(FluentWindow):
         self.ttsInterface = TTSInterface(self)
         self.infoInterface = InfoInterface(self)
         self.settingInterface = SettingInterface(self)
+        self.personaInterface = PersonaInterface(self)
         
         self.addSubInterface(self.startInterface, FluentIcon.PLAY, self.tr("启动"), NavigationItemPosition.TOP)
         self.navigationInterface.addSeparator()
@@ -42,6 +45,7 @@ class MainWindow(FluentWindow):
         self.addSubInterface(self.asrInterface, FluentIcon.MICROPHONE, self.tr("ASR 管理"), NavigationItemPosition.SCROLL)
         self.addSubInterface(self.llmInterface, FluentIcon.MESSAGE, self.tr("LLM 管理"), NavigationItemPosition.SCROLL)
         self.addSubInterface(self.ttsInterface, FluentIcon.VOLUME, self.tr("TTS 管理"), NavigationItemPosition.SCROLL)
+        self.addSubInterface(self.personaInterface, FluentIcon.FEEDBACK, self.tr("人格提示词管理"), NavigationItemPosition.SCROLL)
         
         self.navigationInterface.addSeparator(NavigationItemPosition.BOTTOM)
         self.addSubInterface(self.infoInterface, FluentIcon.INFO, self.tr("信息"), NavigationItemPosition.BOTTOM)
@@ -69,5 +73,10 @@ class MainWindow(FluentWindow):
     def __initWindow(self):
         self.setWindowTitle(self.tr("离真 启动器"))
         self.setWindowIcon(QIcon("./launcher/assets/images/LZ64.ico"))
-        self.resize(900, 600)
-        
+        self.resize(1000, 700)
+    
+    
+    def __SSConnection(self):
+        self.startInterface.ASRCard.clicked.connect(lambda: self.switchTo(self.asrInterface))
+        self.startInterface.LLMCard.clicked.connect(lambda: self.switchTo(self.llmInterface))
+        self.startInterface.TTSCard.clicked.connect(lambda: self.switchTo(self.ttsInterface))

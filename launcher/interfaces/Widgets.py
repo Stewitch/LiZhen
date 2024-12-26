@@ -1,7 +1,7 @@
 from PySide6.QtCore import QSize, Qt
 from PySide6.QtWidgets import QVBoxLayout
 from PySide6.QtGui import QFont
-from qfluentwidgets import ElevatedCardWidget, ImageLabel, CaptionLabel, ImageLabel
+from qfluentwidgets import ElevatedCardWidget, ImageLabel, CaptionLabel, ImageLabel, BodyLabel
 
 from ..utils.configs import cfg
 from ..utils.logger import logger
@@ -14,6 +14,8 @@ class ModelDisplayCard(ElevatedCardWidget):
         super().__init__(parent)
         self.icon = ImageLabel(iconPath, self)
         self.title = CaptionLabel(name, self)
+        self.provider = BodyLabel("测试", self)
+        self.model = BodyLabel("模型",self)
         self.imgName = None
 
         self.vBoxLayout = QVBoxLayout(self)
@@ -22,12 +24,23 @@ class ModelDisplayCard(ElevatedCardWidget):
         self.vBoxLayout.addWidget(self.icon, 0, Qt.AlignCenter)
         self.vBoxLayout.addStretch(1)
         self.vBoxLayout.addWidget(self.title, 0, Qt.AlignHCenter | Qt.AlignBottom)
+        self.vBoxLayout.addStretch(1)
+        self.vBoxLayout.addWidget(self.provider, 0, Qt.AlignHCenter | Qt.AlignBottom)
+        self.vBoxLayout.addStretch(1)
+        self.vBoxLayout.addWidget(self.model, 0, Qt.AlignHCenter | Qt.AlignBottom)
 
         font = QFont()
         font.setFamilies([u"\u5fae\u8f6f\u96c5\u9ed1"])
         font.setPointSize(11)
         
         self.title.setFont(font)
+        
+        font.setPointSize(10)
+        self.provider.setFont(font)
+        
+        font.setPointSize(8)
+        self.model.setFont(font)
+        
         
         # self.resize(200, 180)
         # self.setMinimumHeight(150)
