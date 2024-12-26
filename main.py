@@ -47,6 +47,8 @@ def main():
     window.show()
     sys.exit(app.exec())
 
+
+
 if __name__ == '__main__':
     logger.info("主程序启动")
     main()

@@ -3,7 +3,7 @@ from enum import Enum
 
 class StyleSheet(StyleSheetBase, Enum):
     
-    SETTING = "Setting"
+    START = "Start"
     MANAGER = "Manager"
     
     def path(self, theme=Theme.AUTO):

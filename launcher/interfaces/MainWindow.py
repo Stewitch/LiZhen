@@ -1,10 +1,18 @@
-from qfluentwidgets import FluentIcon, FluentWindow, NavigationItemPosition, SplashScreen
 from PySide6.QtGui import QIcon
 from PySide6.QtWidgets import QApplication
 from PySide6.QtCore import QSize, QEventLoop, QTimer
+from qfluentwidgets import FluentIcon, FluentWindow, NavigationItemPosition, SplashScreen
+
 from .Info import InfoInterface
 from .Setting import SettingInterface
+from .Start import StartInterface
+from .ASR import ASRInterface
+from .LLM import LLMInterface
+from .TTS import TTSInterface
+
 from ..utils.logger import logger
+
+
 
 class MainWindow(FluentWindow):
     @logger.catch
@@ -17,15 +25,32 @@ class MainWindow(FluentWindow):
         
         logger.info("主窗口初始化完成")
         QApplication.processEvents()
-        
+    
+       
     def __initNavigation(self):
         
+        self.startInterface = StartInterface(self)
+        self.asrInterface = ASRInterface(self)
+        self.llmInterface = LLMInterface(self)
+        self.ttsInterface = TTSInterface(self)
         self.infoInterface = InfoInterface(self)
         self.settingInterface = SettingInterface(self)
         
+        self.addSubInterface(self.startInterface, FluentIcon.PLAY, self.tr("启动"), NavigationItemPosition.TOP)
+        self.navigationInterface.addSeparator()
+        
+        self.addSubInterface(self.asrInterface, FluentIcon.MICROPHONE, self.tr("ASR 管理"), NavigationItemPosition.SCROLL)
+        self.addSubInterface(self.llmInterface, FluentIcon.MESSAGE, self.tr("LLM 管理"), NavigationItemPosition.SCROLL)
+        self.addSubInterface(self.ttsInterface, FluentIcon.VOLUME, self.tr("TTS 管理"), NavigationItemPosition.SCROLL)
+        
+        self.navigationInterface.addSeparator(NavigationItemPosition.BOTTOM)
         self.addSubInterface(self.infoInterface, FluentIcon.INFO, self.tr("信息"), NavigationItemPosition.BOTTOM)
         self.addSubInterface(self.settingInterface, FluentIcon.SETTING, self.tr("设置"), NavigationItemPosition.BOTTOM)
+
         
+
+    
+    
     def __splash(self):
         self.splashScreen = SplashScreen("./launcher/assets/images/LZ128.ico", self)
         self.splashScreen.setIconSize(QSize(128, 128))
@@ -36,11 +61,13 @@ class MainWindow(FluentWindow):
         
         self.show()
         loop = QEventLoop(self)
-        QTimer.singleShot(2000, loop.quit)
+        QTimer.singleShot(1000, loop.quit)
         loop.exec()
         self.splashScreen.finish()
+    
     
     def __initWindow(self):
         self.setWindowTitle(self.tr("离真 启动器"))
         self.setWindowIcon(QIcon("./launcher/assets/images/LZ64.ico"))
-        self.resize(1000, 600)
+        self.resize(900, 600)
+        

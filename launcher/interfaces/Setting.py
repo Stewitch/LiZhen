@@ -1,15 +1,11 @@
-from qfluentwidgets import (SettingCardGroup, ScrollArea,
-                            ComboBoxSettingCard, ExpandLayout, setTheme, SwitchSettingCard)
+from qfluentwidgets import (SettingCardGroup, ComboBoxSettingCard, setTheme, setThemeColor, SwitchSettingCard, CustomColorSettingCard)
 from qfluentwidgets import FluentIcon as FIF
 from qfluentwidgets import InfoBar
-from PySide6.QtCore import Qt
-from PySide6.QtWidgets import QWidget, QLabel
-
-from ..utils.styles import StyleSheet
-from ..utils.configs import cfg
-from ..utils.logger import logger
 
 from .Interfaces import ManagerInterface
+
+from ..utils.configs import cfg
+from ..utils.logger import logger
 
 
 
@@ -18,7 +14,6 @@ class SettingInterface(ManagerInterface):
     @logger.catch
     def __init__(self, parent=None, title = "设置"):
         super().__init__(parent, title)
-        logger.info("设置界面初始化")
         
     
     def _setGroups(self):
@@ -49,24 +44,35 @@ class SettingInterface(ManagerInterface):
             ],
             parent=self.uiGroup
         )
+        self.themeColorCard = CustomColorSettingCard(
+            cfg.themeColor,
+            FIF.PALETTE,
+            self.tr('主题颜色'),
+            self.tr('更改启动器主题颜色'),
+            parent=self.uiGroup
+        )
         
         self.pipMirrorEnabledCard = SwitchSettingCard(
             FIF.CLOUD_DOWNLOAD, self.tr("启用 pip 镜像源"),
             self.tr("pip 镜像源可以加速模块和依赖安装，建议国内用户开启"),
-            configItem=cfg.pipMirrorEnabled, parent=self.mirrorsGroup)
+            configItem=cfg.pipMirrorEnabled,
+            parent=self.mirrorsGroup)
         self.anacondaMirrorEnabledCard = SwitchSettingCard(
             FIF.CLOUD_DOWNLOAD, self.tr("启用 Anaconda 镜像源"),
             self.tr("解决 Anaconda 包下载失败等问题，建议国内用户开启"),
-            configItem=cfg.anacondaMirrorEnabled, parent=self.mirrorsGroup)
+            configItem=cfg.anacondaMirrorEnabled,
+            parent=self.mirrorsGroup)
         self.hfMirrorEnabledCard = SwitchSettingCard(
             FIF.CLOUD_DOWNLOAD, self.tr("启用 Hugging Face 镜像源"),
             self.tr("国内用户大多无法直接连接到 Hugging Face，启用镜像源可解决模型下载问题"),
-            configItem=cfg.hfMirrorEnabled, parent=self.mirrorsGroup)
+            configItem=cfg.hfMirrorEnabled,
+            parent=self.mirrorsGroup)
     
     
     def _addCards2Groups(self):
         self.uiGroup.addSettingCard(self.themeCard)
         self.uiGroup.addSettingCard(self.zoomCard)
+        self.uiGroup.addSettingCard(self.themeColorCard)
         
         self.mirrorsGroup.addSettingCard(self.pipMirrorEnabledCard)
         self.mirrorsGroup.addSettingCard(self.anacondaMirrorEnabledCard)
@@ -100,7 +106,9 @@ class SettingInterface(ManagerInterface):
     def _SSConnection(self):
         cfg.appRestartSig.connect(self._restartAppNotice)
         cfg.themeChanged.connect(setTheme)
+        cfg.themeColorChanged.connect(lambda c: setThemeColor(c))
         
-        cfg.pipChanged.connect(self._restartProjectNotice)
-        cfg.anacondaChanged.connect(self._restartProjectNotice)
-        cfg.hfChanged.connect(self._restartProjectNotice)
+        cfg.pipMirrorEnabled.valueChanged.connect(self._restartProjectNotice)
+        cfg.anacondaMirrorEnabled.valueChanged.connect(self._restartProjectNotice)
+        cfg.hfMirrorEnabled.valueChanged.connect(self._restartProjectNotice)
+        

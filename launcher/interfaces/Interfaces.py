@@ -1,12 +1,11 @@
-from qfluentwidgets import ScrollArea, ExpandLayout
 from PySide6.QtWidgets import QWidget, QLabel
 from PySide6.QtCore import Qt
+from qfluentwidgets import ScrollArea, ExpandLayout
 
 from ..utils.styles import StyleSheet
+from ..utils.logger import logger
 
-
-class SubInterface:
-    pass
+import random
 
 
 
@@ -19,6 +18,10 @@ class ManagerInterface(ScrollArea):
         self.titleLabel = QLabel(self.tr(title), self)
         
         self._init()
+        
+        self.setObjectName(f"ManagerInterface_{str(random.randint(100000, 999999))}")
+        
+        logger.info(f"{title} 界面初始化，对象名称：{self.objectName()}")
     
       
     def _setGroups(self):

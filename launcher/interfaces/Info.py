@@ -1,6 +1,9 @@
-from .ui.Ui_Info import Ui_Info
 from PySide6.QtWidgets import QWidget
 from qfluentwidgets import FluentIcon
+
+from .ui.Ui_Info import Ui_Info
+
+
 
 class InfoInterface(QWidget, Ui_Info):
     def __init__(self, parent=None):

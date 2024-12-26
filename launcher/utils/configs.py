@@ -19,20 +19,6 @@ class LauncherConfig(QConfig):
     hfMirrorEnabled = OptionsConfigItem(
         "Mirrors", "hfEnabled", True, BoolValidator())
     
-    pipChanged = Signal()
-    anacondaChanged = Signal()
-    hfChanged = Signal()
-    
-    @logger.catch
-    def set(self, item, value, save=True, copy=True):
-        logger.debug("./launcher/configs/launcher.json 更新")
-        if item is self.pipMirrorEnabled:
-            self.pipChanged.emit()
-        elif item is self.anacondaMirrorEnabled:
-            self.anacondaChanged.emit()
-        elif item is self.hfMirrorEnabled:
-            self.hfChanged.emit()
-        return super().set(item, value, save, copy)
 
 
 cfg = LauncherConfig()

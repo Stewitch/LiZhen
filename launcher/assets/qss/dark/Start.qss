@@ -1,0 +1,7 @@
+QFrame#pHeader {
+    border-image: url("./launcher/assets/images/startHeader.png");
+}
+
+QFrame#pBoard {
+    background: transparent;
+}
