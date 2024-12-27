@@ -6,6 +6,8 @@ from qfluentwidgets import ElevatedCardWidget, ImageLabel, CaptionLabel, ImageLa
 from ..utils.configs import cfg
 from ..utils.logger import logger
 
+import os.path
+
 
 
 class ModelDisplayCard(ElevatedCardWidget):
@@ -58,7 +60,18 @@ class ModelDisplayCard(ElevatedCardWidget):
         img = f"./launcher/assets/images/ui/{theme}/{self.imgName}"
         self.icon.setImage(img)
         self.icon.setFixedSize(QSize(90,90))
-        logger.debug(f"更新图标：{self.imgName}, 主题：{theme}")
+        if self.imgName is None or not os.path.exists(img):
+            logger.warning(f"图标不存在：{img}")
+        else:
+            logger.debug(f"更新图标：{self.imgName}, 主题：{theme}")
+    
+    def _init(self, iconName: str, name: str, provider: str, model: str):
+        """图标必须放在./launcher/assets/images/ui/{theme}/文件夹下"""
+        logger.info(f"初始化模型卡片：{name.strip(":")}")
+        self.setIcon(iconName)
+        self.title.setText(name)
+        self.provider.setText(provider)
+        self.model.setText(model)
 
  
  

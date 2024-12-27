@@ -6,7 +6,7 @@ from .ui.Ui_Start import Ui_Start
 from ..utils.styles import StyleSheet
 from ..utils.logger import logger
 from ..utils.configs import pcfg
-
+from ..utils.common import *
 
 
 class StartInterface(QWidget, Ui_Start):
@@ -17,12 +17,12 @@ class StartInterface(QWidget, Ui_Start):
         
         self.__initFunctions()
         self.__initWidgets()
+        self.__SSConnection()
         
         logger.info(f"启动 界面初始化，对象名称：{self.objectName()}")
     
     
     def __initFunctions(self):
-        logger.debug(pcfg.conf)
         self.ASR = pcfg.get("ASR_MODEL")
         self.LLM = pcfg.get("LLM_PROVIDER")
         self.TTS = pcfg.get("TTS_MODEL")
@@ -32,21 +32,10 @@ class StartInterface(QWidget, Ui_Start):
     
     
     def __initWidgets(self):
-        self.ASRCard.setIcon("asr_available.png")
-        self.ASRCard.title.setText(f"ASR:")
-        self.ASRCard.provider.setText(f"{self.ASR}")
-        self.ASRCard.model.setText(self.ASRModel)
-        
-        self.LLMCard.setIcon("llm.png")
-        self.LLMCard.title.setText(f"LLM:")
-        self.LLMCard.provider.setText(f"{self.LLM}")
-        self.LLMCard.model.setText(f'{self.LLMModel}')
-        
-        self.TTSCard.setIcon("tts_available.png")
-        self.TTSCard.title.setText(f"TTS:")
-        self.TTSCard.provider.setText(f"{self.TTS}")
-        self.TTSCard.model.setText(f"{self.TTSModel}")
-        
+        self.ASRCard._init("asr_available.png", f"ASR:", f"{self.ASR}", f"{self.ASRModel}")
+        self.LLMCard._init("llm.png", f"LLM:", f"{self.LLM}", f"{self.LLMModel}")
+        self.TTSCard._init("tts_available.png", f"TTS:", f"{self.TTS}", f"{self.TTSModel}")
+  
         self.startButton.setIcon(FluentIcon.PLAY)
         
         self.ASRFolder.setIcon(FluentIcon.MICROPHONE)
@@ -58,5 +47,11 @@ class StartInterface(QWidget, Ui_Start):
         StyleSheet.START.apply(self)
     
     
+    def __SSConnection(self):
+        self.startButton.clicked.connect(startProject)
+        self.ASRFolder.clicked.connect(openFolder)
+        self.LLMFolder.clicked.connect(openFolder)
+        self.TTSFolder.clicked.connect(openFolder)
+        self.personaFolder.clicked.connect(openFolder)
     
-    
+

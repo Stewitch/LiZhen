@@ -6,52 +6,11 @@ import json, ruamel.yaml
 
 
 
-class Conf:
-    def __init__(self, filename: str = None):
-        self.filename = filename
-        self.conf = {}
-
-        if self.filename is None:
-            raise ValueError("You didn't provide a filename")
-        
-        elif self.filename.endswith('.yaml'):
-            self.yaml_ = ruamel.yaml.YAML()
-            self.yaml_.preserve_quotes = True
-            self.type = "YAML"
-        elif self.filename.endswith(".json"):
-            self.type = "JSON"
-        else:
-            raise ValueError('Unsupported file type')
-        
-        self.load()
-
-    def load(self) -> None:
-        with open(self.filename, 'r', encoding='utf-8') as f:
-            if self.type == "JSON":
-                self.conf = json.load(f)
-            elif self.type == "YAML":
-                self.conf = self.yaml_.load(f)
-            else:
-                raise ValueError('Unsupported file type')
-    
-    
-    def save(self):
-        with open(self.filename, 'w', encoding='utf-8') as f:
-            if self.filename.endswith('.json'):
-                json.dump(self.conf, f, indent=4)
-            elif self.filename.endswith('.yaml') or self.filename.endswith('.yml'):
-                self.yaml_.dump(self.conf, f)
-            else:
-                raise ValueError('Unsupported file type')
-
-
-
 class YamlConf:
     def __init__(self, filename: str = None):
         self.filename = filename
         self.yaml_ = ruamel.yaml.YAML()
         self.yaml_.preserve_quotes = True
-        self.type = "YAML"
         self.conf = {}
         
         if self.filename is not None:
@@ -104,6 +63,7 @@ class YamlConf:
             for k in keys:
                 value = value.get(k, default)
                 if value == default:
+                    logger.warning(f"未找到键: {k}")
                     break
             return value
         else:
@@ -150,6 +110,46 @@ class YamlConf:
         except Exception as e:
             logger.error(f"设置键值的时候出错: {str(e)}")
             raise
+
+
+
+class Conf:
+    def __init__(self, filename: str = None):
+        self.filename = filename
+        self.conf = {}
+
+        if self.filename is None:
+            raise ValueError("You didn't provide a filename")
+        
+        elif self.filename.endswith('.yaml'):
+            self.yaml_ = ruamel.yaml.YAML()
+            self.yaml_.preserve_quotes = True
+            self.type = "YAML"
+        elif self.filename.endswith(".json"):
+            self.type = "JSON"
+        else:
+            raise ValueError('Unsupported file type')
+        
+        self.load()
+
+    def load(self) -> None:
+        with open(self.filename, 'r', encoding='utf-8') as f:
+            if self.type == "JSON":
+                self.conf = json.load(f)
+            elif self.type == "YAML":
+                self.conf = self.yaml_.load(f)
+            else:
+                raise ValueError('Unsupported file type')
+    
+    
+    def save(self):
+        with open(self.filename, 'w', encoding='utf-8') as f:
+            if self.filename.endswith('.json'):
+                json.dump(self.conf, f, indent=4)
+            elif self.filename.endswith('.yaml') or self.filename.endswith('.yml'):
+                self.yaml_.dump(self.conf, f)
+            else:
+                raise ValueError('Unsupported file type')
 
 
 
