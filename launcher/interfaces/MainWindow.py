@@ -57,7 +57,7 @@ class MainWindow(FluentWindow):
     
     
     def __splash(self):
-        self.splashScreen = SplashScreen(IMAGES.joinpath("lz128.ico"), self)
+        self.splashScreen = SplashScreen(str(IMAGES.joinpath("lz128.ico")), self)
         self.splashScreen.setIconSize(QSize(128, 128))
         
         desktop = QApplication.screens()[0].availableGeometry()
@@ -73,7 +73,7 @@ class MainWindow(FluentWindow):
     
     def __initWindow(self):
         self.setWindowTitle(self.tr("离真 启动器"))
-        self.setWindowIcon(QIcon(IMAGES.joinpath("lz64.ico")))
+        self.setWindowIcon(QIcon(str(IMAGES.joinpath("lz64.ico"))))
         self.resize(1000, 700)
     
     
