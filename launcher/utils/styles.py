@@ -1,6 +1,10 @@
 from qfluentwidgets import StyleSheetBase, Theme, qconfig
 from enum import Enum
 
+from .paths import QSS
+
+
+
 class StyleSheet(StyleSheetBase, Enum):
     
     START = "Start"
@@ -8,4 +12,4 @@ class StyleSheet(StyleSheetBase, Enum):
     
     def path(self, theme=Theme.AUTO):
         theme = qconfig.theme if theme == Theme.AUTO else theme
-        return f"./launcher/assets/qss/{theme.value.lower()}/{self.value}.qss"
+        return QSS.joinpath(f"{theme.value.lower()}/{self.value}.qss")

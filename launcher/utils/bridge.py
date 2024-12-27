@@ -112,7 +112,7 @@ class YamlConf:
             raise
 
 
-
+# NOTICE: 可能成为无用代码
 class Conf:
     def __init__(self, filename: str = None):
         self.filename = filename
@@ -152,7 +152,7 @@ class Conf:
                 raise ValueError('Unsupported file type')
 
 
-
+# NOTICE: 可能成为无用代码
 class ConfigBridge:
     """
     本意是要实现一个配置文件的桥接器，可以将 JSON 和 YAML 两种格式的配置文件互相转换。
@@ -204,6 +204,7 @@ class ConfigBridge:
 
 
 if __name__ == '__main__':
+    # 测试用代码
     j = Conf("D:\\Launcher\\Fluent\\launcher\\configs\\project.json")
     y = Conf("D:\\Launcher\\Fluent\\conf.yaml")
     bridge = ConfigBridge(j, y)

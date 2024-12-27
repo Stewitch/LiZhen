@@ -5,6 +5,7 @@ from qfluentwidgets import ElevatedCardWidget, ImageLabel, CaptionLabel, ImageLa
 
 from ..utils.configs import cfg
 from ..utils.logger import logger
+from ..utils.paths import UICONS
 
 import os.path
 
@@ -57,7 +58,7 @@ class ModelDisplayCard(ElevatedCardWidget):
     
     def updateIcon(self):
         theme = cfg.theme.value.lower()
-        img = f"./launcher/assets/images/ui/{theme}/{self.imgName}"
+        img = UICONS.joinpath(f"{theme}/{self.imgName}")
         self.icon.setImage(img)
         self.icon.setFixedSize(QSize(90,90))
         if self.imgName is None or not os.path.exists(img):

@@ -12,6 +12,5 @@ def openFolder(folder: str):
 
 
 
-
 def startProject():
     logger.info("启动项目！")
