@@ -19,7 +19,6 @@ class ManagerInterface(ScrollArea):
         
         self._init()
         
-        self.setObjectName(f"ManagerInterface_{str(random.randint(100000, 999999))}")
         
         logger.info(f"{title} 界面初始化，对象名称：{self.objectName()}")
     
@@ -65,7 +64,7 @@ class ManagerInterface(ScrollArea):
         self.setViewportMargins(0, 80, 0, 20)
         self.setWidget(self.view)
         self.setWidgetResizable(True)
-        self.setObjectName('ManagerInterface')
+        self.setObjectName(f"ManagerInterface_{str(random.randint(100000, 999999))}")
         self.view.setObjectName('View')
         self.titleLabel.setObjectName('TitleLabel')
         

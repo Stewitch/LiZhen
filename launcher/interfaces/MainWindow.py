@@ -12,6 +12,7 @@ from .TTS import TTSInterface
 from .Persona import PersonaInterface
 
 from ..utils.logger import logger
+from ..utils.paths import IMAGES
 
 
 
@@ -56,7 +57,7 @@ class MainWindow(FluentWindow):
     
     
     def __splash(self):
-        self.splashScreen = SplashScreen("./launcher/assets/images/LZ128.ico", self)
+        self.splashScreen = SplashScreen(IMAGES.joinpath("lz128.ico"), self)
         self.splashScreen.setIconSize(QSize(128, 128))
         
         desktop = QApplication.screens()[0].availableGeometry()
@@ -72,7 +73,7 @@ class MainWindow(FluentWindow):
     
     def __initWindow(self):
         self.setWindowTitle(self.tr("离真 启动器"))
-        self.setWindowIcon(QIcon("./launcher/assets/images/LZ64.ico"))
+        self.setWindowIcon(QIcon(IMAGES.joinpath("lz64.ico")))
         self.resize(1000, 700)
     
     

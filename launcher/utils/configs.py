@@ -1,7 +1,8 @@
 from qfluentwidgets import qconfig, QConfig, OptionsConfigItem, OptionsValidator, Theme, BoolValidator
 
-from ..utils.logger import logger
-from ..utils.bridge import YamlConf
+from .logger import logger
+from .bridge import YamlConf
+from .paths import LAUNCHER_CONFIG
 
 import os.path
 
@@ -28,5 +29,5 @@ if os.path.exists("conf.yaml"):
 
 cfg = LauncherConfig()
 cfg.themeMode.value = Theme.AUTO
-qconfig.load('./launcher/configs/launcher.json', cfg)
+qconfig.load(LAUNCHER_CONFIG, cfg)
 logger.info("启动器配置文件载入")
