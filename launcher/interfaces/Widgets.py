@@ -58,7 +58,7 @@ class ModelDisplayCard(ElevatedCardWidget):
     
     def updateIcon(self):
         theme = cfg.theme.value.lower()
-        img = UICONS.joinpath(f"{theme}/{self.imgName}")
+        img = str(UICONS.joinpath(f"{theme}/{self.imgName}"))
         self.icon.setImage(img)
         self.icon.setFixedSize(QSize(90,90))
         if self.imgName is None or not os.path.exists(img):
