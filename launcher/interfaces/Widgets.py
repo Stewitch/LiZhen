@@ -33,15 +33,17 @@ class ModelDisplayCard(ElevatedCardWidget):
         self.vBoxLayout.addWidget(self.model, 0, Qt.AlignHCenter | Qt.AlignBottom)
 
         font = QFont()
-        font.setFamilies([u"\u5fae\u8f6f\u96c5\u9ed1"])
-        font.setPointSize(11)
+        font.setFamilies([u"\u963f\u91cc\u5df4\u5df4\u666e\u60e0\u4f53 R"])
+        font.setPointSize(13)
+        font.setBold(True)
         
         self.title.setFont(font)
         
-        font.setPointSize(10)
+        font.setPointSize(12)
         self.provider.setFont(font)
         
-        font.setPointSize(8)
+        font.setItalic(True)
+        font.setPointSize(10)
         self.model.setFont(font)
         
         

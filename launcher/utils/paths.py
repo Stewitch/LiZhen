@@ -16,6 +16,7 @@ ASSETS = LAUNCHER.joinpath('assets')
 I18N = ASSETS.joinpath('i18n')
 IMAGES = ASSETS.joinpath('images')
 QSS = ASSETS.joinpath('qss')
+FONTS = ASSETS.joinpath('fonts')
 UICONS = IMAGES.joinpath('ui')
 
 

@@ -16,4 +16,5 @@ class InfoInterface(QWidget, Ui_Info):
         self.toGithub.setUrl("https://github.com/SunKSugaR/LiZhen")
         self.toLicense.setIcon(FluentIcon.DICTIONARY)
         self.toLicense.setUrl("https://www.gnu.org/licenses/gpl-3.0.html")
+        self.setObjectName("InfoInterface")
         
