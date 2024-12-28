@@ -8,9 +8,15 @@
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
 
-from PySide6.QtCore import QCoreApplication, QMetaObject, Qt, QSize
-from PySide6.QtGui import QFont
-from PySide6.QtWidgets import QGridLayout, QSizePolicy, QSpacerItem
+from PySide6.QtCore import (QCoreApplication, QDate, QDateTime, QLocale,
+    QMetaObject, QObject, QPoint, QRect,
+    QSize, QTime, QUrl, Qt)
+from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
+    QFont, QFontDatabase, QGradient, QIcon,
+    QImage, QKeySequence, QLinearGradient, QPainter,
+    QPalette, QPixmap, QRadialGradient, QTransform)
+from PySide6.QtWidgets import (QApplication, QGridLayout, QSizePolicy, QSpacerItem,
+    QWidget)
 
 from qfluentwidgets import (DisplayLabel, HyperlinkButton, ImageLabel)
 
@@ -41,6 +47,10 @@ class Ui_Info(object):
 
         self.toGithub = HyperlinkButton(Info)
         self.toGithub.setObjectName(u"toGithub")
+        font = QFont()
+        font.setFamilies([u"\u963f\u91cc\u5df4\u5df4\u666e\u60e0\u4f53 R"])
+        font.setBold(True)
+        self.toGithub.setFont(font)
 
         self.gridLayout.addWidget(self.toGithub, 9, 2, 1, 1)
 
@@ -50,11 +60,11 @@ class Ui_Info(object):
 
         self.authorInfo = DisplayLabel(Info)
         self.authorInfo.setObjectName(u"authorInfo")
-        font = QFont()
-        font.setFamilies([u"Gabriola"])
-        font.setPointSize(13)
-        font.setBold(False)
-        self.authorInfo.setFont(font)
+        font1 = QFont()
+        font1.setFamilies([u"\u963f\u91cc\u5df4\u5df4\u666e\u60e0\u4f53 R"])
+        font1.setPointSize(13)
+        font1.setBold(False)
+        self.authorInfo.setFont(font1)
         self.authorInfo.setTextFormat(Qt.TextFormat.AutoText)
         self.authorInfo.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
@@ -74,6 +84,7 @@ class Ui_Info(object):
 
         self.toLicense = HyperlinkButton(Info)
         self.toLicense.setObjectName(u"toLicense")
+        self.toLicense.setFont(font)
 
         self.gridLayout.addWidget(self.toLicense, 4, 2, 1, 1)
 

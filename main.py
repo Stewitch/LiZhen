@@ -31,29 +31,36 @@ Code with passion, code with love.
 
 
 from PySide6.QtWidgets import QApplication
+from PySide6.QtGui import QFontDatabase
+
 from launcher.interfaces.MainWindow import MainWindow
 from launcher.utils.configs import cfg
 from launcher.utils.logger import logger
+from launcher.utils.paths import FONTS
+from launcher.utils.common import _launcher
 
-import os
+import os, sys
 
 
 
 if cfg.get(cfg.dpiScale) != "Auto":
     os.environ["QT_ENABLE_HIGHDPI_SCALING"] = "0"
     os.environ["QT_SCALE_FACTOR"] = str(cfg.get(cfg.dpiScale))
+    
 
 
 
 def main():
-    import sys
     app = QApplication(sys.argv)
+    QFontDatabase.addApplicationFont(str(FONTS.joinpath("Alibaba-PuHuiTi-Regular.ttf")))
     window = MainWindow()
     window.show()
-    sys.exit(app.exec())
-
+    _launcher.switch()
+    return app.exec()
 
 
 if __name__ == '__main__':
     logger.info("主程序启动")
-    main()
+    code = main()
+    logger.info("主程序退出")
+    sys.exit(code)

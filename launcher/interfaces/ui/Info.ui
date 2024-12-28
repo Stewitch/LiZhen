@@ -71,6 +71,12 @@
    </item>
    <item row="9" column="2">
     <widget class="HyperlinkButton" name="toGithub">
+     <property name="font">
+      <font>
+       <family>阿里巴巴普惠体 R</family>
+       <bold>true</bold>
+      </font>
+     </property>
      <property name="text">
       <string>Github Repo</string>
      </property>
@@ -96,7 +102,7 @@
     <widget class="DisplayLabel" name="authorInfo">
      <property name="font">
       <font>
-       <family>Gabriola</family>
+       <family>阿里巴巴普惠体 R</family>
        <pointsize>13</pointsize>
        <bold>false</bold>
       </font>
@@ -156,6 +162,12 @@
    </item>
    <item row="4" column="2">
     <widget class="HyperlinkButton" name="toLicense">
+     <property name="font">
+      <font>
+       <family>阿里巴巴普惠体 R</family>
+       <bold>true</bold>
+      </font>
+     </property>
      <property name="text">
       <string>License: GPL-3.0</string>
      </property>

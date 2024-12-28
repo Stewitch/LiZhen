@@ -36,7 +36,7 @@ class StartInterface(QWidget, Ui_Start):
         self.LLMCard._init("llm.png", f"LLM:", f"{self.LLM}", f"{self.LLMModel}")
         self.TTSCard._init("tts_available.png", f"TTS:", f"{self.TTS}", f"{self.TTSModel}")
   
-        self.startButton.setIcon(FluentIcon.PLAY)
+        self.startButton.setIcon(FluentIcon.PLAY_SOLID)
         
         self.ASRFolder.setIcon(FluentIcon.MICROPHONE)
         self.LLMFolder.setIcon(FluentIcon.MESSAGE)

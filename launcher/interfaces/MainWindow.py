@@ -1,4 +1,4 @@
-from PySide6.QtGui import QIcon
+from PySide6.QtGui import QIcon, QFont
 from PySide6.QtWidgets import QApplication
 from PySide6.QtCore import QSize, QEventLoop, QTimer
 from qfluentwidgets import FluentIcon, FluentWindow, NavigationItemPosition, SplashScreen
@@ -10,9 +10,12 @@ from .ASR import ASRInterface
 from .LLM import LLMInterface
 from .TTS import TTSInterface
 from .Persona import PersonaInterface
+from .Console import ConsoleInterface
 
 from ..utils.logger import logger
 from ..utils.paths import IMAGES
+
+import sys
 
 
 
@@ -39,6 +42,7 @@ class MainWindow(FluentWindow):
         self.infoInterface = InfoInterface(self)
         self.settingInterface = SettingInterface(self)
         self.personaInterface = PersonaInterface(self)
+        self.consoleInterface = ConsoleInterface(self)
         
         self.addSubInterface(self.startInterface, FluentIcon.PLAY, self.tr("启动"), NavigationItemPosition.TOP)
         self.navigationInterface.addSeparator()
@@ -46,9 +50,13 @@ class MainWindow(FluentWindow):
         self.addSubInterface(self.asrInterface, FluentIcon.MICROPHONE, self.tr("ASR 管理"), NavigationItemPosition.SCROLL)
         self.addSubInterface(self.llmInterface, FluentIcon.MESSAGE, self.tr("LLM 管理"), NavigationItemPosition.SCROLL)
         self.addSubInterface(self.ttsInterface, FluentIcon.VOLUME, self.tr("TTS 管理"), NavigationItemPosition.SCROLL)
+        
+        self.navigationInterface.addSeparator(NavigationItemPosition.SCROLL)
+        
         self.addSubInterface(self.personaInterface, FluentIcon.FEEDBACK, self.tr("人格提示词管理"), NavigationItemPosition.SCROLL)
         
         self.navigationInterface.addSeparator(NavigationItemPosition.BOTTOM)
+        self.addSubInterface(self.consoleInterface, FluentIcon.COMMAND_PROMPT, self.tr("控制台"), NavigationItemPosition.BOTTOM)
         self.addSubInterface(self.infoInterface, FluentIcon.INFO, self.tr("信息"), NavigationItemPosition.BOTTOM)
         self.addSubInterface(self.settingInterface, FluentIcon.SETTING, self.tr("设置"), NavigationItemPosition.BOTTOM)
 
@@ -81,3 +89,10 @@ class MainWindow(FluentWindow):
         self.startInterface.ASRCard.clicked.connect(lambda: self.switchTo(self.asrInterface))
         self.startInterface.LLMCard.clicked.connect(lambda: self.switchTo(self.llmInterface))
         self.startInterface.TTSCard.clicked.connect(lambda: self.switchTo(self.ttsInterface))
+        
+    
+    def closeEvent(self, e):
+        sys.stdout = sys.__stdout__
+        sys.stderr = sys.__stderr__
+        logger.info("主窗口关闭")
+        return super().closeEvent(e)

@@ -8,7 +8,7 @@
         "DpiScale": "Auto"
     },
     "QFluentWidgets": {
-        "ThemeColor": "#ff1f93ff",
-        "ThemeMode": "Light"
+        "ThemeColor": "#ff00aeff",
+        "ThemeMode": "Dark"
     }
 }
