@@ -312,7 +312,7 @@
        <item row="5" column="0">
         <layout class="QGridLayout" name="mulitFunc">
          <item row="0" column="0">
-          <widget class="PushButton" name="bButton">
+          <widget class="PushButton" name="toConsoleButton">
            <property name="font">
             <font>
              <family>阿里巴巴普惠体 R</family>

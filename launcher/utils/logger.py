@@ -1,10 +1,9 @@
 from loguru import logger
 
 from .stream import _stdout
-
-
-
 from .paths import LAUNCHER_LOG
+
+
 
 logger.remove()
 

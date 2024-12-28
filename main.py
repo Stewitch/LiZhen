@@ -49,18 +49,16 @@ if cfg.get(cfg.dpiScale) != "Auto":
     
 
 
-
 def main():
     app = QApplication(sys.argv)
     QFontDatabase.addApplicationFont(str(FONTS.joinpath("Alibaba-PuHuiTi-Regular.ttf")))
     window = MainWindow()
     window.show()
     _launcher.switch()
-    return app.exec()
+    sys.exit(app.exec())
+
 
 
 if __name__ == '__main__':
     logger.info("主程序启动")
-    code = main()
-    logger.info("主程序退出")
-    sys.exit(code)
+    main()

@@ -44,7 +44,7 @@ class MainWindow(FluentWindow):
         self.personaInterface = PersonaInterface(self)
         self.consoleInterface = ConsoleInterface(self)
         
-        self.addSubInterface(self.startInterface, FluentIcon.PLAY, self.tr("启动"), NavigationItemPosition.TOP)
+        self.addSubInterface(self.startInterface, FluentIcon.PLAY_SOLID, self.tr("启动"), NavigationItemPosition.TOP)
         self.navigationInterface.addSeparator()
         
         self.addSubInterface(self.asrInterface, FluentIcon.MICROPHONE, self.tr("ASR 管理"), NavigationItemPosition.SCROLL)
@@ -89,6 +89,7 @@ class MainWindow(FluentWindow):
         self.startInterface.ASRCard.clicked.connect(lambda: self.switchTo(self.asrInterface))
         self.startInterface.LLMCard.clicked.connect(lambda: self.switchTo(self.llmInterface))
         self.startInterface.TTSCard.clicked.connect(lambda: self.switchTo(self.ttsInterface))
+        self.startInterface.toConsoleButton.clicked.connect(lambda: self.switchTo(self.consoleInterface))
         
     
     def closeEvent(self, e):

@@ -6,7 +6,7 @@ from .ui.Ui_Start import Ui_Start
 from ..utils.styles import StyleSheet
 from ..utils.logger import logger
 from ..utils.configs import pcfg
-from ..utils.common import *
+from ..utils.common import switchProject, openFolder, _project
 
 
 class StartInterface(QWidget, Ui_Start):
@@ -37,6 +37,7 @@ class StartInterface(QWidget, Ui_Start):
         self.TTSCard._init("tts_available.png", f"TTS:", f"{self.TTS}", f"{self.TTSModel}")
   
         self.startButton.setIcon(FluentIcon.PLAY_SOLID)
+        self.toConsoleButton.setIcon(FluentIcon.COMMAND_PROMPT)
         
         self.ASRFolder.setIcon(FluentIcon.MICROPHONE)
         self.LLMFolder.setIcon(FluentIcon.MESSAGE)
@@ -47,8 +48,18 @@ class StartInterface(QWidget, Ui_Start):
         StyleSheet.START.apply(self)
     
     
+    def __updateButton(self, status: str):
+        if status in ["on", "starting"]:
+            self.startButton.setText("终止项目")
+            self.startButton.setIcon(FluentIcon.PAUSE_BOLD)
+        else:
+            self.startButton.setText("一键启动！")
+            self.startButton.setIcon(FluentIcon.PLAY_SOLID)
+    
+    
     def __SSConnection(self):
-        self.startButton.clicked.connect(startProject)
+        _project.changed.connect(self.__updateButton)
+        self.startButton.clicked.connect(switchProject)
         self.ASRFolder.clicked.connect(openFolder)
         self.LLMFolder.clicked.connect(openFolder)
         self.TTSFolder.clicked.connect(openFolder)

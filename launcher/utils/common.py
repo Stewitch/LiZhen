@@ -1,5 +1,5 @@
 from PySide6.QtGui import QColor
-from PySide6.QtCore import QObject, Signal
+from PySide6.QtCore import QObject, Signal, QTimer
 
 from .logger import logger
 
@@ -9,29 +9,39 @@ import os, subprocess
 
 class Status(QObject):
     
-    changed = Signal(bool)
+    changed = Signal(str)
 
-    def __init__(self, status: bool = False):
+    def __init__(self, status: str = "off"):
         super().__init__()
         self.__status = status
-        
-    
-    def isRunning(self) -> bool:
-        if self.__status:
-            return True
-        return False
     
     
-    def changeTo(self, s: bool):
-        if isinstance(s, bool):
-            self.__status = s
-            self.changed.emit(s)
+    def isRunning(self):
+        if self.__status == "starting":
+            return None
+        return self.__status == "on"
     
     
     def switch(self):
-        self.__status = not self.__status
+        if self.isRunning():
+            self.__status = "off"
+        elif self.__status == "starting":
+            self.__status = "on"
+        else:
+            self.__status = "starting"
         self.changed.emit(self.__status)
-
+    
+    
+    def changeTo(self, s: str):
+        if s in ["off", "starting", "on"] and self.__status != s:
+            self.__status = s
+            self.changed.emit(self.__status)
+            
+    
+    def __str__(self):
+        return self.__status
+        
+    
 
 
 _project = Status()
@@ -43,6 +53,8 @@ class Color:
     RED = QColor(255, 0, 0)
     GREEN = QColor(0, 255, 0)
     BLUE = QColor(0, 0, 255)
+    LIME_GREEN = QColor(50, 205, 50)
+    GOLD = QColor(255, 215, 0)
 
 
 
@@ -55,7 +67,28 @@ def openFolder(folder: str):
         os.startfile(folder)
     except:
         subprocess.Popen(['xdg-open', folder])
+        
+
+timer = QTimer()
+def onProjectStart():
+    _project.changeTo("on")
+    logger.debug(f"当前项目状态：{_project}")
+    logger.debug("启动完成")
+
+def onProjectStop():
+    _project.changeTo("off")
+    logger.debug(f"当前项目状态：{_project}")
+    logger.debug("终止完成")
 
 
-def startProject():
-    logger.info("启动项目！")
+@logger.catch
+def switchProject():
+    if _project.isRunning():
+        logger.info("终止项目！")
+        logger.debug("假终止模式，三秒后结束")
+        timer.singleShot(3000, onProjectStop)
+    else:
+        logger.info("启动项目！")
+        logger.debug("假启动模式，三秒后结束")
+        _project.changeTo("starting")
+        timer.singleShot(3000, onProjectStart)
