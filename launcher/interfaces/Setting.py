@@ -6,6 +6,7 @@ from .Interfaces import ManagerInterface
 
 from ..utils.configs import cfg
 from ..utils.logger import logger
+from ..utils.common import pipMirrorFile
 
 
 
@@ -57,11 +58,6 @@ class SettingInterface(ManagerInterface):
             self.tr("pip 镜像源可以加速模块和依赖安装，建议国内用户开启"),
             configItem=cfg.pipMirrorEnabled,
             parent=self.mirrorsGroup)
-        self.anacondaMirrorEnabledCard = SwitchSettingCard(
-            FIF.CLOUD_DOWNLOAD, self.tr("启用 Anaconda 镜像源"),
-            self.tr("解决 Anaconda 包下载失败等问题，建议国内用户开启"),
-            configItem=cfg.anacondaMirrorEnabled,
-            parent=self.mirrorsGroup)
         self.hfMirrorEnabledCard = SwitchSettingCard(
             FIF.CLOUD_DOWNLOAD, self.tr("启用 Hugging Face 镜像源"),
             self.tr("国内用户大多无法直接连接到 Hugging Face，启用镜像源可解决模型下载问题"),
@@ -75,7 +71,6 @@ class SettingInterface(ManagerInterface):
         self.uiGroup.addSettingCard(self.themeColorCard)
         
         self.mirrorsGroup.addSettingCard(self.pipMirrorEnabledCard)
-        self.mirrorsGroup.addSettingCard(self.anacondaMirrorEnabledCard)
         self.mirrorsGroup.addSettingCard(self.hfMirrorEnabledCard)
     
     
@@ -85,30 +80,30 @@ class SettingInterface(ManagerInterface):
         self.expandLayout.addWidget(self.mirrorsGroup)
     
     
-    def _restartAppNotice(self):
+    def __restartAppNotice(self):
         InfoBar.success(
             self.tr('设置成功'),
-            self.tr('重新打开启动器生效'),
+            self.tr('重新打开 启动器 生效'),
             duration=1500,
             parent=self
         )
     
     
-    def _restartProjectNotice(self):
+    def __restartProjectNotice(self):
         InfoBar.success(
             self.tr("设置成功"),
-            self.tr("重启项目后生效"),
+            self.tr("重启 项目 后生效"),
             duration=1000,
             parent=self
         )
 
     
     def _SSConnection(self):
-        cfg.appRestartSig.connect(self._restartAppNotice)
+        cfg.appRestartSig.connect(self.__restartAppNotice)
         cfg.themeChanged.connect(setTheme)
         cfg.themeColorChanged.connect(lambda c: setThemeColor(c))
         
-        cfg.pipMirrorEnabled.valueChanged.connect(self._restartProjectNotice)
-        cfg.anacondaMirrorEnabled.valueChanged.connect(self._restartProjectNotice)
-        cfg.hfMirrorEnabled.valueChanged.connect(self._restartProjectNotice)
+        cfg.pipMirrorEnabled.valueChanged.connect(self.__restartProjectNotice)
+        cfg.pipMirrorEnabled.valueChanged.connect(lambda v: pipMirrorFile(v))
+        cfg.hfMirrorEnabled.valueChanged.connect(self.__restartProjectNotice)
         

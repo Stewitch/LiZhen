@@ -6,8 +6,8 @@ from qfluentwidgets import Action, FluentIcon
 from .ui.Ui_Console import Ui_Console
 
 from ..utils.logger import logger
-from ..utils.common import project, switchProject
-from ..utils.stream import _stdout, _stderr
+from ..utils.common import project, switchProjectState
+from ..utils.stream import _stderr
 from ..utils.color import Color
 
 
@@ -20,7 +20,7 @@ class ConsoleInterface(QWidget, Ui_Console):
         self.__initFunctions()
         self.__SSConnection()
         
-        self.statusUpdate()
+        self.__updateStatus()
         
         
     def __initWidgets(self):
@@ -39,23 +39,21 @@ class ConsoleInterface(QWidget, Ui_Console):
         ])
         self.cmdBar.addSeparator()
         self.cmdBar.addActions([
-            Action(FluentIcon.PLAY_SOLID, self.tr("一键启动"), triggered=lambda: switchProject()),
+            Action(FluentIcon.PLAY_SOLID, self.tr("一键启动"), triggered=lambda: switchProjectState()),
             Action(FluentIcon.ROTATE, self.tr("启动器控制台"), triggered=self.switchShell)
         ])
     
     
     def __initFunctions(self):
         self.currentShell = self.Shells.currentWidget().children()[1]
-        self.stdout = _stdout
         self.stderr = _stderr
     
     
     def __SSConnection(self):
-        project.changed.connect(self.statusUpdate)
-        project.changed.connect(self.__buttonUpdate)
+        project.changed.connect(self.__updateStatus)
+        project.changed.connect(self.__updateButton)
         project.shellNewText.connect(self.projectShellUpdate)
-        self.stdout.newText.connect(self.launcherShellUpdate)
-        self.stderr.newText.connect(self.projectShellUpdate)
+        self.stderr.newText.connect(self.launcherShellUpdate)
     
     
     def launcherShellUpdate(self, text: str):
@@ -76,7 +74,7 @@ class ConsoleInterface(QWidget, Ui_Console):
         self.projectShell.ensureCursorVisible()
     
     
-    def __buttonUpdate(self, status: str):
+    def __updateButton(self, status: str):
         if status in ["on", "starting"]:
             self.cmdBar.actions()[2].setIcon(FluentIcon.PAUSE_BOLD)
             self.cmdBar.actions()[2].setText("终止项目")
@@ -85,7 +83,7 @@ class ConsoleInterface(QWidget, Ui_Console):
             self.cmdBar.actions()[2].setText("一键启动")
 
     
-    def statusUpdate(self):
+    def __updateStatus(self):
         self.currentShell = self.Shells.currentWidget().children()[1]
         shellName = self.currentShell.objectName()
         if shellName == "projectShell":
@@ -119,5 +117,5 @@ class ConsoleInterface(QWidget, Ui_Console):
     def switchShell(self):
         logger.debug(f"当前页：{self.Shells.currentIndex()}")
         self.Shells.setCurrentIndex(self.Shells.count() - 1 -self.Shells.currentIndex())
-        self.statusUpdate()
+        self.__updateStatus()
         logger.debug(f"切换控制台到：{self.currentShell.objectName()}")

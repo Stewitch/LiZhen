@@ -15,8 +15,6 @@ class LauncherConfig(QConfig):
     # Mirrors
     pipMirrorEnabled = OptionsConfigItem(
         "Mirrors", "pipEnabled", True, BoolValidator())
-    anacondaMirrorEnabled = OptionsConfigItem(
-        "Mirrors", "anacondaEnabled", True, BoolValidator())
     hfMirrorEnabled = OptionsConfigItem(
         "Mirrors", "hfEnabled", True, BoolValidator())
     

@@ -29,9 +29,9 @@ UICONS = IMAGES.joinpath('ui')
 
 
 # 配置文件
+UV_CONFIG = PROJECT.joinpath('uv.toml')
 CONFIGS = LAUNCHER.joinpath('configs')
 LAUNCHER_CONFIG = CONFIGS.joinpath('launcher.json')
-MIRRORS = CONFIGS.joinpath('mirrors.json')
 
 
 # 日志文件

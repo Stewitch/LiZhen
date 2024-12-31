@@ -1,11 +1,10 @@
-from PySide6.QtGui import QColor
-from PySide6.QtCore import QObject, Signal, QTimer, QProcess
+from PySide6.QtCore import QObject, Signal, QProcess
 
-from .logger import logger, switchStream, SYSTEM
-from .paths import PROJECT, VENV, VENV_ACTIVATE
+from .logger import logger, SYSTEM
+from .paths import PROJECT, VENV, VENV_ACTIVATE, UV_CONFIG
 from .color import ansi_to_html
 
-import os, subprocess, shutil
+import os, subprocess, shutil, tomlkit
 
 
 
@@ -113,6 +112,8 @@ class Project(Status):
     def __initProcess(self):
         self.__process.setWorkingDirectory(str(PROJECT))
         self.__process.readyReadStandardError.connect(self.__newText)
+        self.__process.finished.connect(lambda: self.changeTo("off"))
+        self.__process.started.connect(lambda: self.changeTo("on"))
         
         
     def __initCommands(self):
@@ -136,6 +137,8 @@ class Project(Status):
             self.__process.start("cmd", ["/k", self.__runProject])
         else:  # Linux or MacOS
             self.__process.start("sh", ["-c", self.__runProject])
+        
+        self.changeTo("starting")
         
     
     def stop(self):
@@ -172,39 +175,42 @@ def openFolder(folder: str):
         os.startfile(folder)
     except:
         subprocess.Popen(['xdg-open', folder])
-    
 
-def projectFunc():
-    pass
 
-timer = QTimer()
+
 def onProjectStart():
-    switchStream()
     logger.debug(project.uvAvailable())
     if project.uvAvailable():
         logger.info("UV 已安装，启动项目")
         project.start()
-    switchStream()
-    project.changeTo("on")
     logger.debug(f"当前项目状态：{project}")
     logger.debug("启动完成")
 
 def onProjectStop():
-    switchStream()
     project.stop()
-    project.changeTo("off")
     logger.debug(f"当前项目状态：{project}")
     logger.debug("终止完成")
 
 
 @logger.catch
-def switchProject():
+def switchProjectState():
     if project.isRunning():
         logger.info("终止项目！")
-        logger.debug("假终止模式，三秒后结束")
-        timer.singleShot(3000, onProjectStop)
+        onProjectStop()
     else:
         logger.info("启动项目！")
-        logger.debug("假启动模式，三秒后结束")
         project.changeTo("starting")
         onProjectStart()
+
+
+
+def pipMirrorFile(enable: True):
+    if enable:
+        pipMirror = {'index': [{'url': 'https://pypi.tuna.tsinghua.edu.cn/simple'}]}
+        with open(UV_CONFIG, "w") as f:
+            tomlkit.dump(pipMirror, f)
+        logger.info("启用 pip 镜像")
+    else:
+        if os.path.exists(UV_CONFIG):
+            os.remove(UV_CONFIG)
+            logger.info("关闭 pip 镜像")

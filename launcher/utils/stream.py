@@ -16,15 +16,8 @@ class Stream(QObject):
     def flush(self):
         pass
 
-
-
-
-_stdout = Stream()
 _stderr = Stream()
 
-sys.stdout = _stdout
 sys.stderr = _stderr
 
-
-# _stdout = sys.stdout
 # _stderr = sys.stderr

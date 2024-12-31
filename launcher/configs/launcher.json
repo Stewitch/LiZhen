@@ -1,14 +1,13 @@
 {
-    "Mirrors": {
-        "anacondaEnabled": true,
-        "hfEnabled": true,
-        "pipEnabled": true
-    },
     "MainWindow": {
         "DpiScale": "Auto"
     },
+    "Mirrors": {
+        "hfEnabled": true,
+        "pipEnabled": true
+    },
     "QFluentWidgets": {
         "ThemeColor": "#ff00aeff",
-        "ThemeMode": "Dark"
+        "ThemeMode": "Light"
     }
 }

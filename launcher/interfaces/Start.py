@@ -6,7 +6,7 @@ from .ui.Ui_Start import Ui_Start
 from ..utils.styles import StyleSheet
 from ..utils.logger import logger
 from ..utils.configs import pcfg
-from ..utils.common import switchProject, openFolder, project
+from ..utils.common import switchProjectState, openFolder, project
 
 
 class StartInterface(QWidget, Ui_Start):
@@ -59,7 +59,7 @@ class StartInterface(QWidget, Ui_Start):
     
     def __SSConnection(self):
         project.changed.connect(self.__updateButton)
-        self.startButton.clicked.connect(switchProject)
+        self.startButton.clicked.connect(switchProjectState)
         self.ASRFolder.clicked.connect(openFolder)
         self.LLMFolder.clicked.connect(openFolder)
         self.TTSFolder.clicked.connect(openFolder)

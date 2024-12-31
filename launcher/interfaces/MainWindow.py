@@ -14,6 +14,7 @@ from .Console import ConsoleInterface
 
 from ..utils.logger import logger
 from ..utils.paths import IMAGES
+from ..utils.common import project
 
 import sys
 
@@ -59,9 +60,6 @@ class MainWindow(FluentWindow):
         self.addSubInterface(self.consoleInterface, FluentIcon.COMMAND_PROMPT, self.tr("控制台"), NavigationItemPosition.BOTTOM)
         self.addSubInterface(self.infoInterface, FluentIcon.INFO, self.tr("信息"), NavigationItemPosition.BOTTOM)
         self.addSubInterface(self.settingInterface, FluentIcon.SETTING, self.tr("设置"), NavigationItemPosition.BOTTOM)
-
-        
-
     
     
     def __splash(self):
@@ -93,7 +91,7 @@ class MainWindow(FluentWindow):
         
     
     def closeEvent(self, e):
-        sys.stdout = sys.__stdout__
         sys.stderr = sys.__stderr__
+        project.stop()
         logger.info("主窗口关闭")
         return super().closeEvent(e)
