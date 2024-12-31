@@ -11,6 +11,14 @@ LAUNCHER = CWD.joinpath('launcher')
 PROJECT = CWD.joinpath('Open-LLM-VTuber')
 
 
+# 项目主文件
+RUN_PROJECT = PROJECT.joinpath('run_server.py')
+# 项目虚拟环境
+VENV = PROJECT.joinpath('.venv')
+# 激活脚本
+VENV_ACTIVATE = VENV.joinpath('Scripts').joinpath('activate')
+
+
 # 资源相关
 ASSETS = LAUNCHER.joinpath('assets')
 I18N = ASSETS.joinpath('i18n')
@@ -34,4 +42,5 @@ LAUNCHER_LOG = LOGS.joinpath('launcher.log')
 if __name__ == "__main__":
     print(CWD)
     print(LAUNCHER)
-    os.startfile(LAUNCHER)
+    print(VENV_ACTIVATE)
+    os.system(f"cmd /k {VENV_ACTIVATE}") 

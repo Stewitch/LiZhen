@@ -6,8 +6,9 @@ from qfluentwidgets import Action, FluentIcon
 from .ui.Ui_Console import Ui_Console
 
 from ..utils.logger import logger
-from ..utils.common import Color, _project, switchProject
+from ..utils.common import project, switchProject
 from ..utils.stream import _stdout, _stderr
+from ..utils.color import Color
 
 
 
@@ -50,8 +51,9 @@ class ConsoleInterface(QWidget, Ui_Console):
     
     
     def __SSConnection(self):
-        _project.changed.connect(self.statusUpdate)
-        _project.changed.connect(self.__buttonUpdate)
+        project.changed.connect(self.statusUpdate)
+        project.changed.connect(self.__buttonUpdate)
+        project.shellNewText.connect(self.projectShellUpdate)
         self.stdout.newText.connect(self.launcherShellUpdate)
         self.stderr.newText.connect(self.projectShellUpdate)
     
@@ -59,7 +61,8 @@ class ConsoleInterface(QWidget, Ui_Console):
     def launcherShellUpdate(self, text: str):
         cursor = self.launcherShell.textCursor()
         cursor.movePosition(QTextCursor.End)
-        cursor.insertText(text)
+        cursor.insertHtml(text)
+        cursor.insertText("\n")
         self.launcherShell.setTextCursor(cursor)
         self.launcherShell.ensureCursorVisible()
     
@@ -67,7 +70,8 @@ class ConsoleInterface(QWidget, Ui_Console):
     def projectShellUpdate(self, text: str):
         cursor = self.projectShell.textCursor()
         cursor.movePosition(QTextCursor.End)
-        cursor.insertText(text)
+        cursor.insertHtml(text)
+        cursor.insertText("\n")
         self.projectShell.setTextCursor(cursor)
         self.projectShell.ensureCursorVisible()
     
@@ -87,10 +91,10 @@ class ConsoleInterface(QWidget, Ui_Console):
         if shellName == "projectShell":
             self.cmdBar.actions()[3].setText(self.tr("启动器控制台"))
             self.shellName.setText(" 项目")
-            if _project.isRunning() is None:
+            if project.isRunning() is None:
                 self.status.setText("启动中")
                 self.status.setTextColor(Color.GOLD, Color.GOLD)
-            elif _project.isRunning():
+            elif project.isRunning():
                 self.status.setText("运行中")
                 self.status.setTextColor(Color.LIME_GREEN,Color.GREEN)
             else:

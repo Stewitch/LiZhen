@@ -37,7 +37,6 @@ from launcher.interfaces.MainWindow import MainWindow
 from launcher.utils.configs import cfg
 from launcher.utils.logger import logger
 from launcher.utils.paths import FONTS
-from launcher.utils.common import _launcher
 
 import os, sys
 
@@ -54,7 +53,6 @@ def main():
     QFontDatabase.addApplicationFont(str(FONTS.joinpath("Alibaba-PuHuiTi-Regular.ttf")))
     window = MainWindow()
     window.show()
-    _launcher.switch()
     sys.exit(app.exec())
 
 
