@@ -60,7 +60,6 @@ class ConsoleInterface(QWidget, Ui_Console):
         cursor = self.launcherShell.textCursor()
         cursor.movePosition(QTextCursor.End)
         cursor.insertHtml(text)
-        cursor.insertText("\n")
         self.launcherShell.setTextCursor(cursor)
         self.launcherShell.ensureCursorVisible()
     
@@ -69,7 +68,6 @@ class ConsoleInterface(QWidget, Ui_Console):
         cursor = self.projectShell.textCursor()
         cursor.movePosition(QTextCursor.End)
         cursor.insertHtml(text)
-        cursor.insertText("\n")
         self.projectShell.setTextCursor(cursor)
         self.projectShell.ensureCursorVisible()
     
@@ -115,7 +113,6 @@ class ConsoleInterface(QWidget, Ui_Console):
     
     
     def switchShell(self):
-        logger.debug(f"当前页：{self.Shells.currentIndex()}")
         self.Shells.setCurrentIndex(self.Shells.count() - 1 -self.Shells.currentIndex())
         self.__updateStatus()
         logger.debug(f"切换控制台到：{self.currentShell.objectName()}")

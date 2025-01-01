@@ -1,10 +1,18 @@
 from PySide6.QtCore import QObject, Signal, QProcess
+from signal import SIGTERM, CTRL_C_EVENT
+from threading import Thread
 
 from .log import logger, SYSTEM
 from .paths import PROJECT, VENV, VENV_ACTIVATE, UV_CONFIG
 from .color import ansi_to_html
 
-import os, subprocess, shutil, tomlkit
+from ..interfaces.Widgets import StopDialog
+
+import os, subprocess, shutil, tomlkit, re
+
+
+
+SIGEND = CTRL_C_EVENT if SYSTEM == "Windows" else SIGTERM
 
 
 
@@ -94,10 +102,27 @@ def checkVenv() -> bool:
     return checkVenv()
 
 
+# ...被逼无奈
+def getServerPid() -> int | None:
+    def worker():
+        global serverPid
+        with os.popen('netstat -aon|findstr "12393"') as r:
+            serverPid = int(r.read().strip().split(" ")[-1])
+    try:
+        wt = Thread(target=worker)
+        wt.start()
+        wt.join()
+        return serverPid
+    except:
+        logger.error("获取服务器进程PID失败")
+        return
+
+
 
 class Project(Status):
     
     shellNewText = Signal(str)
+    tryToStop = Signal()
     SYS_SPECIFIED_COMMANDS = {
         "Windows": {
             "shell": "cmd",
@@ -117,6 +142,7 @@ class Project(Status):
         self.__uv = checkUV()
         self.__venv = checkVenv() if self.__uv else False
         self.__backend = QProcess()
+        self.__serverPid = None
         
         self.__initBackend()
         self.__initCommands()
@@ -126,8 +152,6 @@ class Project(Status):
         self.__backend.setWorkingDirectory(str(PROJECT))
         self.__backend.readyReadStandardError.connect(self.__newStderr)
         self.__backend.readyReadStandardOutput.connect(self.__newStdout)
-        self.__backend.finished.connect(lambda: self.changeTo("off"))
-        self.__backend.started.connect(lambda: self.changeTo("on"))
         
         
     def __initCommands(self):
@@ -182,11 +206,21 @@ class Project(Status):
         
         self.changeTo("starting")
         self.shellNewText.connect(self.__stateUpdateByText)
+    
+    def __killServer(self):
+        try:
+            os.kill(self.__serverPid, SIGEND)
+        except:
+            logger.warning("终止服务器进程失败，可能是因为服务器未启动")
         
     
     def stop(self):
-        self.__backend.kill()
+        self._forceStop()
         self.changeTo("off")
+    
+    def _forceStop(self):
+        self.__killServer()
+        self.__backend.kill()
     
     
     def uvAvailable(self):
@@ -202,19 +236,26 @@ class Project(Status):
         self.shellNewText.emit(html_msg)
     
     def __newStderr(self):
-        msg = self.__backend.readAllStandardError().data().decode(errors="replace")
+        msg = self.__backend.readAllStandardError().data().decode(encoding="gbk", errors="replace")
         self.__newText(msg)
         logger.debug("项目进程新消息，来自 stderr")
     
     def __newStdout(self):
-        msg = self.__backend.readAllStandardOutput().data().decode(errors="replace")
+        msg = self.__backend.readAllStandardOutput().data().decode(encoding="gbk", errors="replace")
         self.__newText(msg)
         logger.debug("项目进程新消息，来自 stdout")
         
     
     def __stateUpdateByText(self, text: str):
+        if "Started server process" in text:
+            logger.debug("触发服务器PID获取")
+            if match := re.search(r'\[(\d+)\]', text):
+                self.__serverPid = int(match.group(1))
+            logger.debug(f"服务器PID：{self.__serverPid}")
+            
         if "Application startup complete." in text:
             self.changeTo("on")
+            logger.info("项目启动完成")
             self.shellNewText.disconnect(self.__stateUpdateByText)
         
 
@@ -228,9 +269,12 @@ def openFolder(folder: str):
         logger.error(f"文件夹路径错误：{folder}")
         return
     logger.debug(f"打开文件夹：{folder}")
-    try:
+    if SYSTEM == "Windows":
         os.startfile(folder)
-    except:
+        return
+    try: # MacOS
+        subprocess.Popen(['open', folder])
+    except: # Linux
         subprocess.Popen(['xdg-open', folder])
 
 
@@ -241,18 +285,20 @@ def onProjectStart():
         logger.info("UV 已安装，启动项目")
         project.start()
     logger.debug(f"当前项目状态：{project}")
-    logger.debug("启动中")
+    logger.info("项目启动中")
     
 
 def onProjectStop():
     project.stop()
     logger.debug(f"当前项目状态：{project}")
-    logger.debug("终止完成")
+    logger.debug("项目终止完成")
 
 
 @logger.catch
 def switchProjectState():
-    if project.isRunning() or project.isRunning() is None:
+    if project.isRunning() is None:
+        project.tryToStop.emit()
+    elif project.isRunning():
         logger.info("终止项目！")
         onProjectStop()
     else:

@@ -1,7 +1,7 @@
 from PySide6.QtGui import QIcon, QFont
 from PySide6.QtWidgets import QApplication
 from PySide6.QtCore import QSize, QEventLoop, QTimer
-from qfluentwidgets import FluentIcon, FluentWindow, NavigationItemPosition, SplashScreen
+from qfluentwidgets import FluentIcon, MSFluentWindow, NavigationItemPosition, SplashScreen
 
 from .Info import InfoInterface
 from .Setting import SettingInterface
@@ -11,6 +11,7 @@ from .LLM import LLMInterface
 from .TTS import TTSInterface
 from .Persona import PersonaInterface
 from .Console import ConsoleInterface
+from .Widgets import StopDialog
 
 from ..utils.log import logger
 from ..utils.paths import IMAGES
@@ -20,7 +21,7 @@ import sys
 
 
 
-class MainWindow(FluentWindow):
+class MainWindow(MSFluentWindow):
     @logger.catch
     def __init__(self):
         super().__init__()
@@ -45,21 +46,34 @@ class MainWindow(FluentWindow):
         self.personaInterface = PersonaInterface(self)
         self.consoleInterface = ConsoleInterface(self)
         
-        self.addSubInterface(self.startInterface, FluentIcon.PLAY_SOLID, self.tr("启动"), NavigationItemPosition.TOP)
-        self.navigationInterface.addSeparator()
+        self.addSubInterface(self.startInterface, FluentIcon.PLAY, self.tr("启动"),
+                             selectedIcon=FluentIcon.PLAY_SOLID,
+                             position=NavigationItemPosition.TOP)
         
-        self.addSubInterface(self.asrInterface, FluentIcon.MICROPHONE, self.tr("ASR 管理"), NavigationItemPosition.SCROLL)
-        self.addSubInterface(self.llmInterface, FluentIcon.MESSAGE, self.tr("LLM 管理"), NavigationItemPosition.SCROLL)
-        self.addSubInterface(self.ttsInterface, FluentIcon.VOLUME, self.tr("TTS 管理"), NavigationItemPosition.SCROLL)
+        self.addSubInterface(self.personaInterface, FluentIcon.FEEDBACK, self.tr("人格提示词"),
+                             selectedIcon=FluentIcon.FEEDBACK,
+                             position=NavigationItemPosition.SCROLL)
         
-        self.navigationInterface.addSeparator(NavigationItemPosition.SCROLL)
+        self.addSubInterface(self.asrInterface, FluentIcon.MICROPHONE, self.tr("ASR 管理"),
+                             selectedIcon=FluentIcon.MICROPHONE,
+                             position=NavigationItemPosition.SCROLL)
+        self.addSubInterface(self.llmInterface, FluentIcon.MESSAGE, self.tr("LLM 管理"),
+                            selectedIcon=FluentIcon.MESSAGE,
+                             position=NavigationItemPosition.SCROLL)
+        self.addSubInterface(self.ttsInterface, FluentIcon.VOLUME, self.tr("TTS 管理"),
+                             selectedIcon=FluentIcon.VOLUME,
+                             position=NavigationItemPosition.SCROLL)
         
-        self.addSubInterface(self.personaInterface, FluentIcon.FEEDBACK, self.tr("人格提示词管理"), NavigationItemPosition.SCROLL)
         
-        self.navigationInterface.addSeparator(NavigationItemPosition.BOTTOM)
-        self.addSubInterface(self.consoleInterface, FluentIcon.COMMAND_PROMPT, self.tr("控制台"), NavigationItemPosition.BOTTOM)
-        self.addSubInterface(self.infoInterface, FluentIcon.INFO, self.tr("信息"), NavigationItemPosition.BOTTOM)
-        self.addSubInterface(self.settingInterface, FluentIcon.SETTING, self.tr("设置"), NavigationItemPosition.BOTTOM)
+        self.addSubInterface(self.consoleInterface, FluentIcon.COMMAND_PROMPT, self.tr("控制台"),
+                            selectedIcon=FluentIcon.COMMAND_PROMPT,
+                            position=NavigationItemPosition.BOTTOM)
+        self.addSubInterface(self.infoInterface, FluentIcon.INFO, self.tr("信息"),
+                            selectedIcon=FluentIcon.INFO,
+                            position=NavigationItemPosition.BOTTOM)
+        self.addSubInterface(self.settingInterface, FluentIcon.SETTING, self.tr("设置"),
+                            selectedIcon=FluentIcon.SETTING,
+                            position=NavigationItemPosition.BOTTOM)
     
     
     def __splash(self):
@@ -88,10 +102,24 @@ class MainWindow(FluentWindow):
         self.startInterface.LLMCard.clicked.connect(lambda: self.switchTo(self.llmInterface))
         self.startInterface.TTSCard.clicked.connect(lambda: self.switchTo(self.ttsInterface))
         self.startInterface.toConsoleButton.clicked.connect(lambda: self.switchTo(self.consoleInterface))
+        project.tryToStop.connect(self.__tryToStop)
+        
+    
+    def __tryToStop(self):
+        stop = StopDialog(self.tr("项目正在运行"), self.tr("是否停止项目运行？\n 可能需要重启启动器以再次启动项目！"), self)
+        if stop.exec():
+            project._forceStop()
+        else:
+            logger.info("用户取消停止项目")
         
     
     def closeEvent(self, e):
         sys.stderr = sys.__stderr__
-        project.stop()
+        if project.isRunning() or project.isRunning() is None:
+            stop = StopDialog(self.tr("项目正在运行！"), self.tr("如要退出启动器，请先停止项目运行！"), self)
+            if stop.exec():
+                project._forceStop()
+            else:
+                return
         logger.info("主窗口关闭")
         return super().closeEvent(e)

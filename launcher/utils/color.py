@@ -24,16 +24,6 @@ ANSI_MAP = {
     '36': 'color: #008B8B',
     '37': 'color: white',
     
-    # 亮色前景色
-    '90': 'color: gray',
-    '91': 'color: #ff4444',
-    '92': 'color: #44ff44',
-    '93': 'color: #ffff44',
-    '94': 'color: #00CDCD',
-    '95': 'color: #ff44ff',
-    '96': 'color: #00CDCD',
-    '97': 'color: #ffffff',
-    
     # 标准背景色
     '40': 'background-color: black',
     '41': 'background-color: red',
@@ -68,19 +58,20 @@ ANSI_MAP = {
 
 
 
+
 def ansi_to_html(text: str) -> str:
-    """将ANSI代码（包括颜色和粗体）转换为HTML格式
-    ONLY FOR WINDOWS
-    """
+    """将ANSI代码和日志换行转换为HTML格式"""
     
-    opened_spans = 0  # 跟踪打开的span标签数量
+    # 处理日志换行
+    text = text.replace('\n', '<br>') 
+    
+    opened_spans = 0
     
     def replace_codes(match):
         nonlocal opened_spans
         codes = match.group(1).split(';')
         styles = []
         
-        # 如果是重置代码(0)，关闭所有标签
         if '0' in codes:
             result = '</span>' * opened_spans
             opened_spans = 0
@@ -99,10 +90,9 @@ def ansi_to_html(text: str) -> str:
         opened_spans += 1
         return f'<span style="{"; ".join(styles)}">'
     
-    # 替换所有ANSI代码
+    # 处理ANSI代码
     result = re.sub(r'\x1b\[([0-9;]+)m|\033\[([0-9;]+)m', replace_codes, text)
     
-    # 确保所有标签都被关闭
     if opened_spans > 0:
         result += '</span>' * opened_spans
     
