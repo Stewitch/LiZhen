@@ -12,7 +12,7 @@ from .TTS import TTSInterface
 from .Persona import PersonaInterface
 from .Console import ConsoleInterface
 
-from ..utils.logger import logger
+from ..utils.log import logger
 from ..utils.paths import IMAGES
 from ..utils.common import project
 

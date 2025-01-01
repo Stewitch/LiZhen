@@ -4,7 +4,7 @@ from qfluentwidgets import FluentIcon
 from .ui.Ui_Start import Ui_Start
 
 from ..utils.styles import StyleSheet
-from ..utils.logger import logger
+from ..utils.log import logger
 from ..utils.configs import pcfg
 from ..utils.common import switchProjectState, openFolder, project
 

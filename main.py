@@ -35,7 +35,7 @@ from PySide6.QtGui import QFontDatabase
 
 from launcher.interfaces.MainWindow import MainWindow
 from launcher.utils.configs import cfg
-from launcher.utils.logger import logger
+from launcher.utils.log import logger
 from launcher.utils.paths import FONTS
 
 import os, sys

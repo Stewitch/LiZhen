@@ -3,7 +3,7 @@ from PySide6.QtCore import Qt
 from qfluentwidgets import ScrollArea, ExpandLayout
 
 from ..utils.styles import StyleSheet
-from ..utils.logger import logger
+from ..utils.log import logger
 
 import random
 

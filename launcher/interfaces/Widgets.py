@@ -4,7 +4,7 @@ from PySide6.QtGui import QFont
 from qfluentwidgets import ElevatedCardWidget, ImageLabel, CaptionLabel, ImageLabel, BodyLabel
 
 from ..utils.configs import cfg
-from ..utils.logger import logger
+from ..utils.log import logger
 from ..utils.paths import UICONS
 
 import os.path

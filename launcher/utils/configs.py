@@ -1,6 +1,6 @@
 from qfluentwidgets import qconfig, QConfig, OptionsConfigItem, OptionsValidator, Theme, BoolValidator
 
-from .logger import logger
+from .log import logger
 from .bridge import YamlConf
 from .paths import LAUNCHER_CONFIG
 

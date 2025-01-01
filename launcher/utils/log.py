@@ -6,7 +6,7 @@ from .paths import LAUNCHER_LOG
 
 
 
-SYSTEM = system()
+SYSTEM = system() if system() != "Darwin" else "Linux"
 
 
 

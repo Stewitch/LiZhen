@@ -5,7 +5,7 @@ from qfluentwidgets import InfoBar
 from .Interfaces import ManagerInterface
 
 from ..utils.configs import cfg
-from ..utils.logger import logger
+from ..utils.log import logger
 from ..utils.common import pipMirrorFile
 
 

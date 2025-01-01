@@ -1,6 +1,6 @@
 from PySide6.QtCore import QObject, Signal, QProcess
 
-from .logger import logger, SYSTEM
+from .log import logger, SYSTEM
 from .paths import PROJECT, VENV, VENV_ACTIVATE, UV_CONFIG
 from .color import ansi_to_html
 
@@ -98,22 +98,36 @@ def checkVenv() -> bool:
 class Project(Status):
     
     shellNewText = Signal(str)
+    SYS_SPECIFIED_COMMANDS = {
+        "Windows": {
+            "shell": "cmd",
+            "arg": "/k",
+            "activate": f"call {VENV_ACTIVATE}"
+        },
+        "Linux": {
+            # 包括 macOS
+            "shell": "sh",
+            "arg": "-c",
+            "activate": f"source {VENV_ACTIVATE}"
+        }
+    }
     
     def __init__(self):
         super().__init__()
         self.__uv = checkUV()
         self.__venv = checkVenv() if self.__uv else False
-        self.__process = QProcess()
+        self.__backend = QProcess()
         
-        self.__initProcess()
+        self.__initBackend()
         self.__initCommands()
+
     
-    
-    def __initProcess(self):
-        self.__process.setWorkingDirectory(str(PROJECT))
-        self.__process.readyReadStandardError.connect(self.__newText)
-        self.__process.finished.connect(lambda: self.changeTo("off"))
-        self.__process.started.connect(lambda: self.changeTo("on"))
+    def __initBackend(self):
+        self.__backend.setWorkingDirectory(str(PROJECT))
+        self.__backend.readyReadStandardError.connect(self.__newStderr)
+        self.__backend.readyReadStandardOutput.connect(self.__newStdout)
+        self.__backend.finished.connect(lambda: self.changeTo("off"))
+        self.__backend.started.connect(lambda: self.changeTo("on"))
         
         
     def __initCommands(self):
@@ -121,28 +135,58 @@ class Project(Status):
             logger.critical("虚拟环境未准备好，无法启动项目")
             return
 
-        if SYSTEM == "Windows":
-            self.__activate = f"call {VENV_ACTIVATE}"
-        else:
-            self.__activate = f"source {VENV_ACTIVATE}"
-        self.__runProject = f"{self.__activate} && python {str(PROJECT.joinpath("run_server.py"))}"
+        self.__activate = self.SYS_SPECIFIED_COMMANDS[SYSTEM]["activate"]
+            
+        self.__runServer = f"python {str(PROJECT.joinpath("run_server.py"))}"
+        self.__runProject = f"{self.__activate} && {self.__runServer}"
+        self.__installReq = "uv pip install --requirements pyproject.toml"
+        self.__insAndRun = f"{self.__activate} && {self.__installReq} && {self.__runServer}"
+        
     
-    
-    def start(self):
-        if self.__process.state() == QProcess.Running:
-            logger.warning("项目已经在运行")
+    def __checkProjectReq(self):
+        if not self.__venv:
+            logger.critical("虚拟环境不存在，无法检测项目依赖")
             return
         
-        if SYSTEM == "Windows":
-            self.__process.start("cmd", ["/k", self.__runProject])
-        else:  # Linux or MacOS
-            self.__process.start("sh", ["-c", self.__runProject])
+        shell = self.SYS_SPECIFIED_COMMANDS[SYSTEM]["shell"]
+        proc = subprocess.Popen(
+            [f'{shell}'],
+            stdin=subprocess.PIPE,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            cwd=PROJECT)
+        
+        req = None
+        out, _ = proc.communicate(input=b'uv pip list --format json\n')
+        for l in out.decode(errors="ignore").split():
+            if l.startswith("[") and l.endswith("]"):
+                req = l
+        
+        if len(req) <= 22:
+            return False
+        return True
+                
+        
+    def start(self):
+        if self.__backend.state() == QProcess.Running:
+            logger.warning("项目启动中，强制终止可能会导致一些问题")
+            return
+        
+        shell = self.SYS_SPECIFIED_COMMANDS[SYSTEM]["shell"]
+        arg = self.SYS_SPECIFIED_COMMANDS[SYSTEM]["arg"]
+        
+        if self.__checkProjectReq():
+            self.__backend.start(shell, [arg, self.__runProject])
+        else:
+            self.__backend.start(shell, [arg, self.__insAndRun])
         
         self.changeTo("starting")
+        self.shellNewText.connect(self.__stateUpdateByText)
         
     
     def stop(self):
-        self.__process.kill()
+        self.__backend.kill()
+        self.changeTo("off")
     
     
     def uvAvailable(self):
@@ -153,13 +197,26 @@ class Project(Status):
         return self.__venv
     
     
-    def __newText(self):
-        msg = self.__process.readAllStandardError().data().decode(errors="replace")
-        html_msg = ansi_to_html(msg)
+    def __newText(self, text: str):
+        html_msg = ansi_to_html(text)
         self.shellNewText.emit(html_msg)
-        logger.debug("项目进程新消息")
-        logger.info(html_msg)
-
+    
+    def __newStderr(self):
+        msg = self.__backend.readAllStandardError().data().decode(errors="replace")
+        self.__newText(msg)
+        logger.debug("项目进程新消息，来自 stderr")
+    
+    def __newStdout(self):
+        msg = self.__backend.readAllStandardOutput().data().decode(errors="replace")
+        self.__newText(msg)
+        logger.debug("项目进程新消息，来自 stdout")
+        
+    
+    def __stateUpdateByText(self, text: str):
+        if "Application startup complete." in text:
+            self.changeTo("on")
+            self.shellNewText.disconnect(self.__stateUpdateByText)
+        
 
 
 project = Project()
@@ -184,7 +241,8 @@ def onProjectStart():
         logger.info("UV 已安装，启动项目")
         project.start()
     logger.debug(f"当前项目状态：{project}")
-    logger.debug("启动完成")
+    logger.debug("启动中")
+    
 
 def onProjectStop():
     project.stop()
@@ -194,7 +252,7 @@ def onProjectStop():
 
 @logger.catch
 def switchProjectState():
-    if project.isRunning():
+    if project.isRunning() or project.isRunning() is None:
         logger.info("终止项目！")
         onProjectStop()
     else:
@@ -213,4 +271,4 @@ def pipMirrorFile(enable: True):
     else:
         if os.path.exists(UV_CONFIG):
             os.remove(UV_CONFIG)
-            logger.info("关闭 pip 镜像")
+        logger.info("关闭 pip 镜像")

@@ -5,7 +5,7 @@ from qfluentwidgets import Action, FluentIcon
 
 from .ui.Ui_Console import Ui_Console
 
-from ..utils.logger import logger
+from ..utils.log import logger
 from ..utils.common import project, switchProjectState
 from ..utils.stream import _stderr
 from ..utils.color import Color

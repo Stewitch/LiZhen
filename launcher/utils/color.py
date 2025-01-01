@@ -17,11 +17,11 @@ ANSI_MAP = {
     # 标准前景色
     '30': 'color: black',
     '31': 'color: red',
-    '32': 'color: green',
-    '33': 'color: yellow',
-    '34': 'color: blue',
+    '32': 'color: #32CD32',
+    '33': 'color: #ffe644',
+    '34': 'color: #00CDCD',
     '35': 'color: magenta',
-    '36': 'color: cyan',
+    '36': 'color: #008B8B',
     '37': 'color: white',
     
     # 亮色前景色
@@ -29,9 +29,9 @@ ANSI_MAP = {
     '91': 'color: #ff4444',
     '92': 'color: #44ff44',
     '93': 'color: #ffff44',
-    '94': 'color: #4444ff',
+    '94': 'color: #00CDCD',
     '95': 'color: #ff44ff',
-    '96': 'color: #00FFFF',
+    '96': 'color: #00CDCD',
     '97': 'color: #ffffff',
     
     # 标准背景色
