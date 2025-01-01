@@ -1,4 +1,4 @@
-from PySide6.QtGui import QIcon, QFont
+from PySide6.QtGui import QIcon
 from PySide6.QtWidgets import QApplication
 from PySide6.QtCore import QSize, QEventLoop, QTimer
 from qfluentwidgets import FluentIcon, MSFluentWindow, NavigationItemPosition, SplashScreen
@@ -119,7 +119,7 @@ class MainWindow(MSFluentWindow):
             stop = StopDialog(self.tr("项目正在运行！"), self.tr("如要退出启动器，请先停止项目运行！"), self)
             if stop.exec():
                 project._forceStop()
+                e.accept()
             else:
-                return
+                e.ignore()
         logger.info("主窗口关闭")
-        return super().closeEvent(e)
