@@ -5,3 +5,10 @@ QFrame#pHeader {
 QFrame#pBoard {
     background: transparent;
 }
+
+QScrollArea {
+    background: transparent;
+}
+QWidget#pFolderWidgets {
+    background: transparent;
+}

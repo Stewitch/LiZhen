@@ -3,7 +3,6 @@ from PySide6.QtWidgets import QApplication
 from PySide6.QtCore import QSize, QEventLoop, QTimer
 from qfluentwidgets import FluentIcon, MSFluentWindow, NavigationItemPosition, SplashScreen
 
-from .Info import InfoInterface
 from .Setting import SettingInterface
 from .Start import StartInterface
 from .ASR import ASRInterface
@@ -41,7 +40,6 @@ class MainWindow(MSFluentWindow):
         self.asrInterface = ASRInterface(self)
         self.llmInterface = LLMInterface(self)
         self.ttsInterface = TTSInterface(self)
-        self.infoInterface = InfoInterface(self)
         self.settingInterface = SettingInterface(self)
         self.personaInterface = PersonaInterface(self)
         self.consoleInterface = ConsoleInterface(self)
@@ -54,22 +52,19 @@ class MainWindow(MSFluentWindow):
                              selectedIcon=FluentIcon.FEEDBACK,
                              position=NavigationItemPosition.SCROLL)
         
-        self.addSubInterface(self.asrInterface, FluentIcon.MICROPHONE, self.tr("ASR 管理"),
+        self.addSubInterface(self.asrInterface, FluentIcon.MICROPHONE, self.tr("ASR"),
                              selectedIcon=FluentIcon.MICROPHONE,
                              position=NavigationItemPosition.SCROLL)
-        self.addSubInterface(self.llmInterface, FluentIcon.MESSAGE, self.tr("LLM 管理"),
+        self.addSubInterface(self.llmInterface, FluentIcon.MESSAGE, self.tr("LLM"),
                             selectedIcon=FluentIcon.MESSAGE,
                              position=NavigationItemPosition.SCROLL)
-        self.addSubInterface(self.ttsInterface, FluentIcon.VOLUME, self.tr("TTS 管理"),
+        self.addSubInterface(self.ttsInterface, FluentIcon.VOLUME, self.tr("TTS"),
                              selectedIcon=FluentIcon.VOLUME,
                              position=NavigationItemPosition.SCROLL)
         
         
         self.addSubInterface(self.consoleInterface, FluentIcon.COMMAND_PROMPT, self.tr("控制台"),
                             selectedIcon=FluentIcon.COMMAND_PROMPT,
-                            position=NavigationItemPosition.BOTTOM)
-        self.addSubInterface(self.infoInterface, FluentIcon.INFO, self.tr("信息"),
-                            selectedIcon=FluentIcon.INFO,
                             position=NavigationItemPosition.BOTTOM)
         self.addSubInterface(self.settingInterface, FluentIcon.SETTING, self.tr("设置"),
                             selectedIcon=FluentIcon.SETTING,
@@ -106,9 +101,9 @@ class MainWindow(MSFluentWindow):
         
     
     def __tryToStop(self):
-        stop = StopDialog(self.tr("项目正在运行"), self.tr("是否停止项目运行？\n 可能需要重启启动器以再次启动项目！"), self)
+        stop = StopDialog(self.tr("项目正在启动！"), self.tr("是否停止项目运行？\n 可能需要重启启动器以再次启动项目！"), self)
         if stop.exec():
-            project._forceStop()
+            project.stop()
         else:
             logger.info("用户取消停止项目")
         
@@ -117,6 +112,7 @@ class MainWindow(MSFluentWindow):
         sys.stderr = sys.__stderr__
         if project.isRunning() or project.isRunning() is None:
             stop = StopDialog(self.tr("项目正在运行！"), self.tr("如要退出启动器，请先停止项目运行！"), self)
+            stop.yesButton.setText(self.tr("停止&退出"))
             if stop.exec():
                 project._forceStop()
                 e.accept()

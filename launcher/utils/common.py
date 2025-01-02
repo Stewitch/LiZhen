@@ -6,13 +6,44 @@ from .log import logger, SYSTEM
 from .paths import PROJECT, VENV, VENV_ACTIVATE, UV_CONFIG
 from .color import ansi_to_html
 
-from ..interfaces.Widgets import StopDialog
-
-import os, subprocess, shutil, tomlkit, re
+import os, subprocess, shutil, tomlkit, re, chardet
 
 
+
+VERSION = "0.3.6"
 
 SIGEND = CTRL_C_EVENT if SYSTEM == "Windows" else SIGTERM
+
+
+
+commands = {"Windows": 'netstat -aon|findstr "12393"', "Linux": 'lsof -i tcp:12393'}
+
+def getPortOccupantPid() -> int | None:
+    oid = None
+    def worker():
+        nonlocal oid
+        with os.popen(commands[SYSTEM]) as r:
+            try:
+                if SYSTEM == "Windows":
+                    oid = int(r.read().strip().split(" ")[-1])
+                else:
+                    oid = int(r.read().split("\n")[1].split("  ")[1])
+            except:
+                pass
+    wt = Thread(target=worker)
+    wt.start()
+    wt.join()
+    if oid is None:
+        logger.info("未找到可能占用12393端口的进程")
+    return oid
+
+occupantPid = getPortOccupantPid()
+if occupantPid is not None:
+    try:
+        os.kill(occupantPid, SIGEND)
+        logger.info(f"终止占用端口的进程：{occupantPid}")
+    except Exception as e:
+        logger.error(f"尝试终止占用端口的进程失败，原因： {e}")
 
 
 
@@ -102,22 +133,6 @@ def checkVenv() -> bool:
     return checkVenv()
 
 
-# ...被逼无奈
-def getServerPid() -> int | None:
-    def worker():
-        global serverPid
-        with os.popen('netstat -aon|findstr "12393"') as r:
-            serverPid = int(r.read().strip().split(" ")[-1])
-    try:
-        wt = Thread(target=worker)
-        wt.start()
-        wt.join()
-        return serverPid
-    except:
-        logger.error("获取服务器进程PID失败")
-        return
-
-
 
 class Project(Status):
     
@@ -143,6 +158,7 @@ class Project(Status):
         self.__venv = checkVenv() if self.__uv else False
         self.__backend = QProcess()
         self.__serverPid = None
+        self.__encoding = "gbk"
         
         self.__initBackend()
         self.__initCommands()
@@ -150,6 +166,7 @@ class Project(Status):
     
     def __initBackend(self):
         self.__backend.setWorkingDirectory(str(PROJECT))
+        self.__backend.readyReadStandardError.connect(self.__detectEncoding)
         self.__backend.readyReadStandardError.connect(self.__newStderr)
         self.__backend.readyReadStandardOutput.connect(self.__newStdout)
         
@@ -231,19 +248,31 @@ class Project(Status):
         return self.__venv
     
     
+    def __detectEncoding(self):
+        data = self.__backend.readAllStandardError().data()
+        if len(data) >= 800:
+            charData = chardet.detect(data)
+            logger.info(f"尝试从长度 {len(data)} 的数据中检测编码数据")
+            logger.info(f"结果：{charData}")
+            if charData["encoding"] is not None:
+                self.__encoding = charData["encoding"]
+                self.__backend.readyReadStandardError.disconnect(self.__detectEncoding)
+        self.__newText(data.decode(self.__encoding, "replace"))
+    
+    
     def __newText(self, text: str):
         html_msg = ansi_to_html(text)
         self.shellNewText.emit(html_msg)
     
     def __newStderr(self):
-        msg = self.__backend.readAllStandardError().data().decode(encoding="gbk", errors="replace")
+        msg = self.__backend.readAllStandardError().data().decode(
+            self.__encoding, "replace")
         self.__newText(msg)
-        logger.debug("项目进程新消息，来自 stderr")
     
     def __newStdout(self):
-        msg = self.__backend.readAllStandardOutput().data().decode(encoding="gbk", errors="replace")
+        msg = self.__backend.readAllStandardOutput().data().decode(
+            self.__encoding, "replace")
         self.__newText(msg)
-        logger.debug("项目进程新消息，来自 stdout")
         
     
     def __stateUpdateByText(self, text: str):

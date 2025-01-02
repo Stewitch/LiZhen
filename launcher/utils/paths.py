@@ -1,10 +1,10 @@
 from pathlib import Path
+from os import getcwd
 
-import os.path
 
 
 # 工作区
-CWD = Path(os.getcwd())
+CWD = Path(getcwd())
 # 启动器主文件夹
 LAUNCHER = CWD.joinpath('launcher')
 # 项目文件夹
@@ -40,6 +40,7 @@ LAUNCHER_LOG = LOGS.joinpath('launcher.log')
 
 
 if __name__ == "__main__":
+    import os
     print(CWD)
     print(LAUNCHER)
     print(VENV_ACTIVATE)

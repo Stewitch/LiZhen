@@ -49,12 +49,15 @@ class StartInterface(QWidget, Ui_Start):
     
     
     def __updateButton(self, status: str):
-        if status in ["on", "starting"]:
-            self.startButton.setText("终止项目")
-            self.startButton.setIcon(FluentIcon.PAUSE_BOLD)
-        else:
-            self.startButton.setText("一键启动！")
-            self.startButton.setIcon(FluentIcon.PLAY_SOLID)
+        try:
+            if status in ["on", "starting"]:
+                self.startButton.setText("终止项目！")
+                self.startButton.setIcon(FluentIcon.PAUSE_BOLD)
+            else:
+                self.startButton.setText("一键启动！")
+                self.startButton.setIcon(FluentIcon.PLAY_SOLID)
+        except KeyboardInterrupt:
+            self.__updateButton(status)
     
     
     def __SSConnection(self):
