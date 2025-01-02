@@ -25,6 +25,11 @@ class Ui_Console(object):
         if not Console.objectName():
             Console.setObjectName(u"Console")
         Console.resize(943, 597)
+        sizePolicy = QSizePolicy(QSizePolicy.Policy.MinimumExpanding, QSizePolicy.Policy.Preferred)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(Console.sizePolicy().hasHeightForWidth())
+        Console.setSizePolicy(sizePolicy)
         self.verticalLayout = QVBoxLayout(Console)
         self.verticalLayout.setObjectName(u"verticalLayout")
         self.Header = QHBoxLayout()
@@ -35,11 +40,11 @@ class Ui_Console(object):
 
         self.title = DisplayLabel(Console)
         self.title.setObjectName(u"title")
-        sizePolicy = QSizePolicy(QSizePolicy.Policy.Maximum, QSizePolicy.Policy.Preferred)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.title.sizePolicy().hasHeightForWidth())
-        self.title.setSizePolicy(sizePolicy)
+        sizePolicy1 = QSizePolicy(QSizePolicy.Policy.Maximum, QSizePolicy.Policy.Preferred)
+        sizePolicy1.setHorizontalStretch(0)
+        sizePolicy1.setVerticalStretch(0)
+        sizePolicy1.setHeightForWidth(self.title.sizePolicy().hasHeightForWidth())
+        self.title.setSizePolicy(sizePolicy1)
         font = QFont()
         font.setFamilies([u"\u963f\u91cc\u5df4\u5df4\u666e\u60e0\u4f53 R"])
         font.setPointSize(18)
@@ -50,11 +55,11 @@ class Ui_Console(object):
 
         self.shellName = DisplayLabel(Console)
         self.shellName.setObjectName(u"shellName")
-        sizePolicy.setHeightForWidth(self.shellName.sizePolicy().hasHeightForWidth())
-        self.shellName.setSizePolicy(sizePolicy)
+        sizePolicy1.setHeightForWidth(self.shellName.sizePolicy().hasHeightForWidth())
+        self.shellName.setSizePolicy(sizePolicy1)
         font1 = QFont()
         font1.setFamilies([u"Alibaba PuHuiTi R"])
-        font1.setPointSize(10)
+        font1.setPointSize(14)
         font1.setBold(True)
         self.shellName.setFont(font1)
 
@@ -62,23 +67,46 @@ class Ui_Console(object):
 
         self.status = DisplayLabel(Console)
         self.status.setObjectName(u"status")
-        sizePolicy.setHeightForWidth(self.status.sizePolicy().hasHeightForWidth())
-        self.status.setSizePolicy(sizePolicy)
+        sizePolicy1.setHeightForWidth(self.status.sizePolicy().hasHeightForWidth())
+        self.status.setSizePolicy(sizePolicy1)
         self.status.setFont(font1)
 
         self.Header.addWidget(self.status)
 
-        self.horizontalSpacer = QSpacerItem(440, 20, QSizePolicy.Policy.Maximum, QSizePolicy.Policy.Minimum)
+        self.horizontalSpacer = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
 
         self.Header.addItem(self.horizontalSpacer)
 
+        self.cBContainer = QWidget(Console)
+        self.cBContainer.setObjectName(u"cBContainer")
+        sizePolicy2 = QSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Preferred)
+        sizePolicy2.setHorizontalStretch(0)
+        sizePolicy2.setVerticalStretch(0)
+        sizePolicy2.setHeightForWidth(self.cBContainer.sizePolicy().hasHeightForWidth())
+        self.cBContainer.setSizePolicy(sizePolicy2)
+        self.cBContainer.setMinimumSize(QSize(375, 0))
+        self.cBContainer.setMaximumSize(QSize(375, 16777215))
+        self.horizontalLayout_4 = QHBoxLayout(self.cBContainer)
+        self.horizontalLayout_4.setObjectName(u"horizontalLayout_4")
+        self.cmdBar = CommandBar(self.cBContainer)
+        self.cmdBar.setObjectName(u"cmdBar")
+        sizePolicy3 = QSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Preferred)
+        sizePolicy3.setHorizontalStretch(0)
+        sizePolicy3.setVerticalStretch(0)
+        sizePolicy3.setHeightForWidth(self.cmdBar.sizePolicy().hasHeightForWidth())
+        self.cmdBar.setSizePolicy(sizePolicy3)
+        font2 = QFont()
+        font2.setFamilies([u"Alibaba PuHuiTi R"])
+        font2.setPointSize(10)
+        self.cmdBar.setFont(font2)
+
+        self.horizontalLayout_4.addWidget(self.cmdBar)
+
+
+        self.Header.addWidget(self.cBContainer)
+
         self.horizontalLayout = QHBoxLayout()
         self.horizontalLayout.setObjectName(u"horizontalLayout")
-        self.cmdBar = CommandBar(Console)
-        self.cmdBar.setObjectName(u"cmdBar")
-
-        self.horizontalLayout.addWidget(self.cmdBar)
-
 
         self.Header.addLayout(self.horizontalLayout)
 
@@ -93,10 +121,10 @@ class Ui_Console(object):
         self.horizontalLayout_2.setObjectName(u"horizontalLayout_2")
         self.projectShell = TextBrowser(self.PShell)
         self.projectShell.setObjectName(u"projectShell")
-        font2 = QFont()
-        font2.setFamilies([u"\u963f\u91cc\u5df4\u5df4\u666e\u60e0\u4f53 R"])
-        font2.setPointSize(10)
-        self.projectShell.setFont(font2)
+        font3 = QFont()
+        font3.setFamilies([u"\u963f\u91cc\u5df4\u5df4\u666e\u60e0\u4f53 R"])
+        font3.setPointSize(10)
+        self.projectShell.setFont(font3)
 
         self.horizontalLayout_2.addWidget(self.projectShell)
 

@@ -1,10 +1,10 @@
 from PySide6.QtCore import QSize, Qt
 from PySide6.QtWidgets import QVBoxLayout
 from PySide6.QtGui import QFont
-from qfluentwidgets import ElevatedCardWidget, ImageLabel, CaptionLabel, ImageLabel, BodyLabel
+from qfluentwidgets import ElevatedCardWidget, ImageLabel, CaptionLabel, ImageLabel, BodyLabel, MessageBox
 
 from ..utils.configs import cfg
-from ..utils.logger import logger
+from ..utils.log import logger
 from ..utils.paths import UICONS
 
 import os.path
@@ -78,3 +78,8 @@ class ModelDisplayCard(ElevatedCardWidget):
 
  
  
+class StopDialog(MessageBox):
+    def __init__(self, title, content, parent=None):
+        super().__init__(title, content, parent)
+        self.yesButton.setText("停止")
+        self.cancelButton.setText("取消")

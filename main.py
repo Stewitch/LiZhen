@@ -35,9 +35,8 @@ from PySide6.QtGui import QFontDatabase
 
 from launcher.interfaces.MainWindow import MainWindow
 from launcher.utils.configs import cfg
-from launcher.utils.logger import logger
+from launcher.utils.log import logger
 from launcher.utils.paths import FONTS
-from launcher.utils.common import _launcher
 
 import os, sys
 
@@ -49,18 +48,15 @@ if cfg.get(cfg.dpiScale) != "Auto":
     
 
 
-
 def main():
     app = QApplication(sys.argv)
     QFontDatabase.addApplicationFont(str(FONTS.joinpath("Alibaba-PuHuiTi-Regular.ttf")))
     window = MainWindow()
     window.show()
-    _launcher.switch()
-    return app.exec()
+    sys.exit(app.exec())
+
 
 
 if __name__ == '__main__':
     logger.info("主程序启动")
-    code = main()
-    logger.info("主程序退出")
-    sys.exit(code)
+    main()

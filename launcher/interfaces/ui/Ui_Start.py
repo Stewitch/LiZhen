@@ -179,15 +179,15 @@ class Ui_Start(object):
         self.pStart.setObjectName(u"pStart")
         self.mulitFunc = QGridLayout()
         self.mulitFunc.setObjectName(u"mulitFunc")
-        self.bButton = PushButton(Start)
-        self.bButton.setObjectName(u"bButton")
+        self.toConsoleButton = PushButton(Start)
+        self.toConsoleButton.setObjectName(u"toConsoleButton")
         font3 = QFont()
         font3.setFamilies([u"\u963f\u91cc\u5df4\u5df4\u666e\u60e0\u4f53 R"])
         font3.setPointSize(10)
         font3.setBold(True)
-        self.bButton.setFont(font3)
+        self.toConsoleButton.setFont(font3)
 
-        self.mulitFunc.addWidget(self.bButton, 0, 0, 1, 1)
+        self.mulitFunc.addWidget(self.toConsoleButton, 0, 0, 1, 1)
 
         self.aButton = PushButton(Start)
         self.aButton.setObjectName(u"aButton")
@@ -278,7 +278,7 @@ class Ui_Start(object):
         self.TTSFolder.setText(QCoreApplication.translate("Start", u"TTS \u6a21\u578b\u76ee\u5f55", None))
         self.LLMFolder.setText(QCoreApplication.translate("Start", u"LLM \u6a21\u578b\u76ee\u5f55", None))
         self.mTitleLabel.setText(QCoreApplication.translate("Start", u"\u6a21\u578b\u533a", None))
-        self.bButton.setText(QCoreApplication.translate("Start", u"\u63a7\u5236\u53f0", None))
+        self.toConsoleButton.setText(QCoreApplication.translate("Start", u"\u63a7\u5236\u53f0", None))
         self.aButton.setText(QCoreApplication.translate("Start", u"\u9884\u7559\u529f\u80fd", None))
         self.bTitle.setText(QCoreApplication.translate("Start", u"\u516c\u544a", None))
         self.broadcast.setHtml(QCoreApplication.translate("Start", u"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"

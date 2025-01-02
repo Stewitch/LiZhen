@@ -1,6 +1,6 @@
 from copy import deepcopy
 
-from .logger import logger
+from .log import logger
 
 import json, ruamel.yaml
 
