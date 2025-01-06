@@ -5,14 +5,14 @@ from .ui.Ui_Start import Ui_Start
 
 from ..utils.styles import StyleSheet
 from ..utils.log import logger
-from ..utils.configs import pcfg
 from ..utils.common import switchProjectState, openFolder, project
 
+pcfg = {}
 
 class StartInterface(QWidget, Ui_Start):
     
     def __init__(self, parent=None):
-        super().__init__(parent)
+        super().__init__(parent=parent)
         self.setupUi(self)
         
         self.__initFunctions()

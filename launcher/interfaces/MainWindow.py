@@ -8,7 +8,7 @@ from .Start import StartInterface
 from .ASR import ASRInterface
 from .LLM import LLMInterface
 from .TTS import TTSInterface
-from .Persona import PersonaInterface
+from .Character import CharacterInterface
 from .Console import ConsoleInterface
 from .Widgets import StopDialog
 
@@ -41,14 +41,14 @@ class MainWindow(MSFluentWindow):
         self.llmInterface = LLMInterface(self)
         self.ttsInterface = TTSInterface(self)
         self.settingInterface = SettingInterface(self)
-        self.personaInterface = PersonaInterface(self)
+        self.characterInterface = CharacterInterface(self)
         self.consoleInterface = ConsoleInterface(self)
         
         self.addSubInterface(self.startInterface, FluentIcon.PLAY, self.tr("启动"),
                              selectedIcon=FluentIcon.PLAY_SOLID,
                              position=NavigationItemPosition.TOP)
         
-        self.addSubInterface(self.personaInterface, FluentIcon.FEEDBACK, self.tr("人格提示词"),
+        self.addSubInterface(self.characterInterface, FluentIcon.FEEDBACK, self.tr("角色"),
                              selectedIcon=FluentIcon.FEEDBACK,
                              position=NavigationItemPosition.SCROLL)
         

@@ -9,6 +9,8 @@ CWD = Path(getcwd())
 LAUNCHER = CWD.joinpath('launcher')
 # 项目文件夹
 PROJECT = CWD.joinpath('Open-LLM-VTuber')
+# 项目源码
+PROJ_SRC = PROJECT.joinpath('src')
 
 
 # 项目主文件
@@ -32,6 +34,7 @@ UICONS = IMAGES.joinpath('ui')
 UV_CONFIG = PROJECT.joinpath('uv.toml')
 CONFIGS = LAUNCHER.joinpath('configs')
 LAUNCHER_CONFIG = CONFIGS.joinpath('launcher.json')
+PROJ_CFG = PROJECT.joinpath("conf.yaml")
 
 
 # 日志文件

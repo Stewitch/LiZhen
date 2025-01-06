@@ -1,5 +1,7 @@
 from PySide6.QtGui import QColor
 
+from .mapping import ANSI_COLOR_MAP
+
 import re
 
 
@@ -10,52 +12,6 @@ class Color:
     BLUE = QColor(0, 0, 255)
     LIME_GREEN = QColor(50, 205, 50)
     GOLD = QColor(255, 215, 0)
-
-
-
-ANSI_MAP = {
-    # 标准前景色
-    '30': 'color: black',
-    '31': 'color: red',
-    '32': 'color: #32CD32',
-    '33': 'color: #ffe644',
-    '34': 'color: #00CDCD',
-    '35': 'color: magenta',
-    '36': 'color: #008B8B',
-    '37': 'color: white',
-    
-    # 标准背景色
-    '40': 'background-color: black',
-    '41': 'background-color: red',
-    '42': 'background-color: green',
-    '43': 'background-color: yellow',
-    '44': 'background-color: blue',
-    '45': 'background-color: magenta',
-    '46': 'background-color: cyan',
-    '47': 'background-color: white',
-    
-    # 亮色背景色
-    '100': 'background-color: gray',
-    '101': 'background-color: #ff4444',
-    '102': 'background-color: #44ff44',
-    '103': 'background-color: #ffff44',
-    '104': 'background-color: #4444ff',
-    '105': 'background-color: #ff44ff',
-    '106': 'background-color: #44ffff',
-    '107': 'background-color: #ffffff',
-    
-    # 文本样式
-    '0': '',  # 重置
-    '1': 'font-weight: bold',  # 粗体
-    '2': 'opacity: 0.8',  # 暗淡
-    '3': 'font-style: italic',  # 斜体
-    '4': 'text-decoration: underline',  # 下划线
-    '5': 'text-decoration: blink',  # 闪烁
-    '7': 'filter: invert(100%)',  # 反显
-    '8': 'opacity: 0',  # 隐藏
-    '9': 'text-decoration: line-through',  # 删除线
-}
-
 
 
 
@@ -78,8 +34,8 @@ def ansi_to_html(text: str) -> str:
             return result
             
         for code in codes:
-            if code in ANSI_MAP:
-                styles.append(ANSI_MAP[code])
+            if code in ANSI_COLOR_MAP:
+                styles.append(ANSI_COLOR_MAP[code])
         
         if not styles:
             if opened_spans > 0:

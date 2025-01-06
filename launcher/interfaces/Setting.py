@@ -15,7 +15,7 @@ from ..utils.common import pipMirrorFile, VERSION
 class SettingInterface(ManagerInterface):
     
     @logger.catch
-    def __init__(self, parent=None, title = "设置"):
+    def __init__(self, parent=None, title: str = "设置"):
         super().__init__(parent, title)
         
     
@@ -75,7 +75,7 @@ class SettingInterface(ManagerInterface):
             self.tr("检查更新"),
             FIF.INFO,
             self.tr("关于"),
-            self.tr(f"© 版权所有 2025，SunKSugaR，保留所有权利，当前版本：{VERSION}"),
+            self.tr(f"© 2025, SunKSugaR，保留所有权利，当前版本：{VERSION}"),
             self.launcherGroup
         )
         self.launcherRepoCard = HyperlinkCard(

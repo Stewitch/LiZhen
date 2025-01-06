@@ -1,11 +1,14 @@
-from PySide6.QtCore import QSize, Qt
-from PySide6.QtWidgets import QVBoxLayout
+from PySide6.QtCore import QSize, Qt, Signal
+from PySide6.QtWidgets import QVBoxLayout, QLabel, QButtonGroup
 from PySide6.QtGui import QFont
-from qfluentwidgets import ElevatedCardWidget, ImageLabel, CaptionLabel, ImageLabel, BodyLabel, MessageBox
+from qfluentwidgets import (ElevatedCardWidget, ImageLabel, CaptionLabel,
+                            ImageLabel, BodyLabel, MessageBox, SettingCard, ExpandSettingCard,
+                            LineEdit, PasswordLineEdit, SwitchButton, RadioButton)
 
 from ..utils.configs import cfg
 from ..utils.log import logger
 from ..utils.paths import UICONS
+from ..utils.form_generator import pcfg
 
 import os.path
 
@@ -52,6 +55,7 @@ class ModelDisplayCard(ElevatedCardWidget):
         
         cfg.themeChanged.connect(self.updateIcon)
     
+    
     def setIcon(self, name: str):
         """图标必须放在./launcher/assets/images/ui/{theme}/文件夹下"""
         self.imgName = name
@@ -68,6 +72,7 @@ class ModelDisplayCard(ElevatedCardWidget):
         else:
             logger.debug(f"更新图标：{self.imgName}, 主题：{theme}")
     
+    
     def _init(self, iconName: str, name: str, provider: str, model: str):
         """图标必须放在./launcher/assets/images/ui/{theme}/文件夹下"""
         logger.info(f"初始化模型卡片：{name.strip(":")}")
@@ -83,3 +88,21 @@ class StopDialog(MessageBox):
         super().__init__(title, content, parent)
         self.yesButton.setText("停止")
         self.cancelButton.setText("取消")
+
+    
+    def __init__(self, icon, title, content=None, configItem=None, parent=None):
+        super().__init__(icon, title, content, parent)
+        self.configItem = configItem
+        self.switchButton = SwitchButton()
+        
+        self.switchButton.setChecked(self.configItem)
+        
+        self.hBoxLayout.addStretch(1)
+        self.hBoxLayout.addWidget(self.switchButton, 0, Qt.AlignRight)
+        
+        self.switchButton.checkedChanged.connect(self.setValue)
+    
+    
+    def setValue(self, value):
+        self.configItem = value
+

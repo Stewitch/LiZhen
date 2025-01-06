@@ -1,6 +1,7 @@
 from PySide6.QtWidgets import QWidget, QLabel
 from PySide6.QtCore import Qt
-from qfluentwidgets import ScrollArea, ExpandLayout
+from PySide6.QtGui import QFont
+from qfluentwidgets import ScrollArea, ExpandLayout, PrimaryPushButton, FluentIcon
 
 from ..utils.styles import StyleSheet
 from ..utils.log import logger
@@ -10,10 +11,11 @@ import random
 
 
 class ManagerInterface(ScrollArea):
-    def __init__(self, parent=None, title:str = "管理"):
+    def __init__(self, parent=None, title:str = "管理", enableSave: bool = False):
         super().__init__(parent=parent)
         self.view = QWidget()
         self.expandLayout = ExpandLayout(self.view)
+        self.enableSave = enableSave
         
         self.titleLabel = QLabel(self.tr(title), self)
         
@@ -70,5 +72,27 @@ class ManagerInterface(ScrollArea):
         
         StyleSheet.MANAGER.apply(self)
         
+        if self.enableSave:
+            self._enableSaveButton()
+        
         self._Layout()
         self._SSConnection()
+    
+    
+    def _enableSaveButton(self):
+        """启用保存按钮"""
+        font = QFont()
+        font.setFamilies([u"\u963f\u91cc\u5df4\u5df4\u666e\u60e0\u4f53 R"])
+        font.setPointSize(10)
+        self.saveButton = PrimaryPushButton(FluentIcon.SAVE, self.tr("保存"), self)
+        self.saveButton.setFont(font)
+        self.saveButton.setEnabled(False)
+        self.setViewportMargins(0, 80, 0, 52)
+        self.saveButton.move(810, 608)
+        
+        
+    def resizeEvent(self, e):
+        if self.enableSave:
+            mgx, mgy = 125, -88
+            self.saveButton.move(e.size().width()-mgx, e.size().height()-mgy)
+        return super().resizeEvent(e)

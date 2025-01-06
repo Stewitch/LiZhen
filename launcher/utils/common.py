@@ -254,7 +254,7 @@ class Project(Status):
             charData = chardet.detect(data)
             logger.info(f"尝试从长度 {len(data)} 的数据中检测编码数据")
             logger.info(f"结果：{charData}")
-            if charData["encoding"] is not None:
+            if charData["encoding"] is not None and charData["confidence"] > 0.85:
                 self.__encoding = charData["encoding"]
                 self.__backend.readyReadStandardError.disconnect(self.__detectEncoding)
         self.__newText(data.decode(self.__encoding, "replace"))

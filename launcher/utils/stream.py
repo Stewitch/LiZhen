@@ -18,6 +18,6 @@ class Stream(QObject):
 
 _stderr = Stream()
 
-sys.stderr = _stderr
+# sys.stderr = _stderr
 
 # _stderr = sys.stderr

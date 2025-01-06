@@ -1,10 +1,8 @@
 from qfluentwidgets import qconfig, QConfig, OptionsConfigItem, OptionsValidator, Theme, BoolValidator
 
 from .log import logger
-from .bridge import YamlConf
 from .paths import LAUNCHER_CONFIG
 
-import os.path
 
 
 class LauncherConfig(QConfig):
@@ -17,11 +15,6 @@ class LauncherConfig(QConfig):
         "Mirrors", "pipEnabled", True, BoolValidator())
     hfMirrorEnabled = OptionsConfigItem(
         "Mirrors", "hfEnabled", True, BoolValidator())
-    
-
-
-if os.path.exists("conf.yaml"):
-    pcfg = YamlConf("conf.yaml")
 
 
 
