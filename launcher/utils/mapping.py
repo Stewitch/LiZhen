@@ -1,4 +1,7 @@
+from qfluentwidgets import (SpinBox, SwitchButton, LineEdit, BodyLabel, PasswordLineEdit)
 from qfluentwidgets import FluentIcon as ICON
+
+from ..interfaces.Widgets import TComboBox, TSwitchButton, TSpinBox
 
 
 
@@ -37,7 +40,7 @@ ANSI_COLOR_MAP = {
 
 
 # Abbr.: et = Extra Type
-ALIAS_MAP = {
+KEY_MAP = {
     "conf_version": {
         "zh": "配置版本",
         "en": "Config Version",
@@ -52,7 +55,8 @@ ALIAS_MAP = {
     "port": {
         "zh": "服务器端口",
         "en": "Server Port",
-        "ico": ICON.INFO
+        "ico": ICON.INFO,
+        "range": (0, 65535)
     },
     "preload_models": {
         "zh": "预加载模型",
@@ -98,7 +102,8 @@ ALIAS_MAP = {
     "llm_provider": {
         "zh": "大语言模型后端",
         "en": "LLM Provider",
-        "ico": ICON.CHAT
+        "ico": ICON.CHAT,
+        "et": "TOCOMBOBOX"
     },
     "base_url": {
         "zh": "基础 URL",
@@ -233,12 +238,14 @@ ALIAS_MAP = {
     "pitch": {
         "zh": "音调增量",
         "en": "Pitch",
-        "ico": ICON.MARKET
+        "ico": ICON.MARKET,
+        "et": "INT"
     },
     "rate": {
         "zh": "语速",
         "en": "Speech Rate",
-        "ico": ICON.SPEED_OFF
+        "ico": ICON.SPEED_OFF,
+        "et": "INT"
     },
     "client_url": {
         "zh": "WebUI 链接",
@@ -328,7 +335,8 @@ ALIAS_MAP = {
     "batch_size": {
         "zh": "Batch 大小",
         "en": "Batch Size",
-        "ico": ICON.FRIGID
+        "ico": ICON.FRIGID,
+        "et": "INT"
     },
     "media_type": {
         "zh": "生成音频文件扩展名",
@@ -338,7 +346,8 @@ ALIAS_MAP = {
     "streaming_mode": {
         "zh": "流式生成模式",
         "en": "Streaming Mode",
-        "ico": ICON.BACK_TO_WINDOW
+        "ico": ICON.BACK_TO_WINDOW,
+        "et": "BOOL"
     },
     "reference_id": {
         "zh": "参考 ID",
@@ -366,3 +375,36 @@ ALIAS_MAP = {
         "ico": ICON.DEVELOPER_TOOLS
     }
 }
+
+
+WIDGETS_MAP = {
+    int: SpinBox,
+    str: LineEdit,
+    bool: SwitchButton,
+    "UNCHANGEABLE": BodyLabel,
+    "TOCOMBOBOX": TComboBox,
+    "PWD": PasswordLineEdit,
+    "BOOL": TSwitchButton,
+    "INT": TSpinBox,
+    "FILE": BodyLabel,
+    "DIR": BodyLabel
+}
+
+
+NON_STANDARD_WIDGETS = [
+    TComboBox, TSwitchButton, TSpinBox
+]
+
+
+WIDGETS_SIZE = {
+    BodyLabel: 100,
+    LineEdit: 200,
+    SpinBox: 150,
+    SwitchButton: 55,
+    PasswordLineEdit: 200,
+    TSwitchButton: 100,
+    TSpinBox: 150,
+    TComboBox: 70,
+}
+
+

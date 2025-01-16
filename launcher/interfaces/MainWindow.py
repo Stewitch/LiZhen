@@ -1,7 +1,8 @@
 from PySide6.QtGui import QIcon
 from PySide6.QtWidgets import QApplication
 from PySide6.QtCore import QSize, QEventLoop, QTimer
-from qfluentwidgets import FluentIcon, MSFluentWindow, NavigationItemPosition, SplashScreen
+from qfluentwidgets import (FluentIcon, MSFluentWindow, NavigationItemPosition, SplashScreen,
+                            InfoBadge, InfoBadgePosition)
 
 from .Setting import SettingInterface
 from .Start import StartInterface

@@ -1,8 +1,9 @@
 from qfluentwidgets import qconfig, QConfig, OptionsConfigItem, OptionsValidator, Theme, BoolValidator
 
-from .log import logger
 from .paths import LAUNCHER_CONFIG
+from .log import logger
 
+logger.remove()
 
 
 class LauncherConfig(QConfig):
