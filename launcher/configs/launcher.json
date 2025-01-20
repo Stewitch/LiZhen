@@ -1,4 +1,7 @@
 {
+    "Project": {
+        "checkEnv": true
+    },
     "MainWindow": {
         "DpiScale": "Auto"
     },

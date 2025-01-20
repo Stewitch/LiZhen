@@ -1,7 +1,7 @@
-from qfluentwidgets import (SpinBox, SwitchButton, LineEdit, BodyLabel, PasswordLineEdit)
 from qfluentwidgets import FluentIcon as ICON
 
-from ..interfaces.Widgets import TComboBox, TSwitchButton, TSpinBox
+from ..interfaces.Cards import *
+from ..interfaces.Widgets import *
 
 
 
@@ -42,7 +42,7 @@ ANSI_COLOR_MAP = {
 # Abbr.: et = Extra Type
 KEY_MAP = {
     "conf_version": {
-        "zh": "配置版本",
+        "zh": "文件版本",
         "en": "Config Version",
         "ico": ICON.SETTING,
         "et": "UNCHANGEABLE"
@@ -67,7 +67,12 @@ KEY_MAP = {
         "zh": "自定义配置路径",
         "en": "Custom Config Directory",
         "ico": ICON.FOLDER,
-        "et": "DIR"
+        "et": "DIR",
+        "caption": {
+            "zh": "选择配置文件路径",
+            "en": "Select config files path."
+        },
+        "defalut": "characters"
     },
     "live2d_expression_prompt": {
         "zh": "Live2D表情提示词",
@@ -137,7 +142,12 @@ KEY_MAP = {
         "zh": "模型存放路径",
         "en": "Model Path",
         "ico": ICON.FOLDER,
-        "et": "DIR"
+        "et": "DIR",
+        "caption": {
+            "zh": "选择模型文件存放目录",
+            "en": "Select a folder that stores model files."
+        },
+        "defalut": "models"
     },
     "model_name": {
         "zh": "模型名称",
@@ -373,38 +383,28 @@ KEY_MAP = {
         "zh": "调试模式",
         "en": "Debug Mode",
         "ico": ICON.DEVELOPER_TOOLS
+    },
+    "temperature": {
+        "zh": "温度",
+        "en": "Temperature",
+        "ico": ICON.FRIGID,
+        "range": (1.0, 2.0)
     }
 }
 
 
-WIDGETS_MAP = {
-    int: SpinBox,
-    str: LineEdit,
-    bool: SwitchButton,
-    "UNCHANGEABLE": BodyLabel,
-    "TOCOMBOBOX": TComboBox,
-    "PWD": PasswordLineEdit,
-    "BOOL": TSwitchButton,
-    "INT": TSpinBox,
-    "FILE": BodyLabel,
-    "DIR": BodyLabel
-}
 
-
-NON_STANDARD_WIDGETS = [
-    TComboBox, TSwitchButton, TSpinBox
-]
-
-
-WIDGETS_SIZE = {
-    BodyLabel: 100,
-    LineEdit: 200,
-    SpinBox: 150,
-    SwitchButton: 55,
-    PasswordLineEdit: 200,
-    TSwitchButton: 100,
-    TSpinBox: 150,
-    TComboBox: 70,
+CARDS_MAP = {
+    int: NumberCard,
+    str: InputCard,
+    bool: SwitchCard,
+    "UNCHANGEABLE": DisplayCard,
+    "TOCOMBOBOX": DisplayCard,
+    "PWD": PasswordInputCard,
+    "BOOL": SwitchCard,
+    "INT": NumberCard,
+    "FILE": FolderCard,
+    "DIR": FolderCard
 }
 
 

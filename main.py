@@ -46,7 +46,7 @@ if cfg.get(cfg.dpiScale) != "Auto":
     os.environ["QT_ENABLE_HIGHDPI_SCALING"] = "0"
     os.environ["QT_SCALE_FACTOR"] = str(cfg.get(cfg.dpiScale))
     
-
+    
 
 def main():
     app = QApplication(sys.argv)

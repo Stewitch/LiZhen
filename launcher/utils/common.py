@@ -5,6 +5,7 @@ from threading import Thread
 from .log import logger, SYSTEM
 from .paths import PROJECT, VENV, VENV_ACTIVATE, UV_CONFIG
 from .color import ansi_to_html
+from .configs import cfg
 
 import os, subprocess, shutil, tomlkit, re, chardet
 
@@ -13,6 +14,12 @@ import os, subprocess, shutil, tomlkit, re, chardet
 VERSION = "0.3.6"
 
 SIGEND = CTRL_C_EVENT if SYSTEM == "Windows" else SIGTERM
+
+if cfg.get(cfg.hfMirrorEnabled):
+    os.environ["HF_ENDPOINT"] = "https://hf-mirror.com"
+    HF_MIRROR = "--hf_mirror"
+else:
+    HF_MIRROR = ""
 
 
 
@@ -178,7 +185,7 @@ class Project(Status):
 
         self.__activate = self.SYS_SPECIFIED_COMMANDS[SYSTEM]["activate"]
             
-        self.__runServer = f"python {str(PROJECT.joinpath("run_server.py"))}"
+        self.__runServer = f"python {str(PROJECT.joinpath("run_server.py"))} {HF_MIRROR}"
         self.__runProject = f"{self.__activate} && {self.__runServer}"
         self.__installReq = "uv pip install --requirements pyproject.toml"
         self.__insAndRun = f"{self.__activate} && {self.__installReq} && {self.__runServer}"
@@ -189,24 +196,16 @@ class Project(Status):
             logger.critical("虚拟环境不存在，无法检测项目依赖")
             return
         
-        shell = self.SYS_SPECIFIED_COMMANDS[SYSTEM]["shell"]
-        proc = subprocess.Popen(
-            [f'{shell}'],
-            stdin=subprocess.PIPE,
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
-            cwd=PROJECT)
-        
-        req = None
-        out, _ = proc.communicate(input=b'uv pip list --format json\n')
-        for l in out.decode(errors="ignore").split():
-            if l.startswith("[") and l.endswith("]"):
-                req = l
-        
-        if len(req) <= 22:
+        logger.info("检测项目依赖，如有缺失则安装")
+        logger.info("可能需要一些时间")
+        try:
+            subprocess.Popen([self.__installReq], cwd=PROJECT)
+            logger.info("环境检测通过")
+            return True
+        except:
             return False
-        return True
-                
+        
+        
         
     def start(self):
         if self.__backend.state() == QProcess.Running:
@@ -266,12 +265,14 @@ class Project(Status):
     
     def __newStderr(self):
         msg = self.__backend.readAllStandardError().data().decode(
-            self.__encoding, "replace")
+            self.__encoding, "replace"
+        )
         self.__newText(msg)
     
     def __newStdout(self):
         msg = self.__backend.readAllStandardOutput().data().decode(
-            self.__encoding, "replace")
+            self.__encoding, "replace"
+        )
         self.__newText(msg)
         
     

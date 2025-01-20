@@ -1,8 +1,7 @@
 from PySide6.QtGui import QIcon
 from PySide6.QtWidgets import QApplication
 from PySide6.QtCore import QSize, QEventLoop, QTimer
-from qfluentwidgets import (FluentIcon, MSFluentWindow, NavigationItemPosition, SplashScreen,
-                            InfoBadge, InfoBadgePosition)
+from qfluentwidgets import (FluentIcon, MSFluentWindow, NavigationItemPosition, SplashScreen)
 
 from .Setting import SettingInterface
 from .Start import StartInterface
@@ -10,6 +9,7 @@ from .ASR import ASRInterface
 from .LLM import LLMInterface
 from .TTS import TTSInterface
 from .Character import CharacterInterface
+from .Project import ProjectInterface
 from .Console import ConsoleInterface
 from .Widgets import StopDialog
 
@@ -44,32 +44,52 @@ class MainWindow(MSFluentWindow):
         self.settingInterface = SettingInterface(self)
         self.characterInterface = CharacterInterface(self)
         self.consoleInterface = ConsoleInterface(self)
+        self.projectInterface = ProjectInterface(self)
         
-        self.addSubInterface(self.startInterface, FluentIcon.PLAY, self.tr("启动"),
-                             selectedIcon=FluentIcon.PLAY_SOLID,
-                             position=NavigationItemPosition.TOP)
-        
-        self.addSubInterface(self.characterInterface, FluentIcon.FEEDBACK, self.tr("角色"),
-                             selectedIcon=FluentIcon.FEEDBACK,
-                             position=NavigationItemPosition.SCROLL)
-        
-        self.addSubInterface(self.asrInterface, FluentIcon.MICROPHONE, self.tr("ASR"),
-                             selectedIcon=FluentIcon.MICROPHONE,
-                             position=NavigationItemPosition.SCROLL)
-        self.addSubInterface(self.llmInterface, FluentIcon.MESSAGE, self.tr("LLM"),
-                            selectedIcon=FluentIcon.MESSAGE,
-                             position=NavigationItemPosition.SCROLL)
-        self.addSubInterface(self.ttsInterface, FluentIcon.VOLUME, self.tr("TTS"),
-                             selectedIcon=FluentIcon.VOLUME,
-                             position=NavigationItemPosition.SCROLL)
+        self.addSubInterface(
+            self.startInterface, FluentIcon.PLAY, self.tr("启动"),
+            selectedIcon=FluentIcon.PLAY_SOLID,
+            position=NavigationItemPosition.TOP
+        )
         
         
-        self.addSubInterface(self.consoleInterface, FluentIcon.COMMAND_PROMPT, self.tr("控制台"),
-                            selectedIcon=FluentIcon.COMMAND_PROMPT,
-                            position=NavigationItemPosition.BOTTOM)
-        self.addSubInterface(self.settingInterface, FluentIcon.SETTING, self.tr("设置"),
-                            selectedIcon=FluentIcon.SETTING,
-                            position=NavigationItemPosition.BOTTOM)
+        self.addSubInterface(
+            self.projectInterface, FluentIcon.DEVELOPER_TOOLS, self.tr("项目"),
+            selectedIcon=FluentIcon.DEVELOPER_TOOLS,
+            position=NavigationItemPosition.SCROLL
+        )
+        self.addSubInterface(
+            self.characterInterface, FluentIcon.FEEDBACK, self.tr("角色"),
+            selectedIcon=FluentIcon.FEEDBACK,
+            position=NavigationItemPosition.SCROLL
+        )
+        self.addSubInterface(
+            self.asrInterface, FluentIcon.MICROPHONE, self.tr("ASR"),
+            selectedIcon=FluentIcon.MICROPHONE,
+            position=NavigationItemPosition.SCROLL
+        )
+        self.addSubInterface(
+            self.llmInterface, FluentIcon.MESSAGE, self.tr("LLM"),
+            selectedIcon=FluentIcon.MESSAGE,
+            position=NavigationItemPosition.SCROLL
+        )
+        self.addSubInterface(
+            self.ttsInterface, FluentIcon.VOLUME, self.tr("TTS"),
+            selectedIcon=FluentIcon.VOLUME,
+            position=NavigationItemPosition.SCROLL
+        )
+        
+        
+        self.addSubInterface(
+            self.consoleInterface, FluentIcon.COMMAND_PROMPT, self.tr("控制台"),
+            selectedIcon=FluentIcon.COMMAND_PROMPT,
+            position=NavigationItemPosition.BOTTOM
+        )
+        self.addSubInterface(
+            self.settingInterface, FluentIcon.SETTING, self.tr("设置"),
+            selectedIcon=FluentIcon.SETTING,
+            position=NavigationItemPosition.BOTTOM
+        )
     
     
     def __splash(self):

@@ -13,6 +13,7 @@ PROJECT = CWD.joinpath('Open-LLM-VTuber')
 PROJ_SRC = PROJECT.joinpath('src')
 
 
+
 # 项目主文件
 RUN_PROJECT = PROJECT.joinpath('run_server.py')
 # 项目虚拟环境

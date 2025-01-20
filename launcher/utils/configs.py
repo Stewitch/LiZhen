@@ -1,4 +1,5 @@
-from qfluentwidgets import qconfig, QConfig, OptionsConfigItem, OptionsValidator, Theme, BoolValidator
+from qfluentwidgets import (qconfig, QConfig, OptionsConfigItem, Theme,
+                            BoolValidator, OptionsValidator)
 
 from .paths import LAUNCHER_CONFIG
 from .log import logger
@@ -13,10 +14,17 @@ class LauncherConfig(QConfig):
     
     # Mirrors
     pipMirrorEnabled = OptionsConfigItem(
-        "Mirrors", "pipEnabled", True, BoolValidator())
+        "Mirrors", "pipEnabled", True, BoolValidator()
+    )
+    
     hfMirrorEnabled = OptionsConfigItem(
-        "Mirrors", "hfEnabled", True, BoolValidator())
-
+        "Mirrors", "hfEnabled", True, BoolValidator()
+    )
+    
+    checkEnv = OptionsConfigItem(
+        "Project", "checkEnv", True, BoolValidator()
+    )
+    
 
 
 cfg = LauncherConfig()

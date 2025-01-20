@@ -1,9 +1,10 @@
 from PySide6.QtWidgets import QWidget, QLabel
 from PySide6.QtCore import Qt
 from PySide6.QtGui import QFont
-from qfluentwidgets import ScrollArea, ExpandLayout, PrimaryPushButton, FluentIcon
+from qfluentwidgets import (ScrollArea, ExpandLayout, PrimaryPushButton, FluentIcon,
+                            InfoBar)
 
-from ..utils.styles import StyleSheet
+from ..utils.enums import StyleSheet
 from ..utils.log import logger
 
 import random
@@ -20,7 +21,6 @@ class ManagerInterface(ScrollArea):
         self.titleLabel = QLabel(self.tr(title), self)
         
         self._init()
-        
         
         logger.info(f"{title} 界面初始化，对象名称：{self.objectName()}")
     
@@ -96,3 +96,27 @@ class ManagerInterface(ScrollArea):
             mgx, mgy = 125, -88
             self.saveButton.move(e.size().width()-mgx, e.size().height()-mgy)
         return super().resizeEvent(e)
+    
+    def _showErrorBar(self, msg):
+        InfoBar.error(
+            self.tr("错误"),
+            msg,
+            duration=1500,
+            parent=self
+        )
+    
+    def _showWarnBar(self, msg):
+        InfoBar.warning(
+            self.tr("警告"),
+            msg,
+            duration=1500,
+            parent=self
+        )
+    
+    def _showInfoBar(self, msg):
+        InfoBar.info(
+            self.tr("信息"),
+            msg,
+            duration=1500,
+            parent=self
+        )

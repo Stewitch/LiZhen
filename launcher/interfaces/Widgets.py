@@ -1,15 +1,12 @@
-from PySide6.QtCore import QSize, Qt, Signal
+from PySide6.QtCore import QSize, Qt
 from PySide6.QtWidgets import QVBoxLayout
 from PySide6.QtGui import QFont
 from qfluentwidgets import (ElevatedCardWidget, ImageLabel, CaptionLabel,
-                            ImageLabel, BodyLabel, MessageBox, SwitchButton,
-                            ComboBox, SpinBox, ToggleButton, FluentIcon)
+                            ImageLabel, BodyLabel, MessageBox)
 
 from ..utils.log import logger
 from ..utils.paths import UICONS
 from ..utils.configs import cfg
-from ..utils.bridge import Item
-
 import os.path
 
 
@@ -89,54 +86,3 @@ class StopDialog(MessageBox):
         self.yesButton.setText("停止")
         self.cancelButton.setText("取消")
 
-    
-    def __init__(self, icon, title, content=None, configItem=None, parent=None):
-        super().__init__(icon, title, content, parent)
-        self.configItem = configItem
-        self.switchButton = SwitchButton()
-        
-        self.switchButton.setChecked(self.configItem)
-        
-        self.hBoxLayout.addStretch(1)
-        self.hBoxLayout.addWidget(self.switchButton, 0, Qt.AlignRight)
-        
-        self.switchButton.checkedChanged.connect(self.setValue)
-    
-    
-    def setValue(self, value):
-        self.configItem = value
-
-
-
-class TWidget:
-    def __init__(self, item: Item):
-        self._item = item
-        
-    
-    def handleItem(self):
-        pass
-        
-
-class TComboBox(ComboBox, TWidget):
-    def __init__(self, item=None, parent=None):
-        ComboBox.__init__(self, parent)
-        TWidget.__init__(self, item)
-
-
-class TSwitchButton(SwitchButton, TWidget):
-    def __init__(self, item=None, parent=None):
-        SwitchButton.__init__(parent)
-        TWidget.__init__(self, item)
-        
-
-class TSpinBox(SpinBox, TWidget):
-    def __init__(self, item=None, parent=None):
-        SpinBox.__init__(parent)
-        TWidget.__init__(self, item)
-
-
-class TFolderButton(ToggleButton, TWidget):
-    def __init__(self, item=None, parent=None):
-        ToggleButton.__init__(FluentIcon.FOLDER, "选择文件夹", parent)
-        TWidget.__init__(self, item)
-        

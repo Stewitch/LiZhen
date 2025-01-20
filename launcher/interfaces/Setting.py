@@ -21,7 +21,6 @@ class SettingInterface(ManagerInterface):
     
     def _setGroups(self):
         self.uiGroup = SettingCardGroup(self.tr('界面'), self.view)
-        self.mirrorsGroup = SettingCardGroup(self.tr('镜像源'), self.view)
         self.launcherGroup = SettingCardGroup(self.tr('启动器'), self.view)
     
     
@@ -56,21 +55,6 @@ class SettingInterface(ManagerInterface):
             parent=self.uiGroup
         )
         
-        self.pipMirrorEnabledCard = SwitchSettingCard(
-            FIF.CLOUD_DOWNLOAD,
-            self.tr("启用 pip 镜像源"),
-            self.tr("pip 镜像源可以加速模块和依赖安装，建议国内用户开启"),
-            configItem=cfg.pipMirrorEnabled,
-            parent=self.mirrorsGroup
-        )
-        self.hfMirrorEnabledCard = SwitchSettingCard(
-            FIF.CLOUD_DOWNLOAD,
-            self.tr("启用 Hugging Face 镜像源"),
-            self.tr("国内用户大多无法直接连接到 Hugging Face，启用镜像源可解决模型下载问题"),
-            configItem=cfg.hfMirrorEnabled,
-            parent=self.mirrorsGroup
-        )
-        
         self.launcherInfoCard = PrimaryPushSettingCard(
             self.tr("检查更新"),
             FIF.INFO,
@@ -101,9 +85,6 @@ class SettingInterface(ManagerInterface):
         self.uiGroup.addSettingCard(self.zoomCard)
         self.uiGroup.addSettingCard(self.themeColorCard)
         
-        self.mirrorsGroup.addSettingCard(self.pipMirrorEnabledCard)
-        self.mirrorsGroup.addSettingCard(self.hfMirrorEnabledCard)
-        
         self.launcherGroup.addSettingCard(self.launcherInfoCard)
         self.launcherGroup.addSettingCard(self.launcherRepoCard)
         self.launcherGroup.addSettingCard(self.launcherLicenseCard)
@@ -112,7 +93,6 @@ class SettingInterface(ManagerInterface):
     def _addGroups2Layout(self):
         super()._addGroups2Layout()
         self.expandLayout.addWidget(self.uiGroup)
-        self.expandLayout.addWidget(self.mirrorsGroup)
         self.expandLayout.addWidget(self.launcherGroup)
     
     
