@@ -6,6 +6,7 @@ from qfluentwidgets import (ScrollArea, ExpandLayout, PrimaryPushButton, FluentI
 
 from ..utils.enums import StyleSheet
 from ..utils.log import logger
+from ..utils.form import SettingsForm
 
 import random
 
@@ -54,6 +55,16 @@ class ManagerInterface(ScrollArea):
     def _SSConnection(self):
         """在此连接信号与槽"""
         pass
+    
+    
+    def _formConnections(self, form: SettingsForm):
+        if not isinstance(form, SettingsForm):
+            raise TypeError(f"{form} 不是 SettingsForm 及其子类的实例")
+        for card in form.cards:
+            if card is None:
+                continue
+            self.saveButton.clicked.connect(card._item.onSave)
+        self.saveButton.clicked.connect(form.onSave)
     
     
     def _init(self):

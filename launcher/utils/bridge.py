@@ -45,7 +45,7 @@ class ConfigHelper:
 
 class Item(QObject):
     
-    valueChanged = Signal(I18nMixin, str, tuple)
+    valueChanged = Signal(tuple)
     
     def __init__(self, config: BaseModel, field: str):
         super().__init__()
@@ -66,13 +66,27 @@ class Item(QObject):
             return
         self.__value = v
         setattr(self.__cfg, self.__field, v)
-        self.valueChanged.emit(self.__cfg, self.__field, (self.__ov, v))
+        self.valueChanged.emit((self.__ov, v))
+        
+    def onSave(self):
+        self._ov = deepcopy(self.__value)
     
     
     @property
     def value(self):
         return self.__value
     
+    @property
+    def field(self):
+        return self.__field
+    
+    @property
+    def originalValue(self):
+        return self.__ov
+    
+    @property
+    def config(self):
+        return self.__cfg
     
     @value.setter
     def value(self, v):
@@ -84,4 +98,4 @@ class Item(QObject):
 
 
 def onSave(filepath):
-    save_config(validate_config(pcfg.model_dump()), filepath)
+    save_config(pcfg, filepath)

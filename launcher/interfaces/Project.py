@@ -1,13 +1,13 @@
-from qfluentwidgets import SettingCardGroup, SwitchSettingCard, FluentIcon, FolderListSettingCard
+from qfluentwidgets import SettingCardGroup, SwitchSettingCard, FluentIcon, InfoBar
 
 from .Interfaces import ManagerInterface
-from .Cards import FolderCard
 
 from ..utils.form import SettingsForm
 from ..utils.bridge import systemConfig
 from ..utils.log import logger
 from ..utils.configs import cfg
 from ..utils.announce import broad
+from ..utils.common import pipMirrorFile, project
 
 
 
@@ -18,16 +18,10 @@ class ProjectInterface(ManagerInterface):
 
 
     def _setGroups(self):
-        self.detailsGroup = SettingCardGroup("详细设置", self.view)
+        self.systemGroup = SettingCardGroup("系统", self.view)
         self.commonsGroup = SettingCardGroup(self.tr("常规 (即时保存)"), self.view)
         
     def _setCards(self):
-        # self.folderCard = FolderListSettingCard(
-        #     cfg.projectFolder,
-        #     "项目文件夹",
-        #     "选择项目文件夹",
-        #     parent=self.commonsGroup
-        # )
         self.checkEnvCard = SwitchSettingCard(
             FluentIcon.CHECKBOX,
             "强制环境检测",
@@ -52,25 +46,41 @@ class ProjectInterface(ManagerInterface):
             parent=self.commonsGroup
         )
         
-        self.systemForm = SettingsForm(systemConfig, self.detailsGroup)
+        self.systemForm = SettingsForm(systemConfig, self.systemGroup)
     
     def _addCards2Groups(self):
         self.commonsGroup.addSettingCard(self.checkEnvCard)
         self.commonsGroup.addSettingCard(self.pipMirrorEnabledCard)
         self.commonsGroup.addSettingCard(self.hfMirrorEnabledCard)
-        self.detailsGroup.addSettingCards(self.systemForm.cards)
+        self.systemGroup.addSettingCards(self.systemForm.cards)
         
     def _addGroups2Layout(self):
         super()._addGroups2Layout()
         self.expandLayout.addWidget(self.commonsGroup)
-        self.expandLayout.addWidget(self.detailsGroup)
+        self.expandLayout.addWidget(self.systemGroup)
         
     
     def _SSConnection(self):
+        self._formConnections(self.systemForm)
         self.systemForm.vDictChanged.connect(self.onVDictChanged)
         broad.showErrBar.connect(self._showErrorBar)
         broad.showWarnBar.connect(self._showWarnBar)
         broad.showInfoBar.connect(self._showInfoBar)
+        
+        cfg.pipMirrorEnabled.valueChanged.connect(self.__restartProjectNotice)
+        cfg.pipMirrorEnabled.valueChanged.connect(lambda v: pipMirrorFile(v))
+        cfg.hfMirrorEnabled.valueChanged.connect(self.__restartProjectNotice)
+        
+    
+    def __restartProjectNotice(self):
+        if not project.isRunning():
+            return
+        InfoBar.success(
+            self.tr("设置成功"),
+            self.tr("重启 项目 后生效"),
+            duration=1000,
+            parent=self
+        )
     
     
     def onVDictChanged(self, dict):

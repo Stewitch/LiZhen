@@ -31,7 +31,7 @@ class SettingsForm(QObject):
         
             item = Item(self.cfg, fieldName)
             item.valueChanged.connect(
-                lambda _, field, values: self._valueDict(field, values)
+                lambda *_, field=fieldName, item=item: self._valueDict(field, item)
             )
             
             icon = map.get("ico")
@@ -61,15 +61,17 @@ class SettingsForm(QObject):
                 card.setCaption(map.get("caption").get(LANG, self.tr("选择目录")))
                 card.setDefault(map.get("default"))
             elif isinstance(card, CARDS_MAP.get("INT")) or isinstance(card, CARDS_MAP.get(int)):
-                card.setRange(map.get("range"))
-            
-                
+                card.setRange(map.get("range"))               
                 
         
-    def _valueDict(self, field, values):
+    def _valueDict(self, field, item: Item):
         # values: (old, new)
-        self.vDict[field] = values
-        if values[0] == values[1]:
+        self.vDict[field] = item
+        if item.originalValue == item.value:
             self.vDict.pop(field, None)
+        self.vDictChanged.emit(self.vDict)
+        
+    def onSave(self):
+        self.vDict = {}
         self.vDictChanged.emit(self.vDict)
         

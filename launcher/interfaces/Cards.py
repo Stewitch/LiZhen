@@ -13,7 +13,7 @@ from ..utils.enums import Signals
 class InputCard(SettingCard):
     def __init__(self, item: Item, icon, title, content=None, parent=None):
         super().__init__(icon, title, content, parent)
-        self.__item = item
+        self._item = item
         
         self.lineEdit = LineEdit(self)
         self.lineEdit.setMinimumWidth(200)
@@ -21,13 +21,13 @@ class InputCard(SettingCard):
         self.hBoxLayout.addWidget(self.lineEdit)
         self.hBoxLayout.addSpacing(16)
         
-        self.setValue(self.__item.value)
+        self.setValue(self._item.value)
         
         self.lineEdit.editingFinished.connect(self.__onEditingFinished)
         
         
     def __onEditingFinished(self):
-        self.__item.set(self.lineEdit.text())
+        self._item.set(self.lineEdit.text())
         
     def setValue(self, value):
         self.lineEdit.setText(value)
@@ -40,9 +40,9 @@ class InputCard(SettingCard):
 class NumberCard(SettingCard):
     def __init__(self, item: Item, icon, title, content=None, parent=None):
         super().__init__(icon, title, content, parent)
-        self.__item = item
+        self._item = item
         
-        if isinstance(self.__item, float):
+        if isinstance(self._item.value, float):
             self.spinBox = DoubleSpinBox(self)
             self.setRange((0.0, 999999.0))
         else:
@@ -53,13 +53,13 @@ class NumberCard(SettingCard):
         self.hBoxLayout.addWidget(self.spinBox)
         self.hBoxLayout.addSpacing(16)
         
-        self.setValue(self.__item.value)
+        self.setValue(self._item.value)
         
         self.spinBox.valueChanged.connect(self.__onValueChanged)
         
         
     def __onValueChanged(self, value):
-        self.__item.set(value)
+        self._item.set(value)
         
     def setValue(self, value):
         self.spinBox.setValue(value)
@@ -67,7 +67,7 @@ class NumberCard(SettingCard):
     def setRange(self, range: tuple):
         try:
             min, max = range[0], range[1]
-            if min <= max:
+            if min >= max:
                 min, max = 0, 999999
         except:
             min, max = 0, 999999
@@ -81,20 +81,20 @@ class NumberCard(SettingCard):
 class SwitchCard(SettingCard):
     def __init__(self, item: Item, icon, title, content=None, parent=None):
         super().__init__(icon, title, content, parent)
-        self.__item = item
+        self._item = item
         
         self.switchButton = SwitchButton(self)
         
         self.hBoxLayout.addWidget(self.switchButton)
         self.hBoxLayout.addSpacing(16)
         
-        self.setValue(self.__item.value)
+        self.setValue(self._item.value)
         
         self.switchButton.checkedChanged.connect(self.__onCheckedChanged)
     
     
     def __onCheckedChanged(self, checked):
-        self.__item.set(checked)
+        self._item.set(checked)
     
     def setValue(self, value):
         self.switchButton.setChecked(value)
@@ -104,14 +104,14 @@ class SwitchCard(SettingCard):
 class DisplayCard(SettingCard):
     def __init__(self, item: Item, icon, title, content=None, parent=None):
         super().__init__(icon, title, content, parent)
-        self.__item = item
+        self._item = item
         
         self.bodyLabel = BodyLabel(self)
         
         self.hBoxLayout.addWidget(self.bodyLabel)
         self.hBoxLayout.addSpacing(16)
         
-        self.setValue(self.__item.value)
+        self.setValue(self._item.value)
         
 
     def setValue(self, value):
@@ -122,7 +122,7 @@ class DisplayCard(SettingCard):
 class FolderCard(SettingCard):
     def __init__(self, item: Item, icon, title, content=None, caption=None, default=None, parent=None):
         super().__init__(icon, title, content, parent)
-        self.__item = item
+        self._item = item
         self._caption = caption
         self._default = default
         
@@ -133,7 +133,7 @@ class FolderCard(SettingCard):
         self.hBoxLayout.addWidget(self.pushButton)
         self.hBoxLayout.addSpacing(16)
         
-        self.setValue(self.__item.value)
+        self.setValue(self._item.value)
         
         self.pushButton.clicked.connect(self.__onClicked)
         
@@ -179,11 +179,11 @@ class FolderCard(SettingCard):
                 return
             else:
                 broad.cast(Signals.showWarnBar, self.tr("目录无效，设置为默认目录"))
-                self.__item.set(str(defalut))
+                self._item.set(str(defalut))
                 self.setValue(defalut)
         
         else:
-            self.__item.set(str(path))
+            self._item.set(str(path))
             self.setValue(path)
         
 
@@ -191,7 +191,7 @@ class FolderCard(SettingCard):
 class PasswordInputCard(SettingCard):
     def __init__(self, item: Item, icon, title, content=None, parent=None):
         super().__init__(icon, title, content, parent)
-        self.__item = item
+        self._item = item
         
         self.lineEdit = PasswordLineEdit(self)
         self.lineEdit.setMinimumWidth(200)
@@ -199,13 +199,13 @@ class PasswordInputCard(SettingCard):
         self.hBoxLayout.addWidget(self.lineEdit)
         self.hBoxLayout.addSpacing(16)
         
-        self.setValue(self.__item.value)
+        self.setValue(self._item.value)
         
         self.lineEdit.editingFinished.connect(self.__onEditingFinished)
         
         
     def __onEditingFinished(self):
-        self.__item.set(self.lineEdit.text())
+        self._item.set(self.lineEdit.text())
         
     def setValue(self, value):
         self.lineEdit.setText(value)

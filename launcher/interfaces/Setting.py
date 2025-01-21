@@ -1,5 +1,5 @@
 from qfluentwidgets import (SettingCardGroup, ComboBoxSettingCard, setTheme, 
-                            setThemeColor, SwitchSettingCard, CustomColorSettingCard,
+                            setThemeColor, CustomColorSettingCard,
                             HyperlinkCard, PrimaryPushSettingCard)
 from qfluentwidgets import FluentIcon as FIF
 from qfluentwidgets import InfoBar
@@ -8,7 +8,7 @@ from .Interfaces import ManagerInterface
 
 from ..utils.configs import cfg
 from ..utils.log import logger
-from ..utils.common import pipMirrorFile, VERSION
+from ..utils.common import VERSION
 
 
 
@@ -103,15 +103,6 @@ class SettingInterface(ManagerInterface):
             duration=1500,
             parent=self
         )
-    
-    
-    def __restartProjectNotice(self):
-        InfoBar.success(
-            self.tr("设置成功"),
-            self.tr("重启 项目 后生效"),
-            duration=1000,
-            parent=self
-        )
 
     
     def _SSConnection(self):
@@ -121,7 +112,4 @@ class SettingInterface(ManagerInterface):
         cfg.themeColorChanged.connect(lambda c: setThemeColor(c))
         cfg.themeColorChanged.connect(lambda c: logger.info(f"主题颜色更新：{c}"))
         
-        cfg.pipMirrorEnabled.valueChanged.connect(self.__restartProjectNotice)
-        cfg.pipMirrorEnabled.valueChanged.connect(lambda v: pipMirrorFile(v))
-        cfg.hfMirrorEnabled.valueChanged.connect(self.__restartProjectNotice)
         
