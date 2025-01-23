@@ -12,3 +12,9 @@ QScrollArea {
 QWidget#pFolderWidgets {
     background: transparent;
 }
+
+QFrame#characterCard {
+    background: transparent;
+    border: 1px solid #505050;
+    border-radius: 10px;
+}

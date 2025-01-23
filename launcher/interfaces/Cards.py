@@ -1,19 +1,32 @@
 from PySide6.QtWidgets import QFileDialog
+from PySide6.QtCore import Signal
 from qfluentwidgets import (LineEdit, SettingCard, SpinBox, SwitchButton,
                             BodyLabel, PrimaryPushButton, PasswordLineEdit,
-                            FluentIcon, DoubleSpinBox)
+                            FluentIcon, DoubleSpinBox, ComboBox)
 from pathlib import Path
 
 from ..utils.bridge import Item
 from ..utils.announce import broad
 from ..utils.enums import Signals
+from ..utils.log import logger
 
 
 
-class InputCard(SettingCard):
+class SettingCard_(SettingCard):
     def __init__(self, item: Item, icon, title, content=None, parent=None):
         super().__init__(icon, title, content, parent)
         self._item = item
+        
+        self._item.valueChanged.connect(lambda vs: self.setValue(vs[1]))
+
+
+
+class InputCard(SettingCard_):
+    
+    editingFinished = Signal(str)
+    
+    def __init__(self, item: Item, icon, title, content=None, parent=None):
+        super().__init__(item, icon, title, content, parent)
         
         self.lineEdit = LineEdit(self)
         self.lineEdit.setMinimumWidth(200)
@@ -27,20 +40,27 @@ class InputCard(SettingCard):
         
         
     def __onEditingFinished(self):
-        self._item.set(self.lineEdit.text())
+        text = self.lineEdit.text()
+        self._item.set(text)
+        self.editingFinished.emit(text)
         
     def setValue(self, value):
         self.lineEdit.setText(value)
         
     def setPlaceholder(self, text):
         self.lineEdit.setPlaceholderText(text)
+        
+    def text(self):
+        return self.lineEdit.text()
 
 
 
-class NumberCard(SettingCard):
+class NumberCard(SettingCard_):
+    
+    valueChanged = Signal(float)
+    
     def __init__(self, item: Item, icon, title, content=None, parent=None):
-        super().__init__(icon, title, content, parent)
-        self._item = item
+        super().__init__(item, icon, title, content, parent)
         
         if isinstance(self._item.value, float):
             self.spinBox = DoubleSpinBox(self)
@@ -60,6 +80,7 @@ class NumberCard(SettingCard):
         
     def __onValueChanged(self, value):
         self._item.set(value)
+        self.valueChanged.emit(float(value))
         
     def setValue(self, value):
         self.spinBox.setValue(value)
@@ -76,12 +97,17 @@ class NumberCard(SettingCard):
     def setStep(self, step):
         self.spinBox.setSingleStep(step)
 
+    def value(self):
+        return self.spinBox.value()
 
 
-class SwitchCard(SettingCard):
+
+class SwitchCard(SettingCard_):
+    
+    checkedChanged = Signal(bool)
+    
     def __init__(self, item: Item, icon, title, content=None, parent=None):
-        super().__init__(icon, title, content, parent)
-        self._item = item
+        super().__init__(item, icon, title, content, parent)
         
         self.switchButton = SwitchButton(self)
         
@@ -95,16 +121,19 @@ class SwitchCard(SettingCard):
     
     def __onCheckedChanged(self, checked):
         self._item.set(checked)
+        self.checkedChanged.emit(checked)
     
     def setValue(self, value):
         self.switchButton.setChecked(value)
+        
+    def isChecked(self):
+        return self.switchButton.isChecked()
 
 
 
-class DisplayCard(SettingCard):
+class DisplayCard(SettingCard_):
     def __init__(self, item: Item, icon, title, content=None, parent=None):
-        super().__init__(icon, title, content, parent)
-        self._item = item
+        super().__init__(item, icon, title, content, parent)
         
         self.bodyLabel = BodyLabel(self)
         
@@ -119,10 +148,12 @@ class DisplayCard(SettingCard):
 
 
 
-class FolderCard(SettingCard):
+class FolderCard(SettingCard_):
+    
+    folderChanged = Signal(Path)
+    
     def __init__(self, item: Item, icon, title, content=None, caption=None, default=None, parent=None):
-        super().__init__(icon, title, content, parent)
-        self._item = item
+        super().__init__(item, icon, title, content, parent)
         self._caption = caption
         self._default = default
         
@@ -181,17 +212,21 @@ class FolderCard(SettingCard):
                 broad.cast(Signals.showWarnBar, self.tr("目录无效，设置为默认目录"))
                 self._item.set(str(defalut))
                 self.setValue(defalut)
+                self.folderChanged.emit(defalut)
         
         else:
             self._item.set(str(path))
             self.setValue(path)
+            self.folderChanged.emit(path)
         
 
 
-class PasswordInputCard(SettingCard):
+class PasswordInputCard(SettingCard_):
+    
+    editingFinished = Signal(str)
+    
     def __init__(self, item: Item, icon, title, content=None, parent=None):
-        super().__init__(icon, title, content, parent)
-        self._item = item
+        super().__init__(item, icon, title, content, parent)
         
         self.lineEdit = PasswordLineEdit(self)
         self.lineEdit.setMinimumWidth(200)
@@ -205,12 +240,57 @@ class PasswordInputCard(SettingCard):
         
         
     def __onEditingFinished(self):
-        self._item.set(self.lineEdit.text())
+        text = self.lineEdit.text()
+        self._item.set(text)
+        self.editingFinished.emit(text)
         
     def setValue(self, value):
         self.lineEdit.setText(value)
         
     def setPlaceholder(self, text):
         self.lineEdit.setPlaceholderText(text)
+        
+    def text(self):
+        return self.lineEdit.text()
 
 
+
+class OptionsCard(SettingCard_):
+    
+    currentIndexChanged = Signal(int)
+    
+    def __init__(self, item: Item, icon, title, content=None, options: list | tuple=None, parent=None):
+        super().__init__(item, icon, title, content, parent)
+        self.comboBox = ComboBox(self)
+        self.comboBox.setMinimumWidth(200)
+        
+        self.hBoxLayout.addWidget(self.comboBox)
+        self.hBoxLayout.addSpacing(16)
+        
+        if isinstance(options, (list, tuple)):
+            self._options = options
+            self.setOptions(options)
+        else:
+            self._options = []
+        
+        self.setValue(self._item.value)
+        
+        self.comboBox.currentIndexChanged.connect(self.__onCurrentIndexChanged)
+        
+    def setOptions(self, options):
+        self._options = options
+        self.comboBox.clear()
+        self.comboBox.addItems(self._options)
+        
+    def __onCurrentIndexChanged(self, index):
+        self._item.set(self._options[index])
+        self.currentIndexChanged.emit(index)
+        
+    def setValue(self, value):
+        if value not in self._options:
+            logger.warning(f"{value} 未在 {self._options} 中，无法设置")
+            return
+        self.comboBox.setCurrentIndex(self._options.index(value))
+    
+    def currentIndex(self):
+        return self.comboBox.currentIndex()

@@ -1,10 +1,10 @@
+from PySide6.QtCore import Signal
 from qfluentwidgets import SettingCardGroup, SwitchSettingCard, FluentIcon, InfoBar
 
 from .Interfaces import ManagerInterface
 
 from ..utils.form import SettingsForm
 from ..utils.bridge import systemConfig
-from ..utils.log import logger
 from ..utils.configs import cfg
 from ..utils.announce import broad
 from ..utils.common import pipMirrorFile, project
@@ -13,6 +13,7 @@ from ..utils.common import pipMirrorFile, project
 
 class ProjectInterface(ManagerInterface):
     
+    
     def __init__(self, parent=None, title = "项目设置"):
         super().__init__(parent, title, True)
 
@@ -20,7 +21,8 @@ class ProjectInterface(ManagerInterface):
     def _setGroups(self):
         self.systemGroup = SettingCardGroup("系统", self.view)
         self.commonsGroup = SettingCardGroup(self.tr("常规 (即时保存)"), self.view)
-        
+    
+    
     def _setCards(self):
         self.checkEnvCard = SwitchSettingCard(
             FluentIcon.CHECKBOX,
@@ -48,6 +50,7 @@ class ProjectInterface(ManagerInterface):
         
         self.systemForm = SettingsForm(systemConfig, self.systemGroup)
     
+    
     def _addCards2Groups(self):
         self.commonsGroup.addSettingCard(self.checkEnvCard)
         self.commonsGroup.addSettingCard(self.pipMirrorEnabledCard)
@@ -61,8 +64,7 @@ class ProjectInterface(ManagerInterface):
         
     
     def _SSConnection(self):
-        self._formConnections(self.systemForm)
-        self.systemForm.vDictChanged.connect(self.onVDictChanged)
+        
         broad.showErrBar.connect(self._showErrorBar)
         broad.showWarnBar.connect(self._showWarnBar)
         broad.showInfoBar.connect(self._showInfoBar)
@@ -82,13 +84,4 @@ class ProjectInterface(ManagerInterface):
             parent=self
         )
     
-    
-    def onVDictChanged(self, dict):
-        logger.info(f"配置变更: {dict}")
-        if len(dict) > 0:
-            self.saveButton.setEnabled(True)
-        else:
-            self.saveButton.setEnabled(False)
-    
-    
-    
+

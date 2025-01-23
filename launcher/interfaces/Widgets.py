@@ -86,3 +86,16 @@ class StopDialog(MessageBox):
         self.yesButton.setText("停止")
         self.cancelButton.setText("取消")
 
+
+class DiscardDialog(MessageBox):
+    def __init__(self, title, content, parent=None):
+        super().__init__(title, content, parent)
+        self.yesButton.setText("放弃")
+        self.cancelButton.setText("取消")
+
+
+class SaveDialog(MessageBox):
+    def __init__(self, title, content, parent=None):
+        super().__init__(title, content, parent)
+        self.yesButton.setText("保存")
+        self.cancelButton.setText("取消")

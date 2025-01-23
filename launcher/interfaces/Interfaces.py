@@ -1,18 +1,22 @@
 from PySide6.QtWidgets import QWidget, QLabel
-from PySide6.QtCore import Qt
+from PySide6.QtCore import Qt, Signal
 from PySide6.QtGui import QFont
 from qfluentwidgets import (ScrollArea, ExpandLayout, PrimaryPushButton, FluentIcon,
-                            InfoBar)
+                            InfoBar, PushButton)
 
 from ..utils.enums import StyleSheet
 from ..utils.log import logger
-from ..utils.form import SettingsForm
+from ..utils.managers import itemManager
 
 import random
 
 
 
 class ManagerInterface(ScrollArea):
+    
+    configsSave = Signal()
+    configsDiscard = Signal()
+    
     def __init__(self, parent=None, title:str = "管理", enableSave: bool = False):
         super().__init__(parent=parent)
         self.view = QWidget()
@@ -57,16 +61,6 @@ class ManagerInterface(ScrollArea):
         pass
     
     
-    def _formConnections(self, form: SettingsForm):
-        if not isinstance(form, SettingsForm):
-            raise TypeError(f"{form} 不是 SettingsForm 及其子类的实例")
-        for card in form.cards:
-            if card is None:
-                continue
-            self.saveButton.clicked.connect(card._item.onSave)
-        self.saveButton.clicked.connect(form.onSave)
-    
-    
     def _init(self):
         self._setGroups()
         self._setCards()
@@ -85,6 +79,7 @@ class ManagerInterface(ScrollArea):
         
         if self.enableSave:
             self._enableSaveButton()
+            itemManager.vDictChanged.connect(self.onVDictChanged)
         
         self._Layout()
         self._SSConnection()
@@ -100,12 +95,20 @@ class ManagerInterface(ScrollArea):
         self.saveButton.setEnabled(False)
         self.setViewportMargins(0, 80, 0, 52)
         self.saveButton.move(810, 608)
+        self.discardButton = PushButton(FluentIcon.CANCEL, self.tr("放弃"), self)
+        self.discardButton.setFont(font)
+        self.discardButton.setEnabled(False)
+        self.discardButton.move(810, 608)
+        
+        self.saveButton.clicked.connect(lambda: self.configsSave.emit())
+        self.discardButton.clicked.connect(lambda: self.configsDiscard.emit())
         
         
     def resizeEvent(self, e):
         if self.enableSave:
             mgx, mgy = 125, -88
             self.saveButton.move(e.size().width()-mgx, e.size().height()-mgy)
+            self.discardButton.move(self.saveButton.x()-self.saveButton.width()-8, e.size().height()-mgy)
         return super().resizeEvent(e)
     
     def _showErrorBar(self, msg):
@@ -131,3 +134,12 @@ class ManagerInterface(ScrollArea):
             duration=1500,
             parent=self
         )
+    
+    
+    def onVDictChanged(self, dict):
+        if len(dict) > 0:
+            self.saveButton.setEnabled(True)
+            self.discardButton.setEnabled(True)
+        else:
+            self.saveButton.setEnabled(False)
+            self.discardButton.setEnabled(False)

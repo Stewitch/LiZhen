@@ -4,7 +4,9 @@ from qfluentwidgets import (qconfig, QConfig, OptionsConfigItem, Theme,
 from .paths import LAUNCHER_CONFIG
 from .log import logger
 
+# 比较奇怪的BUG
 logger.remove()
+
 
 
 class LauncherConfig(QConfig):
@@ -24,7 +26,7 @@ class LauncherConfig(QConfig):
     checkEnv = OptionsConfigItem(
         "Project", "checkEnv", True, BoolValidator()
     )
-    
+
 
 
 cfg = LauncherConfig()

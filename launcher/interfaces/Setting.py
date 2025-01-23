@@ -8,7 +8,7 @@ from .Interfaces import ManagerInterface
 
 from ..utils.configs import cfg
 from ..utils.log import logger
-from ..utils.common import VERSION
+from ..utils import VERSION
 
 
 

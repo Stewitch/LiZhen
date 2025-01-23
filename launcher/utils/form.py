@@ -1,7 +1,9 @@
 from PySide6.QtCore import Signal, QObject
 
-from .mapping import CARDS_MAP, KEY_MAP
+from .mapping import CARDS_MAP, KEY_MAP, AVAILABLE_VALUES
 from .bridge import Item, I18nMixin
+from .log import logger
+from .managers import itemManager
 
 
 
@@ -17,7 +19,6 @@ class SettingsForm(QObject):
         super().__init__(parent)
         self.cfg = config
         self.infos = {}
-        self.vDict = {}
         self.cards = []
         
         self._init()
@@ -25,14 +26,19 @@ class SettingsForm(QObject):
     
     def _init(self):
         for fieldName, fieldInfo in self.cfg.model_fields.items():
+            try:
+                if issubclass(fieldInfo.annotation, I18nMixin):
+                    continue
+            except TypeError:
+                pass
+                
             map = KEY_MAP.get(fieldName)
             if map is None:
+                logger.warning(f"字段 {fieldName} 未在 KEY_MAP 中定义")
                 continue
         
             item = Item(self.cfg, fieldName)
-            item.valueChanged.connect(
-                lambda *_, field=fieldName, item=item: self._valueDict(field, item)
-            )
+            itemManager.registerItem(item)
             
             icon = map.get("ico")
             title = map.get(LANG)
@@ -54,24 +60,18 @@ class SettingsForm(QObject):
         self.__setCards()
     
     
+    @logger.catch
     def __setCards(self):
-        for _, info in self.infos.items():
+        for fieldName, info in self.infos.items():
             card, map = info[0], info[1]
             if isinstance(card, CARDS_MAP.get("DIR")):
                 card.setCaption(map.get("caption").get(LANG, self.tr("选择目录")))
                 card.setDefault(map.get("default"))
-            elif isinstance(card, CARDS_MAP.get("INT")) or isinstance(card, CARDS_MAP.get(int)):
-                card.setRange(map.get("range"))               
+            elif isinstance(card, (CARDS_MAP.get("INT"), CARDS_MAP.get(int))):
+                card.setRange(map.get("range"))         
+            elif isinstance(card, CARDS_MAP.get("OPTIONS")):
+                options = AVAILABLE_VALUES.get(fieldName)
+                logger.info(f"字段 {fieldName} 的可选值为 {options}")
+                card.setOptions(options)   
                 
-        
-    def _valueDict(self, field, item: Item):
-        # values: (old, new)
-        self.vDict[field] = item
-        if item.originalValue == item.value:
-            self.vDict.pop(field, None)
-        self.vDictChanged.emit(self.vDict)
-        
-    def onSave(self):
-        self.vDict = {}
-        self.vDictChanged.emit(self.vDict)
         

@@ -11,8 +11,6 @@ import os, subprocess, shutil, tomlkit, re, chardet
 
 
 
-VERSION = "0.3.6"
-
 SIGEND = CTRL_C_EVENT if SYSTEM == "Windows" else SIGTERM
 
 if cfg.get(cfg.hfMirrorEnabled):

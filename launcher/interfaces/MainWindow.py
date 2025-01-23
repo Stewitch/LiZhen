@@ -16,6 +16,7 @@ from .Widgets import StopDialog
 from ..utils.log import logger
 from ..utils.paths import IMAGES
 from ..utils.common import project
+from ..utils.managers import interfaceManager
 
 import sys
 
@@ -45,6 +46,12 @@ class MainWindow(MSFluentWindow):
         self.characterInterface = CharacterInterface(self)
         self.consoleInterface = ConsoleInterface(self)
         self.projectInterface = ProjectInterface(self)
+        
+        interfaceManager.addInterface([
+            self.asrInterface, self.ttsInterface, self.characterInterface,
+            self.projectInterface,
+        ])
+        
         
         self.addSubInterface(
             self.startInterface, FluentIcon.PLAY, self.tr("启动"),
@@ -118,6 +125,9 @@ class MainWindow(MSFluentWindow):
         self.startInterface.LLMCard.clicked.connect(lambda: self.switchTo(self.llmInterface))
         self.startInterface.TTSCard.clicked.connect(lambda: self.switchTo(self.ttsInterface))
         self.startInterface.toConsoleButton.clicked.connect(lambda: self.switchTo(self.consoleInterface))
+        self.startInterface.toSettingButton.clicked.connect(lambda: self.switchTo(self.settingInterface))
+        
+
         project.tryToStop.connect(self.__tryToStop)
         
     
@@ -127,6 +137,14 @@ class MainWindow(MSFluentWindow):
             project.stop()
         else:
             logger.info("用户取消停止项目")
+        
+    
+    def __configSave(self):
+        logger.info("保存配置")
+
+    
+    def __configDiscard(self):
+        logger.info("放弃配置")
         
     
     def closeEvent(self, e):

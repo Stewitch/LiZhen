@@ -15,14 +15,14 @@ class StartInterface(QWidget, Ui_Start):
         super().__init__(parent=parent)
         self.setupUi(self)
         
-        self.__initFunctions()
+        self.__initConfigs()
         self.__initWidgets()
         self.__SSConnection()
         
         logger.info(f"启动 界面初始化，对象名称：{self.objectName()}")
     
     
-    def __initFunctions(self):
+    def __initConfigs(self):
         self.ASR = pcfg.get("ASR_MODEL")
         self.LLM = pcfg.get("LLM_PROVIDER")
         self.TTS = pcfg.get("TTS_MODEL")
@@ -38,11 +38,14 @@ class StartInterface(QWidget, Ui_Start):
   
         self.startButton.setIcon(FluentIcon.PLAY_SOLID)
         self.toConsoleButton.setIcon(FluentIcon.COMMAND_PROMPT)
+        self.toSettingButton.setIcon(FluentIcon.SETTING)
         
         self.ASRFolder.setIcon(FluentIcon.MICROPHONE)
         self.LLMFolder.setIcon(FluentIcon.MESSAGE)
         self.TTSFolder.setIcon(FluentIcon.VOLUME)
         self.personaFolder.setIcon(FluentIcon.FEEDBACK)
+        
+        self.pFolders.setVisible(False)
         
         self.setObjectName("StartInterface")
         StyleSheet.START.apply(self)

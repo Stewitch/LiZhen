@@ -108,7 +108,7 @@ KEY_MAP = {
         "zh": "大语言模型后端",
         "en": "LLM Provider",
         "ico": ICON.CHAT,
-        "et": "TOCOMBOBOX"
+        "et": "OPTIONS"
     },
     "base_url": {
         "zh": "基础 URL",
@@ -389,7 +389,7 @@ KEY_MAP = {
         "en": "Temperature",
         "ico": ICON.FRIGID,
         "range": (1.0, 2.0)
-    }
+    },
 }
 
 
@@ -399,7 +399,7 @@ CARDS_MAP = {
     str: InputCard,
     bool: SwitchCard,
     "UNCHANGEABLE": DisplayCard,
-    "TOCOMBOBOX": DisplayCard,
+    "OPTIONS": OptionsCard,
     "PWD": PasswordInputCard,
     "BOOL": SwitchCard,
     "INT": NumberCard,
@@ -408,3 +408,21 @@ CARDS_MAP = {
 }
 
 
+
+AVAILABLE_VALUES = {
+    "llm_provider": [
+        "openai_compatible_llm",
+        "claude_llm",
+        "llama_cpp_llm",
+        "ollama_llm",
+        "openai_llm",
+        "gemini_llm",
+        "zhipu_llm",
+        "deepseek_llm",
+        "groq_llm",
+        "mistral_llm",
+    ],
+    "conversation_agent_choice": [
+        "basic_memory_agent", "mem0_agent", "hume_ai_agent"
+    ]
+}
