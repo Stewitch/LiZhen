@@ -1,4 +1,6 @@
 from PySide6.QtCore import Signal, QObject
+from PySide6.QtWidgets import QWidget
+from typing import Dict, Tuple, List, Optional
 
 from .mapping import CARDS_MAP, KEY_MAP, AVAILABLE_VALUES
 from .bridge import Item, I18nMixin
@@ -18,8 +20,8 @@ class SettingsForm(QObject):
     def __init__(self, config: I18nMixin, parent=None):
         super().__init__(parent)
         self.cfg = config
-        self.infos = {}
-        self.cards = []
+        self.infos: Dict[str, Tuple[QWidget, dict]] = {}
+        self.cards: List[QWidget] = []
         
         self._init()
     
@@ -72,6 +74,8 @@ class SettingsForm(QObject):
             elif isinstance(card, CARDS_MAP.get("OPTIONS")):
                 options = AVAILABLE_VALUES.get(fieldName)
                 logger.info(f"字段 {fieldName} 的可选值为 {options}")
-                card.setOptions(options)   
+                card.setOptions(options)
+                
+    
                 
         

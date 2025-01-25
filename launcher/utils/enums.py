@@ -23,3 +23,6 @@ class Signals(Enum):
     showErrBar = 2
     showNoticeDialog = 3
     changeProjectFolder = 99
+
+    agentUpdate = 1000
+    llmProviderUpdate = 1001

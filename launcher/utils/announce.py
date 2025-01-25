@@ -12,6 +12,8 @@ class Announcer(QObject):
     showWarnBar = Signal(str)
     showInfoBar = Signal(str)
     changeProjectFolder = Signal(str)
+    agentUpdate = Signal(str)
+    llmProviderUpdate = Signal(str)
     
     def __init__(self):
         super().__init__()
@@ -21,6 +23,8 @@ class Announcer(QObject):
             2: self.showErrBar,
             3: self.showNoticeDialog,
             99: self.changeProjectFolder,
+            1000: self.agentUpdate,
+            1001: self.llmProviderUpdate,
         }
     
     

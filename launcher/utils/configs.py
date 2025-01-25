@@ -26,6 +26,10 @@ class LauncherConfig(QConfig):
     checkEnv = OptionsConfigItem(
         "Project", "checkEnv", True, BoolValidator()
     )
+    
+    updateSource = OptionsConfigItem(
+        "Project", "updateSource", True, OptionsValidator(["GitHub", "Gitee"])
+    )
 
 
 

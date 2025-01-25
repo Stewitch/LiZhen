@@ -58,11 +58,6 @@ KEY_MAP = {
         "ico": ICON.INFO,
         "range": (0, 65535)
     },
-    "preload_models": {
-        "zh": "预加载模型",
-        "en": "Preload Models",
-        "ico": ICON.SEND
-    },
     "config_alts_dir": {
         "zh": "自定义配置路径",
         "en": "Custom Config Directory",
@@ -110,6 +105,11 @@ KEY_MAP = {
         "ico": ICON.CHAT,
         "et": "OPTIONS"
     },
+    "provider": {
+        "zh": "提供者",
+        "en": "Provider",
+        "ico": ICON.IOT,
+    },
     "base_url": {
         "zh": "基础 URL",
         "en": "Base URL",
@@ -121,6 +121,35 @@ KEY_MAP = {
         "en": "API Key",
         "ico": ICON.VPN,
         "et": "PWD"
+    },
+    "api_key": {
+        "zh": "API 密钥",
+        "en": "API Key",
+        "ico": ICON.VPN,
+        "et": "PWD"
+    },
+    "config_id": {
+        "zh": "配置 ID",
+        "en": "Config ID",
+        "ico": ICON.FLAG,
+        "et": str
+    },
+    "faster_first_response": {
+        "zh": "快速响应",
+        "en": "faster_first_response",
+        "ico": ICON.SPEED_HIGH,
+        "et": bool
+    },
+    "segment_method":   {
+        "zh": "句子分割方式",
+        "en": "Segment Method",
+        "ico": ICON.TILES,
+        "et": "OPTIONS"
+    },
+    "idle_timeout": {
+        "zh": "空闲时间",
+        "en": "Idle Timeout",
+        "ico": ICON.EMBED,
     },
     "model": {
         "zh": "模型",
@@ -404,7 +433,8 @@ CARDS_MAP = {
     "BOOL": SwitchCard,
     "INT": NumberCard,
     "FILE": FolderCard,
-    "DIR": FolderCard
+    "DIR": FolderCard,
+    "STR": InputCard
 }
 
 
@@ -424,5 +454,8 @@ AVAILABLE_VALUES = {
     ],
     "conversation_agent_choice": [
         "basic_memory_agent", "mem0_agent", "hume_ai_agent"
+    ],
+    "segment_method": [
+        "regex", "pysbd"
     ]
 }

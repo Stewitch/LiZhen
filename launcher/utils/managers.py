@@ -16,6 +16,7 @@ class ItemManager(QObject):
         self.items: List[Item] = []
         self.registeredItems: Dict[str, Item] = {}
         self.vDict: Dict[str, Any] = {}
+        self.changedFields: List[str] = []
     
     def addItem(self, item: Item):
         self.items.append(item)
@@ -26,6 +27,16 @@ class ItemManager(QObject):
         if item not in self.items:
             self.addItem(item)
     
+    def unregisterItem(self, item: Item):
+        try:
+            self.registeredItems.pop(item.field)
+            self.items.pop(self.items.index(item))
+        except ValueError:
+            logger.warning(f"未注册配置项：{item}")
+    
+    def getByField(self, field: str) -> Item:
+        return self.registeredItems.get(field, None)
+    
     def _valueDict(self, fieldOrItem: str | Item):
         if isinstance(fieldOrItem, str):
             item = self.registeredItems.get(fieldOrItem)
@@ -35,12 +46,19 @@ class ItemManager(QObject):
             field = item.field
         
         if item in self.registeredItems.values():
+            logger.info(f"{item.originalValue}, {item.value}")
             if item.originalValue == item.value:
-                self.vDict.pop(field)
+                try:
+                    self.vDict.pop(field)
+                    self.changedFields.pop(self.changedFields.index(field))
+                except ValueError:
+                    logger.debug("撤销操作触发 _valueDict")
             else:
                 self.vDict[field] = item.value
+                self.changedFields.append(item.field)
             self.vDictChanged.emit(self.vDict)
             logger.debug(f"配置值表变更：{self.vDict}")
+            logger.debug(f"变更的键：{self.changedFields}")
             
         else:
             logger.warning(f"未注册配置项：{item}, 尝试注册")
@@ -55,59 +73,16 @@ class ItemManager(QObject):
         self.vDictChanged.emit(self.vDict)
     
     def onDiscard(self):
-        for item in self.items:
-            item.onDiscard()
-        self.vDict = {}
+        try:
+            field = self.changedFields.pop()
+        except Exception as e:
+            logger.warning(f"{e}")
+            return
+        self.registeredItems.get(field).onDiscard()
+        self.vDict.pop(field, None)
         self.vDictChanged.emit(self.vDict)
         
 
 
 itemManager = ItemManager()
 
-
-
-class InterfaceManager(QObject):
-    
-    def __init__(self, parent=None):
-        super().__init__(parent=parent)
-        self.interfaces = {}
-    
-    def addInterface(self, interface: QWidget | Iterable[QWidget]):
-        if isinstance(interface, Iterable):
-            for i in interface:
-                self.interfaces[i.objectName()] = i
-        elif isinstance(interface, QWidget):
-            self.interfaces[interface.objectName()] = interface
-        else:
-            logger.warning(f"{interface} 不是 QWidget 子类实例或其实例列表")
-    
-    def getInterface(self, name):
-        return self.interfaces.get(name)
-    
-    def removeInterface(self, name):
-        self.interfaces.pop(name, None)
-    
-    def clear(self):
-        self.interfaces.clear()
-        
-    def __iter__(self):
-        return iter(self.interfaces.values())
-    
-    def __getitem__(self, name):
-        return self.interfaces[name]
-    
-    def __setitem__(self, name, value):
-        self.interfaces[name] = value
-    
-    def __delitem__(self, name):
-        self.interfaces.pop(name)
-    
-    def __len__(self):
-        return len(self.interfaces)
-    
-    def __contains__(self, name):
-        return name in self.interfaces
-
-
-
-interfaceManager = InterfaceManager()

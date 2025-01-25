@@ -95,7 +95,7 @@ class ManagerInterface(ScrollArea):
         self.saveButton.setEnabled(False)
         self.setViewportMargins(0, 80, 0, 52)
         self.saveButton.move(810, 608)
-        self.discardButton = PushButton(FluentIcon.CANCEL, self.tr("放弃"), self)
+        self.discardButton = PushButton(FluentIcon.CANCEL, self.tr("撤销"), self)
         self.discardButton.setFont(font)
         self.discardButton.setEnabled(False)
         self.discardButton.move(810, 608)

@@ -3,23 +3,27 @@ from pydantic import BaseModel
 from copy import deepcopy
 
 from .paths import PROJ_SRC, PROJ_CFG
+from .log import logger
 
 import sys
 sys.path.append(str(PROJ_SRC.absolute()))
 
-from open_llm_vtuber.config_manager.utils import read_yaml, validate_config, save_config
-from open_llm_vtuber.config_manager.main import I18nMixin
-
+try:
+    from open_llm_vtuber.config_manager.utils import read_yaml, validate_config, save_config
+    from open_llm_vtuber.config_manager.main import I18nMixin
+except:
+    logger.critical("项目路径有误，请检查后重试！")
+    raise
+    
 
 
 pcfg = validate_config(read_yaml(str(PROJ_CFG)))
 
 systemConfig = pcfg.system_config
+port = systemConfig.port
 characterConfig = pcfg.character_config
 agentConfig = characterConfig.agent_config
-basicMemoryAgentConfig = agentConfig.agent_settings.basic_memory_agent
-humeAIConfig = agentConfig.agent_settings.hume_ai_agent
-asrConfig = characterConfig.asr_config
+agentSettings = agentConfig.agent_settings
 
 
 

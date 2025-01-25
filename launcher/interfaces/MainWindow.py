@@ -2,6 +2,7 @@ from PySide6.QtGui import QIcon
 from PySide6.QtWidgets import QApplication
 from PySide6.QtCore import QSize, QEventLoop, QTimer
 from qfluentwidgets import (FluentIcon, MSFluentWindow, NavigationItemPosition, SplashScreen)
+from typing import List
 
 from .Setting import SettingInterface
 from .Start import StartInterface
@@ -11,12 +12,13 @@ from .TTS import TTSInterface
 from .Character import CharacterInterface
 from .Project import ProjectInterface
 from .Console import ConsoleInterface
-from .Widgets import StopDialog
+from .Widgets import StopDialog, DiscardDialog
+from .Interfaces import ManagerInterface
 
 from ..utils.log import logger
 from ..utils.paths import IMAGES
 from ..utils.common import project
-from ..utils.managers import interfaceManager
+from ..utils.managers import itemManager
 
 import sys
 
@@ -47,10 +49,10 @@ class MainWindow(MSFluentWindow):
         self.consoleInterface = ConsoleInterface(self)
         self.projectInterface = ProjectInterface(self)
         
-        interfaceManager.addInterface([
-            self.asrInterface, self.ttsInterface, self.characterInterface,
-            self.projectInterface,
-        ])
+        self.managerInterfaces: List[ManagerInterface] = [
+            self.asrInterface, self.llmInterface, self.ttsInterface,
+            self.characterInterface, self.projectInterface
+        ]
         
         
         self.addSubInterface(
@@ -127,6 +129,10 @@ class MainWindow(MSFluentWindow):
         self.startInterface.toConsoleButton.clicked.connect(lambda: self.switchTo(self.consoleInterface))
         self.startInterface.toSettingButton.clicked.connect(lambda: self.switchTo(self.settingInterface))
         
+        for interface in self.managerInterfaces:
+            interface.configsSave.connect(self.__configSave)
+            interface.configsDiscard.connect(self.__configDiscard)
+        
 
         project.tryToStop.connect(self.__tryToStop)
         
@@ -140,11 +146,13 @@ class MainWindow(MSFluentWindow):
         
     
     def __configSave(self):
+        itemManager.onSave()
         logger.info("保存配置")
 
     
     def __configDiscard(self):
-        logger.info("放弃配置")
+        itemManager.onDiscard()
+        logger.info("已撤销上一个值变更")
         
     
     def closeEvent(self, e):

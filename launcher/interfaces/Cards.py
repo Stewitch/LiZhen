@@ -18,6 +18,12 @@ class SettingCard_(SettingCard):
         self._item = item
         
         self._item.valueChanged.connect(lambda vs: self.setValue(vs[1]))
+    
+    def setValue(self, value):
+        pass
+    
+    def value(self):
+        return self._item.value
 
 
 
@@ -110,6 +116,9 @@ class SwitchCard(SettingCard_):
         super().__init__(item, icon, title, content, parent)
         
         self.switchButton = SwitchButton(self)
+        
+        self.switchButton.setOnText(self.tr("开"))
+        self.switchButton.setOffText(self.tr("关"))
         
         self.hBoxLayout.addWidget(self.switchButton)
         self.hBoxLayout.addSpacing(16)
@@ -277,10 +286,11 @@ class OptionsCard(SettingCard_):
         
         self.comboBox.currentIndexChanged.connect(self.__onCurrentIndexChanged)
         
-    def setOptions(self, options):
+    def setOptions(self, options: list | tuple):
         self._options = options
         self.comboBox.clear()
         self.comboBox.addItems(self._options)
+        self.comboBox.setCurrentIndex(self._options.index(self._item.originalValue))
         
     def __onCurrentIndexChanged(self, index):
         self._item.set(self._options[index])

@@ -6,6 +6,7 @@ from .log import logger, SYSTEM
 from .paths import PROJECT, VENV, VENV_ACTIVATE, UV_CONFIG
 from .color import ansi_to_html
 from .configs import cfg
+from .bridge import port
 
 import os, subprocess, shutil, tomlkit, re, chardet
 
@@ -21,7 +22,7 @@ else:
 
 
 
-commands = {"Windows": 'netstat -aon|findstr "12393"', "Linux": 'lsof -i tcp:12393'}
+commands = {"Windows": f'netstat -aon|findstr "{port}"', "Linux": f'lsof -i tcp:{port}'}
 
 def getPortOccupantPid() -> int | None:
     oid = None
@@ -39,7 +40,7 @@ def getPortOccupantPid() -> int | None:
     wt.start()
     wt.join()
     if oid is None:
-        logger.info("未找到可能占用12393端口的进程")
+        logger.info(f"未找到可能占用{port}端口的进程")
     return oid
 
 occupantPid = getPortOccupantPid()
