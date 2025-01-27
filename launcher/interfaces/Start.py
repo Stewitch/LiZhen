@@ -1,13 +1,19 @@
 from PySide6.QtWidgets import QWidget
-from qfluentwidgets import FluentIcon
+from qfluentwidgets import FluentIcon, MessageBox
 
 from .ui.Ui_Start import Ui_Start
+from .Widgets import FirstStartDialog
 
 from ..utils.enums import StyleSheet
 from ..utils.log import logger
 from ..utils.common import switchProjectState, openFolder, project
+from ..utils.announce import broad
+from ..utils.managers import itemManager
+from ..utils.bridge import statelessLLMConfigs
+from ..utils.configs import cfg
 
-pcfg = {}
+import webbrowser
+
 
 class StartInterface(QWidget, Ui_Start):
     
@@ -15,20 +21,20 @@ class StartInterface(QWidget, Ui_Start):
         super().__init__(parent=parent)
         self.setupUi(self)
         
-        self.__initConfigs()
+        self.ASR = None
+        self.LLM = None
+        self.TTS = None
+        self.ASRModel = "详情页查看"
+        self.LLMModel = "详情页查看"
+        self.TTSModel = "详情页查看"
+        self.agent = None
+        self.l2d = None
+        self.character = None
+        
         self.__initWidgets()
         self.__SSConnection()
         
         logger.info(f"启动 界面初始化，对象名称：{self.objectName()}")
-    
-    
-    def __initConfigs(self):
-        self.ASR = pcfg.get("ASR_MODEL")
-        self.LLM = pcfg.get("LLM_PROVIDER")
-        self.TTS = pcfg.get("TTS_MODEL")
-        self.ASRModel = pcfg.get(f"{self.ASR}.model_name", "详情页查看")
-        self.LLMModel = pcfg.get(f"{self.LLM}.MODEL", "详情页查看")
-        self.TTSModel = pcfg.get(f"{self.TTS}.voice", "详情页查看")
     
     
     def __initWidgets(self):
@@ -62,13 +68,80 @@ class StartInterface(QWidget, Ui_Start):
         except KeyboardInterrupt:
             self.__updateButton(status)
     
+    def __onProjectStart(self):
+        if cfg.get(cfg.firstStart):
+            dialog = FirstStartDialog(
+                self.tr("首次启动"),
+                self.tr("*仅对于N卡用户：*请确认已按照文档配置了 CUDA&CUDNN\n 对于所有用户：请确保已按照文档配置了FFMpeg和除虚拟环境之外的项目"),
+                self
+            )
+            if dialog.exec():
+                if not webbrowser.open("https://open-llm-vtuber.github.io/docs/quick-start#%E7%8E%AF%E5%A2%83%E5%87%86%E5%A4%87"):
+                    w = MessageBox(
+                        self.tr("链接打开失败"),
+                        self.tr("请手动前往: https://open-llm-vtuber.github.io/docs/quick-start#%E7%8E%AF%E5%A2%83%E5%87%86%E5%A4%87"),
+                        self
+                    )
+                return
+            else:
+                cfg.set(cfg.firstStart, False)
+                switchProjectState()
+        else:
+            switchProjectState()
     
     def __SSConnection(self):
         project.changed.connect(self.__updateButton)
-        self.startButton.clicked.connect(switchProjectState)
+        self.startButton.clicked.connect(self.__onProjectStart)
         self.ASRFolder.clicked.connect(openFolder)
         self.LLMFolder.clicked.connect(openFolder)
         self.TTSFolder.clicked.connect(openFolder)
         self.personaFolder.clicked.connect(openFolder)
+        broad.allInterfaceInited.connect(self.__updateConfig)
+        broad.agentUpdate.connect(self.__onAgentUpdate)
+        broad.llmProviderUpdate.connect(self.__onProviderUpdate)
+    
+    
+    def __updateWidgets(self):
+        self.ASRCard.updateInfo(self.ASR, self.ASRModel)
+        self.LLMCard.updateInfo(self.LLM, self.LLMModel)
+        self.TTSCard.updateInfo(self.TTS, self.TTSModel)
+        self.characterName.setText(self.character)
+        self.l2dName.setText(self.l2d)
+        self.agentName.setText(self.agent)
+    
+    
+    @logger.catch
+    def __updateConfig(self):
+        self.ASR = itemManager.registeredItems["asr_model"].value
+        model = itemManager.registeredItems.get("model_name")
+        self.ASRModel = model.value if model else "详情页查看"
+        self.agent = itemManager.registeredItems["conversation_agent_choice"].value
+        
+        self.__onAgentUpdate(self.agent)
+        
+        self.TTS = itemManager.registeredItems["tts_model"].value
+        model = itemManager.registeredItems.get("voice")
+        self.TTSModel = model.value if model else "详情页查看"
+        self.character = itemManager.getByField("conf_name").value
+        self.l2d = itemManager.getByField("live2d_model_name").value
+        
+        self.__updateWidgets()
+    
+    
+    def __onAgentUpdate(self, agent):
+        if agent == "basic_memory_agent":
+            llm = itemManager.registeredItems["llm_provider"].value
+            self.__onProviderUpdate(llm)
+            
+        else:
+            self.LLM = agent
+            self.LLMModel = "详情页查看"
+            self.LLMCard.updateInfo(self.LLM, self.LLMModel)
+        self.agentName.setText(agent)
+            
+    def __onProviderUpdate(self, llm):
+        self.LLM = llm
+        self.LLMModel = itemManager._cFieldItems.get(f"{getattr(statelessLLMConfigs, llm).__repr_name__()}.model").value
+        self.LLMCard.updateInfo(self.LLM, self.LLMModel)
     
 

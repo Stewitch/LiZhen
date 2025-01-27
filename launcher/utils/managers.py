@@ -1,6 +1,5 @@
 from PySide6.QtCore import QObject, Signal
-from PySide6.QtWidgets import QWidget
-from typing import List, Dict, Any, Iterable
+from typing import List, Dict, Any
 
 from .bridge import Item
 from .log import logger
@@ -15,6 +14,7 @@ class ItemManager(QObject):
         super().__init__(parent=parent)
         self.items: List[Item] = []
         self.registeredItems: Dict[str, Item] = {}
+        self._cFieldItems: Dict[str, Item] = {}
         self.vDict: Dict[str, Any] = {}
         self.changedFields: List[str] = []
     
@@ -24,7 +24,8 @@ class ItemManager(QObject):
     
     def registerItem(self, item: Item):
         self.registeredItems[item.field] = item
-        if item not in self.items:
+        self._cFieldItems[item.cfield] = item
+        if not item in self.items:
             self.addItem(item)
     
     def unregisterItem(self, item: Item):
@@ -32,6 +33,8 @@ class ItemManager(QObject):
             self.registeredItems.pop(item.field)
             self.items.pop(self.items.index(item))
         except ValueError:
+            logger.warning(f"未注册配置项：{item}")
+        except KeyError:
             logger.warning(f"未注册配置项：{item}")
     
     def getByField(self, field: str) -> Item:
@@ -46,7 +49,6 @@ class ItemManager(QObject):
             field = item.field
         
         if item in self.registeredItems.values():
-            logger.info(f"{item.originalValue}, {item.value}")
             if item.originalValue == item.value:
                 try:
                     self.vDict.pop(field)
@@ -67,12 +69,17 @@ class ItemManager(QObject):
             
         
     def onSave(self):
+        if self.vDict == {}:
+            return
         for item in self.items:
             item.onSave()
         self.vDict = {}
         self.vDictChanged.emit(self.vDict)
     
     def onDiscard(self):
+        if self.vDict == {}:
+            self.changedFields = []
+            return
         try:
             field = self.changedFields.pop()
         except Exception as e:

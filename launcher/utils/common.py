@@ -7,9 +7,11 @@ from .paths import PROJECT, VENV, VENV_ACTIVATE, UV_CONFIG
 from .color import ansi_to_html
 from .configs import cfg
 from .bridge import port
+from .announce import broad
 
 import os, subprocess, shutil, tomlkit, re, chardet
 
+FASTERINIT = 0
 
 
 SIGEND = CTRL_C_EVENT if SYSTEM == "Windows" else SIGTERM
@@ -139,6 +141,35 @@ def checkVenv() -> bool:
     return checkVenv()
 
 
+def createShortcut():
+    import winshell
+    from pathlib import Path
+
+    # 获取桌面路径
+    desktop = Path(winshell.desktop())
+
+    # 定义快捷方式的目标路径和名称
+    target = r"C:\Path\To\Your\Application.exe"
+    shortcut_name = desktop / "离真启动器.lnk"
+
+    # 创建快捷方式
+    with winshell.shortcut(shortcut_name) as link:
+        link.path = target
+        link.description = "离真启动器 for Open-LLM-VTuber Project."
+        link.icon_location = (target, 0)
+
+
+extraCommands = []
+
+def extraCommand(command):
+    global extraCommands
+    if command not in extraCommands:
+        extraCommands.append(command)
+        logger.info(f"已添加额外命令 {command}")
+
+broad.extraCommand.connect(extraCommand)
+
+
 
 class Project(Status):
     
@@ -183,27 +214,19 @@ class Project(Status):
             return
 
         self.__activate = self.SYS_SPECIFIED_COMMANDS[SYSTEM]["activate"]
-            
+        
         self.__runServer = f"python {str(PROJECT.joinpath("run_server.py"))} {HF_MIRROR}"
-        self.__runProject = f"{self.__activate} && {self.__runServer}"
-        self.__installReq = "uv pip install --requirements pyproject.toml"
+        # self.__runProject = f"{self.__activate} && {self.__runServer}"
+        self.__installReq = "uv sync"
         self.__insAndRun = f"{self.__activate} && {self.__installReq} && {self.__runServer}"
         
-    
+    @logger.catch
     def __checkProjectReq(self):
-        if not self.__venv:
-            logger.critical("虚拟环境不存在，无法检测项目依赖")
-            return
-        
-        logger.info("检测项目依赖，如有缺失则安装")
-        logger.info("可能需要一些时间")
-        try:
-            subprocess.Popen([self.__installReq], cwd=PROJECT)
-            logger.info("环境检测通过")
-            return True
-        except:
-            return False
-        
+        for cmd in extraCommands:
+            self.__installReq += f" && {cmd}"
+        self.__insAndRun = f"{self.__activate} && {self.__installReq} && {self.__runServer}"
+        logger.debug(f"项目启动命令：{self.__insAndRun}")
+        extraCommands.clear()
         
         
     def start(self):
@@ -214,10 +237,8 @@ class Project(Status):
         shell = self.SYS_SPECIFIED_COMMANDS[SYSTEM]["shell"]
         arg = self.SYS_SPECIFIED_COMMANDS[SYSTEM]["arg"]
         
-        if self.__checkProjectReq():
-            self.__backend.start(shell, [arg, self.__runProject])
-        else:
-            self.__backend.start(shell, [arg, self.__insAndRun])
+        self.__checkProjectReq()
+        self.__backend.start(shell, [arg, self.__insAndRun])
         
         self.changeTo("starting")
         self.shellNewText.connect(self.__stateUpdateByText)
@@ -347,3 +368,5 @@ def pipMirrorFile(enable: True):
         if os.path.exists(UV_CONFIG):
             os.remove(UV_CONFIG)
         logger.info("关闭 pip 镜像")
+    
+pipMirrorFile(cfg.get(cfg.pipMirrorEnabled))

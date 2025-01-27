@@ -1,6 +1,8 @@
 {
     "Project": {
-        "checkEnv": true
+        "checkEnv": true,
+        "firstStart": false,
+        "updateSource": "GitHub"
     },
     "MainWindow": {
         "DpiScale": "Auto"

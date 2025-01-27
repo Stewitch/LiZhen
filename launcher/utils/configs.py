@@ -28,8 +28,13 @@ class LauncherConfig(QConfig):
     )
     
     updateSource = OptionsConfigItem(
-        "Project", "updateSource", True, OptionsValidator(["GitHub", "Gitee"])
+        "Project", "updateSource", "GitHub", OptionsValidator(["GitHub", "Gitee"])
     )
+    
+    firstStart = OptionsConfigItem(
+        "Project", "firstStart", True, BoolValidator()
+    )
+    
 
 
 

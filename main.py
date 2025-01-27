@@ -12,7 +12,7 @@ GitHub repository:
 https://github.com/SunKSugaR/LiZhen
     
 Open-LLM-VTuber:
-https://github.com/t41372/Open-LLM-VTuber
+https://github.com/Open-LLM-VTuber/Open-LLM-VTuber
 
 QFluentWidgets:
 https://qfluentwidgets.com/

@@ -1,15 +1,12 @@
 from PySide6.QtCore import Signal, QObject
 from PySide6.QtWidgets import QWidget
-from typing import Dict, Tuple, List, Optional
+from typing import Dict, Tuple, List
 
 from .mapping import CARDS_MAP, KEY_MAP, AVAILABLE_VALUES
 from .bridge import Item, I18nMixin
 from .log import logger
 from .managers import itemManager
-
-
-
-LANG = "zh"
+from .i18n import LANG
 
 
 
@@ -26,6 +23,7 @@ class SettingsForm(QObject):
         self._init()
     
     
+    @logger.catch
     def _init(self):
         for fieldName, fieldInfo in self.cfg.model_fields.items():
             try:
@@ -69,7 +67,7 @@ class SettingsForm(QObject):
             if isinstance(card, CARDS_MAP.get("DIR")):
                 card.setCaption(map.get("caption").get(LANG, self.tr("选择目录")))
                 card.setDefault(map.get("default"))
-            elif isinstance(card, (CARDS_MAP.get("INT"), CARDS_MAP.get(int))):
+            elif isinstance(card, CARDS_MAP.get(int)):
                 card.setRange(map.get("range"))         
             elif isinstance(card, CARDS_MAP.get("OPTIONS")):
                 options = AVAILABLE_VALUES.get(fieldName)

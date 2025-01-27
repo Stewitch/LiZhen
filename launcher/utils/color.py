@@ -18,8 +18,13 @@ class Color:
 def ansi_to_html(text: str) -> str:
     """将ANSI代码和日志换行转换为HTML格式"""
     
-    # 处理日志换行
-    text = text.replace('\n', '<br>') 
+    is_progress = ('Downloading' in text or 'sherpa-onnx' in text) and '%' in text
+    if is_progress:
+        # 使用\r确保进度条在同一行更新
+        text = text.rstrip() + '\r'
+    else:
+        # 普通文本处理换行
+        text = text.replace('\n', '<br>')
     
     opened_spans = 0
     

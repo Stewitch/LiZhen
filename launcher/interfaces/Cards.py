@@ -24,6 +24,13 @@ class SettingCard_(SettingCard):
     
     def value(self):
         return self._item.value
+    
+    def switchItem(self, item: Item):
+        if item is self._item or item is None:
+            return
+        self._item = item
+        self._item.valueChanged.connect(lambda vs: self.setValue(vs[1]))
+        self.setValue(self._item.value)
 
 
 

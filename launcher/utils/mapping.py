@@ -106,9 +106,10 @@ KEY_MAP = {
         "et": "OPTIONS"
     },
     "provider": {
-        "zh": "提供者",
+        "zh": "运算设备",
         "en": "Provider",
-        "ico": ICON.IOT,
+        "ico": ICON.TRAIN,
+        "et": "OPTIONS"
     },
     "base_url": {
         "zh": "基础 URL",
@@ -154,7 +155,8 @@ KEY_MAP = {
     "model": {
         "zh": "模型",
         "en": "Model",
-        "ico": ICON.IOT
+        "ico": ICON.IOT,
+        "et": str
     },
     "verbose": {
         "zh": "详细日志",
@@ -194,20 +196,17 @@ KEY_MAP = {
         "en": "Agent ID",
         "ico": ICON.ROBOT
     },
-    "asr_model": {
-        "zh": "语音识别模型",
-        "en": "ASR Model",
-        "ico": ICON.IOT
-    },
     "language": {
         "zh": "语言",
         "en": "Language",
-        "ico": ICON.LANGUAGE
+        "ico": ICON.LANGUAGE,
+        "et": "OPTIONS"
     },
     "device": {
         "zh": "设备",
         "en": "Device",
-        "ico": ICON.CALORIES
+        "ico": ICON.TRAIN,
+        "et": "OPTIONS"
     },
     "vad_model": {
         "zh": "静默检测模型",
@@ -232,7 +231,8 @@ KEY_MAP = {
     "hub": {
         "zh": "模型站",
         "en": "Model Hub",
-        "ico": ICON.CLOUD_DOWNLOAD
+        "ico": ICON.CLOUD_DOWNLOAD,
+        "et": "OPTIONS"
     },
     "use_itn": {
         "zh": "启用反正则化",
@@ -262,7 +262,8 @@ KEY_MAP = {
     "lang": {
         "zh": "语言",
         "en": "Language",
-        "ico": ICON.LANGUAGE
+        "ico": ICON.LANGUAGE,
+        "et": "OPTIONS"
     },
     "region": {
         "zh": "地区",
@@ -278,13 +279,13 @@ KEY_MAP = {
         "zh": "音调增量",
         "en": "Pitch",
         "ico": ICON.MARKET,
-        "et": "INT"
+        "et": "CINT"
     },
     "rate": {
         "zh": "语速",
         "en": "Speech Rate",
         "ico": ICON.SPEED_OFF,
-        "et": "INT"
+        "et": "CINT"
     },
     "client_url": {
         "zh": "WebUI 链接",
@@ -375,7 +376,7 @@ KEY_MAP = {
         "zh": "Batch 大小",
         "en": "Batch Size",
         "ico": ICON.FRIGID,
-        "et": "INT"
+        "et": "CINT"
     },
     "media_type": {
         "zh": "生成音频文件扩展名",
@@ -386,7 +387,7 @@ KEY_MAP = {
         "zh": "流式生成模式",
         "en": "Streaming Mode",
         "ico": ICON.BACK_TO_WINDOW,
-        "et": "BOOL"
+        "et": "CBOOL"
     },
     "reference_id": {
         "zh": "参考 ID",
@@ -394,9 +395,10 @@ KEY_MAP = {
         "ico": ICON.FLAG
     },
     "latency": {
-        "zh": "生成策略",
+        "zh": "延迟策略",
         "en": "Latency",
-        "ico": ICON.DICTIONARY
+        "ico": ICON.DICTIONARY,
+        "et": "OPTIONS"
     },
     "sid": {
         "zh": "讲述者 ID",
@@ -419,22 +421,72 @@ KEY_MAP = {
         "ico": ICON.FRIGID,
         "range": (1.0, 2.0)
     },
+    "download_root": {
+        "zh": "模型下载路径",
+        "en": "Model Download Path",
+        "ico": ICON.FOLDER,
+        "et": "DIR",
+        "caption": {
+            "zh": "选择下载路径",
+            "en": "Select download path."
+        },
+        "defalut": "models/whisper"
+    },
+    "name": {
+        "zh": "模型名称",
+        "en": "Model Name",
+        "ico": ICON.IOT
+    },
+    "print_realtime": {
+        "zh": "实时输出",
+        "en": "Print Realtime",
+        "ico": ICON.MORE
+    },
+    "print_progress": {
+        "zh": "输出进度",
+        "en": "Print Progress",
+        "ico": ICON.CALENDAR
+    },
+    "organization_id": {
+        "zh": "组织 ID",
+        "en": "Organization ID",
+        'ico': ICON.PEOPLE,
+        "et": str
+    },
+    "project_id": {
+        "zh": "项目 ID",
+        "en": "Project ID",
+        'ico': ICON.FLAG,
+        "et": str
+    },
+    "keep_alive": {
+        "zh": "状态保持时间",
+        "en": "Keep Alive",
+        "ico": ICON.DATE_TIME,
+        "range": (-1, 999999)
+    },
+    "unload_at_exit": {
+        "zh": "退出时卸载",
+        "en": "Unload at Exit",
+        "ico": ICON.ERASE_TOOL,
+    },
 }
 
 
 
 CARDS_MAP = {
     int: NumberCard,
+    float: NumberCard,
     str: InputCard,
     bool: SwitchCard,
     "UNCHANGEABLE": DisplayCard,
     "OPTIONS": OptionsCard,
     "PWD": PasswordInputCard,
-    "BOOL": SwitchCard,
-    "INT": NumberCard,
-    "FILE": FolderCard,
+    "CBOOL": DisplayCard,
+    "CINT": DisplayCard,
+    "FILE": DisplayCard,
     "DIR": FolderCard,
-    "STR": InputCard
+    "URL": InputCard,
 }
 
 
@@ -457,5 +509,69 @@ AVAILABLE_VALUES = {
     ],
     "segment_method": [
         "regex", "pysbd"
-    ]
+    ],
+    "asr_model": [
+        "faster_whisper",
+        "whisper_cpp",
+        "whisper",
+        "azure_asr",
+        "fun_asr",
+        "groq_whisper_asr",
+        "sherpa_onnx_asr",
+    ],
+    "provider": [
+        "cpu",
+        "cuda"
+    ],
+    "device": [
+        "cpu",
+        "cuda",
+        "auto",
+        ""
+    ],
+    "language": [
+        "zh",
+        "en",
+        "auto",
+        "",
+        "ZH",
+        "EN"
+    ],
+    "lang": [
+        "zh",
+        "en",
+        "auto",
+        '',
+        "ZH",
+        'EN'
+    ],
+    "hub": [
+        "ms",
+        "hf",
+    ],
+    "tts_model": [
+        "azure_tts",
+        "bark_tts",
+        "edge_tts",
+        "cosyvoice_tts",
+        "melo_tts",
+        "piper_tts",
+        "coqui_tts",
+        "x_tts",
+        "gpt_sovits_tts",
+        "fish_api_tts",
+        "sherpa_onnx_tts",
+    ],
+    "latency": [
+        "normal",
+        "balanced",
+    ],
 }
+
+
+
+EXTRA_ENV_COMMANDS = {
+    "fun_asr": "uv pip install funasr modelscope huggingface_hub torch torchaudio onnx onnxconverter_common",
+    "fish_tts": "uv pip install fish-audio-sdk"   
+}
+

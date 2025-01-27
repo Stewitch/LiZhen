@@ -14,6 +14,10 @@ class Announcer(QObject):
     changeProjectFolder = Signal(str)
     agentUpdate = Signal(str)
     llmProviderUpdate = Signal(str)
+    allInterfaceInited = Signal()
+    asrModelChanged = Signal(str)
+    ttsModelChanged = Signal(str)
+    extraCommand = Signal(str)
     
     def __init__(self):
         super().__init__()
@@ -25,6 +29,10 @@ class Announcer(QObject):
             99: self.changeProjectFolder,
             1000: self.agentUpdate,
             1001: self.llmProviderUpdate,
+            100: self.allInterfaceInited,
+            1002: self.asrModelChanged,
+            1003: self.ttsModelChanged,
+            50: self.extraCommand
         }
     
     

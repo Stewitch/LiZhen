@@ -35,6 +35,7 @@ UICONS = IMAGES.joinpath('ui')
 UV_CONFIG = PROJECT.joinpath('uv.toml')
 CONFIGS = LAUNCHER.joinpath('configs')
 LAUNCHER_CONFIG = CONFIGS.joinpath('launcher.json')
+UPDATER_CONFIG = CONFIGS.joinpath("updater.json")
 PROJ_CFG = PROJECT.joinpath("conf.yaml")
 
 

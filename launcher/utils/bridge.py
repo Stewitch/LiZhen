@@ -24,6 +24,9 @@ port = systemConfig.port
 characterConfig = pcfg.character_config
 agentConfig = characterConfig.agent_config
 agentSettings = agentConfig.agent_settings
+statelessLLMConfigs = agentConfig.llm_configs
+asrConfig = characterConfig.asr_config
+ttsConfig = characterConfig.tts_config
 
 
 
@@ -35,6 +38,7 @@ class Item(QObject):
         super().__init__()
         self.__cfg = config
         self.__field = field
+        self.cfield = f"{config.__repr_name__()}.{field}"
         
         if not hasattr(self.__cfg, self.__field):
             raise ValueError(f"{self.__cfg} 中 不存在 字段 {self.__field}")
@@ -77,13 +81,20 @@ class Item(QObject):
     
     @value.setter
     def value(self, v):
-        self.set(v)
+        """
+        警告：
+            属性修改器仅用于特殊情况下值的修改
+            不会触发 ItemManager._valueDict 在内的特殊方法
+            如需修改配置，请用 Item.set 方法
+        """
+        self.value = deepcopy(v)
         
     
     def __repr__(self):
         return f"Item({self.__field}: {self.__value})"
 
 
+
 def saveConfig():
-    save_config(pcfg, str(PROJ_CFG))
+    save_config(pcfg, PROJ_CFG)
     

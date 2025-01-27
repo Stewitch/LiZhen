@@ -354,6 +354,7 @@
               <property name="font">
                <font>
                 <family>阿里巴巴普惠体</family>
+                <pointsize>12</pointsize>
                </font>
               </property>
               <property name="text">
@@ -366,6 +367,7 @@
               <property name="font">
                <font>
                 <family>阿里巴巴普惠体</family>
+                <pointsize>12</pointsize>
                </font>
               </property>
               <property name="text">
@@ -378,6 +380,7 @@
               <property name="font">
                <font>
                 <family>阿里巴巴普惠体</family>
+                <pointsize>12</pointsize>
                </font>
               </property>
               <property name="text">
@@ -390,6 +393,7 @@
               <property name="font">
                <font>
                 <family>阿里巴巴普惠体</family>
+                <pointsize>12</pointsize>
                </font>
               </property>
               <property name="text">
@@ -402,6 +406,7 @@
               <property name="font">
                <font>
                 <family>阿里巴巴普惠体</family>
+                <pointsize>12</pointsize>
                </font>
               </property>
               <property name="text">
@@ -414,6 +419,7 @@
               <property name="font">
                <font>
                 <family>阿里巴巴普惠体</family>
+                <pointsize>12</pointsize>
                </font>
               </property>
               <property name="text">
@@ -542,9 +548,10 @@ hr { height: 1px; border-width: 0; }
 li.unchecked::marker { content: &quot;\2610&quot;; }
 li.checked::marker { content: &quot;\2612&quot;; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'阿里巴巴普惠体 R'; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;当前为 0.5.0 Pre-release 版本&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;可能存在较多问题，请及时反馈&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Github链接可在设置中找到&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:12pt; font-weight:700;&quot;&gt;公告区可滚动，请&lt;/span&gt;&lt;span style=&quot; font-size:12pt; font-weight:700; color:#ff0000;&quot;&gt;完全阅读&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;当前为 &lt;span style=&quot; font-weight:700;&quot;&gt;0.5.0 Pre-release&lt;/span&gt; 版本 &lt;span style=&quot; font-weight:700;&quot;&gt;可能存在较多问题，请及时反馈&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Github链接可在&lt;span style=&quot; font-weight:700;&quot;&gt;设置&lt;/span&gt;中找到&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;目前并&lt;span style=&quot; font-weight:700; color:#ff0000;&quot;&gt;不支持CUDA&amp;amp;CUDNN&amp;amp;FFMpeg自动配置&lt;/span&gt;，对于N卡用户，请前往 &lt;span style=&quot; font-weight:700; color:#ff0000;&quot;&gt;文档#Nvidia GPU 支持&lt;/span&gt; 查看教程&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
          </property>
         </widget>
        </item>

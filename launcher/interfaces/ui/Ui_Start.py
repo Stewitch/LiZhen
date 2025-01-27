@@ -11,7 +11,8 @@
 from PySide6.QtCore import (QCoreApplication, QMetaObject, QRect, QSize)
 from PySide6.QtGui import QFont
 from PySide6.QtWidgets import (QFormLayout, QFrame, QGridLayout,
-    QHBoxLayout, QSizePolicy, QSpacerItem, QVBoxLayout, QWidget)
+    QHBoxLayout, QSizePolicy, QSpacerItem, QVBoxLayout,
+    QWidget)
 
 from ..Widgets import ModelDisplayCard
 from qfluentwidgets import (CaptionLabel, DisplayLabel, PrimaryPushButton, PushButton,
@@ -358,10 +359,11 @@ class Ui_Start(object):
 "li.unchecked::marker { content: \"\\2610\"; }\n"
 "li.checked::marker { content: \"\\2612\"; }\n"
 "</style></head><body style=\" font-family:'\u963f\u91cc\u5df4\u5df4\u666e\u60e0\u4f53 R'; font-size:10pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">\u5f53\u524d\u4e3a 0.5.0 Pre-release \u7248\u672c</p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">\u53ef\u80fd\u5b58\u5728\u8f83\u591a\u95ee\u9898\uff0c\u8bf7\u53ca\u65f6\u53cd\u9988</p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-ind"
-                        "ent:0; text-indent:0px;\">Github\u94fe\u63a5\u53ef\u5728\u8bbe\u7f6e\u4e2d\u627e\u5230</p></body></html>", None))
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:12pt; font-weight:700;\">\u516c\u544a\u533a\u53ef\u6eda\u52a8\uff0c\u8bf7</span><span style=\" font-size:12pt; font-weight:700; color:#ff0000;\">\u5b8c\u5168\u9605\u8bfb</span></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">\u5f53\u524d\u4e3a <span style=\" fo"
+                        "nt-weight:700;\">0.5.0 Pre-release</span> \u7248\u672c <span style=\" font-weight:700;\">\u53ef\u80fd\u5b58\u5728\u8f83\u591a\u95ee\u9898\uff0c\u8bf7\u53ca\u65f6\u53cd\u9988</span></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Github\u94fe\u63a5\u53ef\u5728<span style=\" font-weight:700;\">\u8bbe\u7f6e</span>\u4e2d\u627e\u5230</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">\u76ee\u524d\u5e76<span style=\" font-weight:700; color:#ff0000;\">\u4e0d\u652f\u6301CUDA&amp;CUDNN&amp;FFMpeg\u81ea\u52a8\u914d\u7f6e</span>\uff0c\u5bf9\u4e8eN\u5361\u7528\u6237\uff0c\u8bf7\u524d\u5f80 <span style=\" font-weight:700; color:#ff0000;\">\u6587\u6863#Nvidia GPU \u652f\u6301</span> \u67e5\u770b\u6559\u7a0b</p></body></html>", None))
         self.startButton.setText(QCoreApplication.translate("Start", u"\u4e00\u952e\u542f\u52a8\uff01", None))
     # retranslateUi
 

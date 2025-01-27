@@ -8,6 +8,7 @@ from .Interfaces import ManagerInterface
 
 from ..utils.configs import cfg
 from ..utils.log import logger
+from ..utils.upgrade import Updater
 from ..utils import VERSION
 
 
@@ -16,6 +17,9 @@ class SettingInterface(ManagerInterface):
     
     @logger.catch
     def __init__(self, parent=None, title: str = "设置"):
+        self.updater = Updater()
+        self.updater.setRepo(cfg.get(cfg.updateSource))
+        self.updater.setPythonRuntime()
         super().__init__(parent, title)
         
     
@@ -55,6 +59,14 @@ class SettingInterface(ManagerInterface):
             parent=self.uiGroup
         )
         
+        self.updateSourceCard = ComboBoxSettingCard(
+            cfg.updateSource,
+            FIF.CLOUD_DOWNLOAD,
+            self.tr("更新网站"),
+            self.tr("选择使用 GitHub(国际) / Gitee(国内) 仓库进行更新"),
+            ["GitHub", "Gitee"],
+            self.launcherGroup
+        )
         self.launcherInfoCard = PrimaryPushSettingCard(
             self.tr("检查更新"),
             FIF.INFO,
@@ -85,6 +97,7 @@ class SettingInterface(ManagerInterface):
         self.uiGroup.addSettingCard(self.zoomCard)
         self.uiGroup.addSettingCard(self.themeColorCard)
         
+        self.launcherGroup.addSettingCard(self.updateSourceCard)
         self.launcherGroup.addSettingCard(self.launcherInfoCard)
         self.launcherGroup.addSettingCard(self.launcherRepoCard)
         self.launcherGroup.addSettingCard(self.launcherLicenseCard)
@@ -103,7 +116,14 @@ class SettingInterface(ManagerInterface):
             duration=1500,
             parent=self
         )
-
+    
+    def __showErrorBar(self, msg):
+        InfoBar.error(
+            self.tr("错误"),
+            msg,
+            parent=self
+        )
+        
     
     def _SSConnection(self):
         cfg.appRestartSig.connect(self.__restartAppNotice)
@@ -111,5 +131,8 @@ class SettingInterface(ManagerInterface):
         cfg.themeChanged.connect(lambda: logger.info(f"主题更改为：{cfg.themeMode.value}"))
         cfg.themeColorChanged.connect(lambda c: setThemeColor(c))
         cfg.themeColorChanged.connect(lambda c: logger.info(f"主题颜色更新：{c}"))
+        cfg.updateSource.valueChanged.connect(self.updater.setRepo)
+        self.launcherInfoCard.button.clicked.connect(self.updater.exec)
+        self.updater.showError.connect(self.__showErrorBar)
         
         
