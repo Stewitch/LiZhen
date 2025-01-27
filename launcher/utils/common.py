@@ -5,14 +5,53 @@ from threading import Thread
 from .log import logger, SYSTEM
 from .paths import PROJECT, VENV, VENV_ACTIVATE, UV_CONFIG
 from .color import ansi_to_html
+from .configs import cfg
+from .bridge import port
+from .announce import broad
 
-from ..interfaces.Widgets import StopDialog
+import os, subprocess, shutil, tomlkit, re, chardet
 
-import os, subprocess, shutil, tomlkit, re
-
+FASTERINIT = 0
 
 
 SIGEND = CTRL_C_EVENT if SYSTEM == "Windows" else SIGTERM
+
+if cfg.get(cfg.hfMirrorEnabled):
+    os.environ["HF_ENDPOINT"] = "https://hf-mirror.com"
+    HF_MIRROR = "--hf_mirror"
+else:
+    HF_MIRROR = ""
+
+
+
+commands = {"Windows": f'netstat -aon|findstr "{port}"', "Linux": f'lsof -i tcp:{port}'}
+
+def getPortOccupantPid() -> int | None:
+    oid = None
+    def worker():
+        nonlocal oid
+        with os.popen(commands[SYSTEM]) as r:
+            try:
+                if SYSTEM == "Windows":
+                    oid = int(r.read().strip().split(" ")[-1])
+                else:
+                    oid = int(r.read().split("\n")[1].split("  ")[1])
+            except:
+                pass
+    wt = Thread(target=worker)
+    wt.start()
+    wt.join()
+    if oid is None:
+        logger.info(f"未找到可能占用{port}端口的进程")
+    return oid
+
+occupantPid = getPortOccupantPid()
+if occupantPid is not None:
+    try:
+        os.kill(occupantPid, SIGEND)
+        logger.info(f"终止占用端口的进程：{occupantPid}")
+    except Exception as e:
+        logger.error(f"尝试终止占用端口的进程失败，原因： {e}")
 
 
 
@@ -102,20 +141,33 @@ def checkVenv() -> bool:
     return checkVenv()
 
 
-# ...被逼无奈
-def getServerPid() -> int | None:
-    def worker():
-        global serverPid
-        with os.popen('netstat -aon|findstr "12393"') as r:
-            serverPid = int(r.read().strip().split(" ")[-1])
-    try:
-        wt = Thread(target=worker)
-        wt.start()
-        wt.join()
-        return serverPid
-    except:
-        logger.error("获取服务器进程PID失败")
-        return
+def createShortcut():
+    import winshell
+    from pathlib import Path
+
+    # 获取桌面路径
+    desktop = Path(winshell.desktop())
+
+    # 定义快捷方式的目标路径和名称
+    target = r"C:\Path\To\Your\Application.exe"
+    shortcut_name = desktop / "离真启动器.lnk"
+
+    # 创建快捷方式
+    with winshell.shortcut(shortcut_name) as link:
+        link.path = target
+        link.description = "离真启动器 for Open-LLM-VTuber Project."
+        link.icon_location = (target, 0)
+
+
+extraCommands = []
+
+def extraCommand(command):
+    global extraCommands
+    if command not in extraCommands:
+        extraCommands.append(command)
+        logger.info(f"已添加额外命令 {command}")
+
+broad.extraCommand.connect(extraCommand)
 
 
 
@@ -143,6 +195,7 @@ class Project(Status):
         self.__venv = checkVenv() if self.__uv else False
         self.__backend = QProcess()
         self.__serverPid = None
+        self.__encoding = "gbk"
         
         self.__initBackend()
         self.__initCommands()
@@ -150,6 +203,7 @@ class Project(Status):
     
     def __initBackend(self):
         self.__backend.setWorkingDirectory(str(PROJECT))
+        self.__backend.readyReadStandardError.connect(self.__detectEncoding)
         self.__backend.readyReadStandardError.connect(self.__newStderr)
         self.__backend.readyReadStandardOutput.connect(self.__newStdout)
         
@@ -160,36 +214,20 @@ class Project(Status):
             return
 
         self.__activate = self.SYS_SPECIFIED_COMMANDS[SYSTEM]["activate"]
-            
-        self.__runServer = f"python {str(PROJECT.joinpath("run_server.py"))}"
-        self.__runProject = f"{self.__activate} && {self.__runServer}"
-        self.__installReq = "uv pip install --requirements pyproject.toml"
+        
+        self.__runServer = f"python {str(PROJECT.joinpath("run_server.py"))} {HF_MIRROR}"
+        # self.__runProject = f"{self.__activate} && {self.__runServer}"
+        self.__installReq = "uv sync"
         self.__insAndRun = f"{self.__activate} && {self.__installReq} && {self.__runServer}"
         
-    
+    @logger.catch
     def __checkProjectReq(self):
-        if not self.__venv:
-            logger.critical("虚拟环境不存在，无法检测项目依赖")
-            return
+        for cmd in extraCommands:
+            self.__installReq += f" && {cmd}"
+        self.__insAndRun = f"{self.__activate} && {self.__installReq} && {self.__runServer}"
+        logger.debug(f"项目启动命令：{self.__insAndRun}")
+        extraCommands.clear()
         
-        shell = self.SYS_SPECIFIED_COMMANDS[SYSTEM]["shell"]
-        proc = subprocess.Popen(
-            [f'{shell}'],
-            stdin=subprocess.PIPE,
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
-            cwd=PROJECT)
-        
-        req = None
-        out, _ = proc.communicate(input=b'uv pip list --format json\n')
-        for l in out.decode(errors="ignore").split():
-            if l.startswith("[") and l.endswith("]"):
-                req = l
-        
-        if len(req) <= 22:
-            return False
-        return True
-                
         
     def start(self):
         if self.__backend.state() == QProcess.Running:
@@ -199,10 +237,8 @@ class Project(Status):
         shell = self.SYS_SPECIFIED_COMMANDS[SYSTEM]["shell"]
         arg = self.SYS_SPECIFIED_COMMANDS[SYSTEM]["arg"]
         
-        if self.__checkProjectReq():
-            self.__backend.start(shell, [arg, self.__runProject])
-        else:
-            self.__backend.start(shell, [arg, self.__insAndRun])
+        self.__checkProjectReq()
+        self.__backend.start(shell, [arg, self.__insAndRun])
         
         self.changeTo("starting")
         self.shellNewText.connect(self.__stateUpdateByText)
@@ -231,19 +267,33 @@ class Project(Status):
         return self.__venv
     
     
+    def __detectEncoding(self):
+        data = self.__backend.readAllStandardError().data()
+        if len(data) >= 800:
+            charData = chardet.detect(data)
+            logger.info(f"尝试从长度 {len(data)} 的数据中检测编码数据")
+            logger.info(f"结果：{charData}")
+            if charData["encoding"] is not None and charData["confidence"] > 0.85:
+                self.__encoding = charData["encoding"]
+                self.__backend.readyReadStandardError.disconnect(self.__detectEncoding)
+        self.__newText(data.decode(self.__encoding, "replace"))
+    
+    
     def __newText(self, text: str):
         html_msg = ansi_to_html(text)
         self.shellNewText.emit(html_msg)
     
     def __newStderr(self):
-        msg = self.__backend.readAllStandardError().data().decode(encoding="gbk", errors="replace")
+        msg = self.__backend.readAllStandardError().data().decode(
+            self.__encoding, "replace"
+        )
         self.__newText(msg)
-        logger.debug("项目进程新消息，来自 stderr")
     
     def __newStdout(self):
-        msg = self.__backend.readAllStandardOutput().data().decode(encoding="gbk", errors="replace")
+        msg = self.__backend.readAllStandardOutput().data().decode(
+            self.__encoding, "replace"
+        )
         self.__newText(msg)
-        logger.debug("项目进程新消息，来自 stdout")
         
     
     def __stateUpdateByText(self, text: str):
@@ -318,3 +368,5 @@ def pipMirrorFile(enable: True):
         if os.path.exists(UV_CONFIG):
             os.remove(UV_CONFIG)
         logger.info("关闭 pip 镜像")
+    
+pipMirrorFile(cfg.get(cfg.pipMirrorEnabled))

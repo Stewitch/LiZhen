@@ -1,14 +1,17 @@
 from pathlib import Path
+from os import getcwd
 
-import os.path
 
 
 # 工作区
-CWD = Path(os.getcwd())
+CWD = Path(getcwd())
 # 启动器主文件夹
 LAUNCHER = CWD.joinpath('launcher')
 # 项目文件夹
 PROJECT = CWD.joinpath('Open-LLM-VTuber')
+# 项目源码
+PROJ_SRC = PROJECT.joinpath('src')
+
 
 
 # 项目主文件
@@ -32,6 +35,8 @@ UICONS = IMAGES.joinpath('ui')
 UV_CONFIG = PROJECT.joinpath('uv.toml')
 CONFIGS = LAUNCHER.joinpath('configs')
 LAUNCHER_CONFIG = CONFIGS.joinpath('launcher.json')
+UPDATER_CONFIG = CONFIGS.joinpath("updater.json")
+PROJ_CFG = PROJECT.joinpath("conf.yaml")
 
 
 # 日志文件
@@ -40,6 +45,7 @@ LAUNCHER_LOG = LOGS.joinpath('launcher.log')
 
 
 if __name__ == "__main__":
+    import os
     print(CWD)
     print(LAUNCHER)
     print(VENV_ACTIVATE)

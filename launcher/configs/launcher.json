@@ -1,4 +1,9 @@
 {
+    "Project": {
+        "checkEnv": true,
+        "firstStart": false,
+        "updateSource": "Gitee"
+    },
     "MainWindow": {
         "DpiScale": "Auto"
     },

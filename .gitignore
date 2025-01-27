@@ -6,6 +6,8 @@ __pycache__/
 # C extensions
 *.so
 
+.vscode/
+
 # Distribution / packaging
 .Python
 build/
@@ -33,6 +35,9 @@ Open-LLM-VTuber/
 *.ref
 
 test/
+test.py
+
+temp/
 
 # PyInstaller
 #  Usually these files are written by a python script from a template
@@ -90,6 +95,8 @@ target/
 profile_default/
 ipython_config.py
 
+
+.VSCodeCounter/
 # pyenv
 #   For a library or package, you might want to ignore these files since the code is
 #   intended to run in multiple environments; otherwise, check them in:

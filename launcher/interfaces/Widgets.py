@@ -1,12 +1,12 @@
 from PySide6.QtCore import QSize, Qt
 from PySide6.QtWidgets import QVBoxLayout
 from PySide6.QtGui import QFont
-from qfluentwidgets import ElevatedCardWidget, ImageLabel, CaptionLabel, ImageLabel, BodyLabel, MessageBox
+from qfluentwidgets import (ElevatedCardWidget, ImageLabel, CaptionLabel,
+                            ImageLabel, BodyLabel, MessageBox)
 
-from ..utils.configs import cfg
 from ..utils.log import logger
 from ..utils.paths import UICONS
-
+from ..utils.configs import cfg
 import os.path
 
 
@@ -52,6 +52,7 @@ class ModelDisplayCard(ElevatedCardWidget):
         
         cfg.themeChanged.connect(self.updateIcon)
     
+    
     def setIcon(self, name: str):
         """图标必须放在./launcher/assets/images/ui/{theme}/文件夹下"""
         self.imgName = name
@@ -68,11 +69,20 @@ class ModelDisplayCard(ElevatedCardWidget):
         else:
             logger.debug(f"更新图标：{self.imgName}, 主题：{theme}")
     
+    
     def _init(self, iconName: str, name: str, provider: str, model: str):
         """图标必须放在./launcher/assets/images/ui/{theme}/文件夹下"""
         logger.info(f"初始化模型卡片：{name.strip(":")}")
         self.setIcon(iconName)
         self.title.setText(name)
+        self.provider.setText(provider)
+        self.model.setText(model)
+    
+    
+    @logger.catch
+    def updateInfo(self, provider, model, title=None):
+        if title:
+            self.title.setText(title)
         self.provider.setText(provider)
         self.model.setText(model)
 
@@ -81,5 +91,33 @@ class ModelDisplayCard(ElevatedCardWidget):
 class StopDialog(MessageBox):
     def __init__(self, title, content, parent=None):
         super().__init__(title, content, parent)
-        self.yesButton.setText("停止")
-        self.cancelButton.setText("取消")
+        self.yesButton.setText(self.tr("停止"))
+        self.cancelButton.setText(self.tr("取消"))
+
+
+class SaveDialog(MessageBox):
+    def __init__(self, title, content, parent=None):
+        super().__init__(title, content, parent)
+        self.yesButton.setText(self.tr("保存"))
+        self.cancelButton.setText(self.tr("取消"))
+
+
+class FirstStartDialog(MessageBox):
+    def __init__(self, title, content, parent=None):
+        super().__init__(title, content, parent)
+        self.yesButton.setText(self.tr("取消启动#前往文档页面"))
+        self.cancelButton.setText(self.tr("已配置#继续启动"))
+    
+
+class ExportDialog(MessageBox):
+    def __init__(self, title, content, parent=None):
+        super().__init__(title, content, parent)
+        self.yesButton.setText(self.tr("导出"))
+        self.cancelButton.setText(self.tr("取消"))
+
+
+class RestartDialog(MessageBox):
+    def __init__(self, title, content, parent=None):
+        super().__init__(title, content, parent)
+        self.yesButton.setText(self.tr("立即重启"))
+        self.cancelButton.setText(self.tr("稍后自行重启"))

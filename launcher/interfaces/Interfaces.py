@@ -1,24 +1,31 @@
 from PySide6.QtWidgets import QWidget, QLabel
-from PySide6.QtCore import Qt
-from qfluentwidgets import ScrollArea, ExpandLayout
+from PySide6.QtCore import Qt, Signal
+from PySide6.QtGui import QFont
+from qfluentwidgets import (ScrollArea, ExpandLayout, PrimaryPushButton, FluentIcon,
+                            InfoBar, PushButton)
 
-from ..utils.styles import StyleSheet
+from ..utils.enums import StyleSheet
 from ..utils.log import logger
+from ..utils.managers import itemManager
 
 import random
 
 
 
 class ManagerInterface(ScrollArea):
-    def __init__(self, parent=None, title:str = "管理"):
+    
+    configsSave = Signal()
+    configsDiscard = Signal()
+    
+    def __init__(self, parent=None, title:str = "管理", enableSave: bool = False):
         super().__init__(parent=parent)
         self.view = QWidget()
         self.expandLayout = ExpandLayout(self.view)
+        self.enableSave = enableSave
         
         self.titleLabel = QLabel(self.tr(title), self)
         
         self._init()
-        
         
         logger.info(f"{title} 界面初始化，对象名称：{self.objectName()}")
     
@@ -70,5 +77,69 @@ class ManagerInterface(ScrollArea):
         
         StyleSheet.MANAGER.apply(self)
         
+        if self.enableSave:
+            self._enableSaveButton()
+            itemManager.vDictChanged.connect(self.onVDictChanged)
+        
         self._Layout()
         self._SSConnection()
+    
+    
+    def _enableSaveButton(self):
+        """启用保存按钮"""
+        font = QFont()
+        font.setFamilies([u"\u963f\u91cc\u5df4\u5df4\u666e\u60e0\u4f53 R"])
+        font.setPointSize(10)
+        self.saveButton = PrimaryPushButton(FluentIcon.SAVE, self.tr("保存"), self)
+        self.saveButton.setFont(font)
+        self.saveButton.setEnabled(False)
+        self.setViewportMargins(0, 80, 0, 52)
+        self.saveButton.move(810, 608)
+        self.discardButton = PushButton(FluentIcon.CANCEL, self.tr("撤销"), self)
+        self.discardButton.setFont(font)
+        self.discardButton.setEnabled(False)
+        self.discardButton.move(810, 608)
+        
+        self.saveButton.clicked.connect(lambda: self.configsSave.emit())
+        self.discardButton.clicked.connect(lambda: self.configsDiscard.emit())
+        
+        
+    def resizeEvent(self, e):
+        if self.enableSave:
+            mgx, mgy = 125, -88
+            self.saveButton.move(e.size().width()-mgx, e.size().height()-mgy)
+            self.discardButton.move(self.saveButton.x()-self.saveButton.width()-8, e.size().height()-mgy)
+        return super().resizeEvent(e)
+    
+    def _showErrorBar(self, msg):
+        InfoBar.error(
+            self.tr("错误"),
+            msg,
+            duration=1500,
+            parent=self
+        )
+    
+    def _showWarnBar(self, msg):
+        InfoBar.warning(
+            self.tr("警告"),
+            msg,
+            duration=1500,
+            parent=self
+        )
+    
+    def _showInfoBar(self, msg):
+        InfoBar.info(
+            self.tr("信息"),
+            msg,
+            duration=1500,
+            parent=self
+        )
+    
+    
+    def onVDictChanged(self, dict):
+        if len(dict) > 0:
+            self.saveButton.setEnabled(True)
+            self.discardButton.setEnabled(True)
+        else:
+            self.saveButton.setEnabled(False)
+            self.discardButton.setEnabled(False)

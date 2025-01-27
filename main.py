@@ -12,7 +12,7 @@ GitHub repository:
 https://github.com/SunKSugaR/LiZhen
     
 Open-LLM-VTuber:
-https://github.com/t41372/Open-LLM-VTuber
+https://github.com/Open-LLM-VTuber/Open-LLM-VTuber
 
 QFluentWidgets:
 https://qfluentwidgets.com/
@@ -46,7 +46,7 @@ if cfg.get(cfg.dpiScale) != "Auto":
     os.environ["QT_ENABLE_HIGHDPI_SCALING"] = "0"
     os.environ["QT_SCALE_FACTOR"] = str(cfg.get(cfg.dpiScale))
     
-
+    
 
 def main():
     app = QApplication(sys.argv)
@@ -60,3 +60,5 @@ def main():
 if __name__ == '__main__':
     logger.info("主程序启动")
     main()
+    
+    

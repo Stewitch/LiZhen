@@ -1,10 +1,12 @@
-from qfluentwidgets import qconfig, QConfig, OptionsConfigItem, OptionsValidator, Theme, BoolValidator
+from qfluentwidgets import (qconfig, QConfig, OptionsConfigItem, Theme,
+                            BoolValidator, OptionsValidator)
 
-from .log import logger
-from .bridge import YamlConf
 from .paths import LAUNCHER_CONFIG
+from .log import logger
 
-import os.path
+# 比较奇怪的BUG
+logger.remove()
+
 
 
 class LauncherConfig(QConfig):
@@ -14,14 +16,25 @@ class LauncherConfig(QConfig):
     
     # Mirrors
     pipMirrorEnabled = OptionsConfigItem(
-        "Mirrors", "pipEnabled", True, BoolValidator())
-    hfMirrorEnabled = OptionsConfigItem(
-        "Mirrors", "hfEnabled", True, BoolValidator())
+        "Mirrors", "pipEnabled", True, BoolValidator()
+    )
     
-
-
-if os.path.exists("conf.yaml"):
-    pcfg = YamlConf("conf.yaml")
+    hfMirrorEnabled = OptionsConfigItem(
+        "Mirrors", "hfEnabled", True, BoolValidator()
+    )
+    
+    checkEnv = OptionsConfigItem(
+        "Project", "checkEnv", True, BoolValidator()
+    )
+    
+    updateSource = OptionsConfigItem(
+        "Project", "updateSource", "GitHub", OptionsValidator(["GitHub", "Gitee"])
+    )
+    
+    firstStart = OptionsConfigItem(
+        "Project", "firstStart", True, BoolValidator()
+    )
+    
 
 
 
