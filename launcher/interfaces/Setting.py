@@ -62,7 +62,7 @@ class SettingInterface(ManagerInterface):
         self.updateSourceCard = ComboBoxSettingCard(
             cfg.updateSource,
             FIF.CLOUD_DOWNLOAD,
-            self.tr("更新网站"),
+            self.tr("更新仓库"),
             self.tr("选择使用 GitHub(国际) / Gitee(国内) 仓库进行更新"),
             ["GitHub", "Gitee"],
             self.launcherGroup
@@ -71,11 +71,11 @@ class SettingInterface(ManagerInterface):
             self.tr("检查更新"),
             FIF.INFO,
             self.tr("关于"),
-            self.tr(f"© 2025, SunKSugaR，保留所有权利，当前版本：{VERSION}"),
+            self.tr(f"© 2025, Stewitch，保留所有权利，当前版本：{VERSION}"),
             self.launcherGroup
         )
         self.launcherRepoCard = HyperlinkCard(
-            "https://github.com/SunKSugaR/LiZhen",
+            "https://github.com/Stewitch/LiZhen",
             self.tr("前往 GitHub"),
             FIF.GITHUB,
             self.tr("Github 仓库"),

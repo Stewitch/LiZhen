@@ -1,7 +1,7 @@
 from PySide6.QtGui import QIcon
 from PySide6.QtWidgets import QApplication
 from PySide6.QtCore import QSize, QEventLoop, QTimer
-from qfluentwidgets import (FluentIcon, MSFluentWindow, NavigationItemPosition, SplashScreen)
+from qfluentwidgets import (FluentIcon, MSFluentWindow, NavigationItemPosition, SplashScreen, InfoBar)
 from typing import List
 
 from .Setting import SettingInterface
@@ -15,6 +15,7 @@ from .Console import ConsoleInterface
 from .Widgets import StopDialog, SaveDialog, RestartDialog
 from .Interfaces import ManagerInterface
 
+from ..utils import VERSION, getVersion
 from ..utils.log import logger
 from ..utils.paths import IMAGES
 from ..utils.common import project
@@ -170,6 +171,13 @@ class MainWindow(MSFluentWindow):
         logger.info("已撤销上一个值变更")
     
     def __onUpdateFinished(self):
+        if getVersion() == VERSION:
+            InfoBar.success(
+                self.tr("更新成功"),
+                self.tr("启动器已是最新版本"),
+                parent=self.settingInterface
+            )
+            return
         dialog = RestartDialog(
             self.tr("更新完成"),
             self.tr("是否重启启动器以应用更新？"),

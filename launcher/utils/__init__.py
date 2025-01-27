@@ -5,10 +5,11 @@ from .log import logger
 import json
 
 
+def getVersion() -> str:
+    with open(UPDATER_CONFIG, "r", encoding="utf-8") as f:
+        ucfg = json.load(f)
+    return ucfg.get("version")
 
-with open(UPDATER_CONFIG, "r", encoding="utf-8") as f:
-    ucfg = json.load(f)
-
-VERSION = ucfg.get("version", "v0.5.0-Pre_release")
+VERSION = getVersion()
 
 logger.info("utils 初始化")

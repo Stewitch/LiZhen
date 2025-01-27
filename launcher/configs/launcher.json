@@ -2,7 +2,7 @@
     "Project": {
         "checkEnv": true,
         "firstStart": false,
-        "updateSource": "GitHub"
+        "updateSource": "Gitee"
     },
     "MainWindow": {
         "DpiScale": "Auto"
