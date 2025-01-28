@@ -9,7 +9,10 @@ A launcher for Open-LLM-VTuber project.
 Based on PySide6 and QFluentWidgets.
 
 GitHub repository:
-https://github.com/SunKSugaR/LiZhen
+https://github.com/Stewitch/LiZhen
+
+Gitee repository:
+https://gitee.com/Stewitch/LiZhen
     
 Open-LLM-VTuber:
 https://github.com/Open-LLM-VTuber/Open-LLM-VTuber

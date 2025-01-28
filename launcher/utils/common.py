@@ -149,13 +149,13 @@ def createShortcut():
     desktop = Path(winshell.desktop())
 
     # 定义快捷方式的目标路径和名称
-    target = r"C:\Path\To\Your\Application.exe"
-    shortcut_name = desktop / "离真启动器.lnk"
+    target = str(Path.cwd().joinpath("lizhen.exe").absolute())
+    shortcut_name = str(desktop / "离真启动器.lnk")
 
     # 创建快捷方式
     with winshell.shortcut(shortcut_name) as link:
         link.path = target
-        link.description = "离真启动器 for Open-LLM-VTuber Project."
+        link.description = "离真 —— Open-LLM-VTuber 项目启动器"
         link.icon_location = (target, 0)
 
 

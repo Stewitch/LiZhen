@@ -1,7 +1,7 @@
 {
     "Project": {
         "checkEnv": true,
-        "firstStart": false,
+        "firstStart": true,
         "updateSource": "Gitee"
     },
     "MainWindow": {
@@ -10,6 +10,9 @@
     "Mirrors": {
         "hfEnabled": true,
         "pipEnabled": true
+    },
+    "Launcher": {
+        "firstStart": false
     },
     "QFluentWidgets": {
         "ThemeColor": "#ff00aeff",

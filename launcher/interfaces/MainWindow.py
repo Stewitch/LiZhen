@@ -18,7 +18,8 @@ from .Interfaces import ManagerInterface
 from ..utils import VERSION, getVersion
 from ..utils.log import logger
 from ..utils.paths import IMAGES
-from ..utils.common import project
+from ..utils.configs import cfg
+from ..utils.common import project, createShortcut
 from ..utils.managers import itemManager
 from ..utils.announce import broad
 from ..utils.enums import Signals
@@ -226,4 +227,16 @@ class MainWindow(MSFluentWindow):
             else:
                 e.ignore()
                 return
+            
+        if cfg.get(cfg.lFirtStart):
+            w = StopDialog(
+                self.tr("首次启动"),
+                self.tr("这是您第一次启动启动器，是否创建桌面快捷方式？\n随后您也可以手动创建"),
+                self
+            )
+            w.yesButton.setText(self.tr("创建"))
+            w.cancelButton.setText(self.tr("不创建"))
+            if w.exec():
+                createShortcut()
+            cfg.set(cfg.lFirtStart, False)
         logger.info("主窗口关闭")

@@ -35,6 +35,10 @@ class LauncherConfig(QConfig):
         "Project", "firstStart", True, BoolValidator()
     )
     
+    lFirtStart = OptionsConfigItem(
+        "Launcher", "firstStart", True, BoolValidator()
+    )
+    
 
 
 

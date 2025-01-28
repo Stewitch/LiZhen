@@ -1,5 +1,5 @@
 from PySide6.QtWidgets import (QWidget, QPushButton, QVBoxLayout, QLabel,
-                               QProgressBar, QApplication, QGridLayout, QInputDialog, QMessageBox, QDialog)
+                               QProgressBar, QApplication, QGridLayout, QInputDialog, QMessageBox)
 from PySide6.QtGui import QFont, QFontDatabase, QIcon
 from PySide6.QtCore import Qt, Signal
 from typing import Dict

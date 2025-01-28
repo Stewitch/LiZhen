@@ -1,4 +1,5 @@
 from PySide6.QtCore import QObject, Signal
+from PySide6.QtWidgets import QMessageBox
 from pydantic import BaseModel
 from copy import deepcopy
 
@@ -12,6 +13,11 @@ try:
     from open_llm_vtuber.config_manager.utils import read_yaml, validate_config, save_config
     from open_llm_vtuber.config_manager.main import I18nMixin
 except:
+    QMessageBox.critical(
+        None, "错误", "项目路径有误，请检查后重试！",
+        QMessageBox.StandardButton.Ok,
+        QMessageBox.StandardButton.NoButton
+    )
     logger.critical("项目路径有误，请检查后重试！")
     raise
     
