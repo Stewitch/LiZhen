@@ -11,6 +11,8 @@ from ..utils.log import logger
 from ..utils.upgrade import Updater
 from ..utils import VERSION
 
+import sys
+
 
 
 class SettingInterface(ManagerInterface):
@@ -19,7 +21,8 @@ class SettingInterface(ManagerInterface):
     def __init__(self, parent=None, title: str = "设置"):
         self.updater = Updater()
         self.updater.setRepo(cfg.get(cfg.updateSource))
-        self.updater.setPythonRuntime()
+        if sys.executable.endswith("python.exe"):
+            self.updater.setPythonRuntime()
         super().__init__(parent, title)
         
     

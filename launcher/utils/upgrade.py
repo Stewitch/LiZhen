@@ -37,6 +37,7 @@ class Updater(QObject):
         else:
             logger.error(f"文件不存在或不是可执行文件: {file}")
     
+    
     def setPythonRuntime(self):
         self.executable = "python"
         self.args = ["updater.py", "-r", self.repo]
