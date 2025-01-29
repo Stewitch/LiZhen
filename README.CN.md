@@ -76,7 +76,7 @@
 
 ## ▶️ 快速开始
 
-#### Release
+#### <del>Release</del> 警告：当前编译遇到了一些问题，所以Release暂不可用
 1. **请确认下载并解压了项目文件，且配置了 FFMpeg (N卡用户还需配置 CUDA、CUDNN)**，可参考 [项目文档#环境准备](https://open-llm-vtuber.github.io/docs/quick-start/#%E7%8E%AF%E5%A2%83%E5%87%86%E5%A4%87)，Git 和 Python环境 可以不用管
 2. 下载最新版本的启动器 Release 包 (.zip文件)
 3. 将其中文件完整解压到于项目文件夹同一级的文件夹中 (请参照 文件结构#包括 `Open-LLM-VTuber` 文件夹)
