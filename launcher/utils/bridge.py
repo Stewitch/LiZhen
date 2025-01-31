@@ -3,15 +3,12 @@ from PySide6.QtWidgets import QMessageBox
 from pydantic import BaseModel
 from copy import deepcopy
 
-from .paths import PROJ_SRC, PROJ_CFG
+from .paths import PROJ_CFG
 from .log import logger
 
-import sys
-sys.path.append(str(PROJ_SRC.absolute()))
-
 try:
-    from open_llm_vtuber.config_manager.utils import read_yaml, validate_config, save_config
-    from open_llm_vtuber.config_manager.main import I18nMixin
+    from ..open_llm_vtuber.config_manager.utils import read_yaml, validate_config, save_config
+    from ..open_llm_vtuber.config_manager.main import I18nMixin
 except:
     QMessageBox.critical(
         None, "错误", "项目路径有误，请检查后重试！",
@@ -104,3 +101,5 @@ class Item(QObject):
 def saveConfig():
     save_config(pcfg, PROJ_CFG)
     
+
+logger.info('配置桥接初始化完成')

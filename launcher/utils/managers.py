@@ -93,3 +93,4 @@ class ItemManager(QObject):
 
 itemManager = ItemManager()
 
+logger.info('配置项管理器初始化完成')

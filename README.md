@@ -47,7 +47,7 @@ English README | [中文 README](./README.CN.md)
 
 ## ℹ️ File Structure
 
-**Note:** Some file structures are omitted.
+**Note:** Based on Releases, some file structures are omitted.
 
 **Excluding the `Open-LLM-VTuber` folder**
 > - /launcher
@@ -55,6 +55,7 @@ English README | [中文 README](./README.CN.md)
 >   - /configs
 >   - /interfaces
 >   - /logs
+>   - /open_llm_vtuber #Borrowed codes form Project
 >   - /utils
 > - lizhen.exe
 > - updater.exe
@@ -65,6 +66,7 @@ English README | [中文 README](./README.CN.md)
 >   - /configs
 >   - /interfaces
 >   - /logs
+>   - /open_llm_vtuber #Borrowed codes form Project
 >   - /utils
 > - /Open-LLM-VTuber
 >   - ...
@@ -75,8 +77,9 @@ English README | [中文 README](./README.CN.md)
 
 ## ▶️ Quick Start
 
-#### <del>Release</del> Warning: Currently I have some problem with compile, so release is unavailable.
-1. **Make sure you have downloaded and extracted the project files and configured FFMpeg (NVIDIA card users also need to configure CUDA and CUDNN)**. You can refer to the [project documentation#Environment Preparation](https://open-llm-vtuber.github.io/docs/quick-start/#%E7%8E%AF%E5%A2%83%E5%87%86%E5%A4%87).
+
+#### Release
+1. **Make sure you have downloaded and extracted the project files and configured FFMpeg (NVIDIA card users also need to configure CUDA and CUDNN)**. You can refer to the [Project Documentation#Environment Preparation](https://open-llm-vtuber.github.io/docs/quick-start/#%E7%8E%AF%E5%A2%83%E5%87%86%E5%A4%87).
 2. Download the latest version of the launcher Release package (.zip file).
 3. Extract the files to a folder at the same level as the project folder (refer to the File Structure#Including the `Open-LLM-VTuber` folder).
 4. Double-click to run `lizhen.exe`.
@@ -92,7 +95,7 @@ git clone https://github.com/Stewitch/LiZhen.git
 4. Install project dependencies:
 ```batch
 pip install -r requirements.txt
-rem If the download speed is slow, you can try setting the Tsinghua source and reinstalling
+rem For users in China: If the download speed is slow, you can try setting the Tsinghua source and reinstalling
 pip config set global.index-url https://mirrors.tuna.tsinghua.edu.cn/pypi/web/simple
 rem After setting, run the first command again
 ```

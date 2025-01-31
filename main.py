@@ -33,7 +33,7 @@ Code with passion, code with love.
 
 
 
-from PySide6.QtWidgets import QApplication
+from PySide6.QtWidgets import QApplication, QMessageBox
 from PySide6.QtGui import QFontDatabase
 
 from launcher.interfaces.MainWindow import MainWindow
@@ -41,27 +41,69 @@ from launcher.utils.configs import cfg
 from launcher.utils.log import logger
 from launcher.utils.paths import FONTS
 
-import os, sys
+import os, sys, traceback
 
 
 
-if cfg.get(cfg.dpiScale) != "Auto":
-    os.environ["QT_ENABLE_HIGHDPI_SCALING"] = "0"
-    os.environ["QT_SCALE_FACTOR"] = str(cfg.get(cfg.dpiScale))
-    
-    
+def setup_environment():
+    try:
+        logger.info(f"当前工作目录: {os.getcwd()}")
+        # logger.info(f"Python路径: {sys.executable}")
+        # logger.info(f"系统路径: {sys.path}")
+        
+        if cfg.get(cfg.dpiScale) != "Auto":
+            os.environ["QT_ENABLE_HIGHDPI_SCALING"] = "0"
+            os.environ["QT_SCALE_FACTOR"] = str(cfg.get(cfg.dpiScale))
+        
+        # 确保关键目录存在
+        # os.makedirs(FONTS, exist_ok=True)
+        # logger.info(f"字体目录: {FONTS}")
+        
+    except Exception as e:
+        logger.error(f"环境设置失败: {e}")
+        logger.error(traceback.format_exc())
 
+
+@logger.catch
 def main():
-    app = QApplication(sys.argv)
-    QFontDatabase.addApplicationFont(str(FONTS.joinpath("Alibaba-PuHuiTi-Regular.ttf")))
-    window = MainWindow()
-    window.show()
-    sys.exit(app.exec())
+    try:
+        logger.info("正在初始化QApplication...")
+        app = QApplication(sys.argv)
+        
+        # 检查字体文件
+        font_path = FONTS.joinpath("Alibaba-PuHuiTi-Regular.ttf")
+        if not font_path.exists():
+            error_msg = f"找不到字体文件: {font_path}"
+            logger.error(error_msg)
+            QMessageBox.critical(None, "错误", error_msg)
+            return 1
+        
+        logger.info("正在加载字体...")
+        font_id = QFontDatabase.addApplicationFont(str(font_path))
+        if font_id < 0:
+            error_msg = "字体加载失败"
+            logger.error(error_msg)
+            QMessageBox.critical(None, "错误", error_msg)
+            return 1
+            
+        logger.info("正在创建主窗口...")
+        window = MainWindow()
+        window.show()
+        
+        logger.info("进入主循环...")
+        return app.exec()
+        
+    except Exception as e:
+        error_msg = f"程序启动失败: {e}"
+        logger.error(error_msg)
+        logger.error(traceback.format_exc())
+        QMessageBox.critical(None, "错误", error_msg)
+        return 1
 
 
 
 if __name__ == '__main__':
     logger.info("主程序启动")
-    main()
-    
+    setup_environment()
+    sys.exit(main())
     

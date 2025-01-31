@@ -52,3 +52,6 @@ class Updater(QObject):
             self.showError.emit(self.tr(f"未知的更新仓库: {self.repo}"))
             return
         self.process.start(self.executable, self.args)
+
+
+logger.info('更新器初始化完成')
