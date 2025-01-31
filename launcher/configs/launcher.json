@@ -12,7 +12,7 @@
         "pipEnabled": true
     },
     "Launcher": {
-        "firstStart": false
+        "firstStart": true
     },
     "QFluentWidgets": {
         "ThemeColor": "#ff00aeff",

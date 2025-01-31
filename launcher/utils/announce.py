@@ -43,3 +43,5 @@ class Announcer(QObject):
 
 
 broad = Announcer()
+
+logger.info('广播器初始化完成')

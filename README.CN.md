@@ -48,7 +48,7 @@
 
 ## ℹ️ 文件结构
 
-**注意:** 省略了一些文件结构
+**注意:** 以 Releases 为基础，省略了一些文件结构
 
 **不包括 `Open-LLM-VTuber` 文件夹**
 > - /launcher
@@ -56,6 +56,7 @@
 >   - /configs
 >   - /interfaces
 >   - /logs
+>   - /open_llm_vtuber #从项目中借来的一些代码
 >   - /utils
 > - lizhen.exe
 > - updater.exe
@@ -66,6 +67,7 @@
 >   - /configs
 >   - /interfaces
 >   - /logs
+>   - /open_llm_vtuber #从项目中借来的一些代码
 >   - /utils
 > - /Open-LLM-VTuber
 >   - ...
@@ -93,7 +95,7 @@ git clone https://github.com/Stewitch/LiZhen.git
 4. 安装项目依赖:
 ```batch
 pip install -r requirements.txt
-rem 若下载速度较慢，可尝试设置清华源后重新安装
+rem 对于国内用户：若下载速度较慢，可尝试设置清华源后重新安装
 pip config set global.index-url https://mirrors.tuna.tsinghua.edu.cn/pypi/web/simple
 rem 设置完后再次执行第一条命令
 ```

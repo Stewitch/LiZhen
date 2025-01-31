@@ -9,7 +9,7 @@ from .configs import cfg
 from .bridge import port
 from .announce import broad
 
-import os, subprocess, shutil, tomlkit, re, chardet
+import os, subprocess, shutil, tomlkit, re, chardet, winshell
 
 FASTERINIT = 0
 
@@ -142,7 +142,6 @@ def checkVenv() -> bool:
 
 
 def createShortcut():
-    import winshell
     from pathlib import Path
 
     # 获取桌面路径
@@ -370,3 +369,5 @@ def pipMirrorFile(enable: True):
         logger.info("关闭 pip 镜像")
     
 pipMirrorFile(cfg.get(cfg.pipMirrorEnabled))
+
+logger.info("常规功能初始化完成")
