@@ -77,6 +77,7 @@ English README | [中文 README](./README.CN.md)
 
 ## ▶️ Quick Start
 
+
 #### Release
 1. **Make sure you have downloaded and extracted the project files and configured FFMpeg (NVIDIA card users also need to configure CUDA and CUDNN)**. You can refer to the [Project Documentation#Environment Preparation](https://open-llm-vtuber.github.io/docs/quick-start/#%E7%8E%AF%E5%A2%83%E5%87%86%E5%A4%87).
 2. Download the latest version of the launcher Release package (.zip file).
