@@ -1,5 +1,5 @@
 from qfluentwidgets import (qconfig, QConfig, OptionsConfigItem, Theme,
-                            BoolValidator, OptionsValidator)
+                            BoolValidator, OptionsValidator, ConfigItem)
 
 from .paths import LAUNCHER_CONFIG
 from .log import logger
@@ -38,7 +38,6 @@ class LauncherConfig(QConfig):
     lFirtStart = OptionsConfigItem(
         "Launcher", "firstStart", True, BoolValidator()
     )
-    
 
 
 
