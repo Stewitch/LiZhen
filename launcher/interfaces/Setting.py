@@ -19,11 +19,15 @@ class SettingInterface(ManagerInterface):
     
     @logger.catch
     def __init__(self, parent=None, title: str = "设置"):
-        self.updater = Updater()
+        super().__init__(parent, title)
+        
+        
+    def _init(self):
+        self.updater = Updater(self)
         self.updater.setRepo(cfg.get(cfg.updateSource))
         if sys.executable.endswith("python.exe"):
             self.updater.setPythonRuntime()
-        super().__init__(parent, title)
+        super()._init()
         
     
     def _setGroups(self):

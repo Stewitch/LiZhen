@@ -134,7 +134,7 @@ class MainWindow(MSFluentWindow):
         self.startInterface.TTSCard.clicked.connect(lambda: self.switchTo(self.ttsInterface))
         self.startInterface.toConsoleButton.clicked.connect(lambda: self.switchTo(self.consoleInterface))
         self.startInterface.toSettingButton.clicked.connect(lambda: self.switchTo(self.settingInterface))
-        self.settingInterface.updater.updateFinished.connect(self.__onUpdateFinished)
+        self.settingInterface.updater.terminate.connect(self.close)
         
         for interface in self.managerInterfaces:
             interface.configsSave.connect(self.__configSave)
@@ -171,38 +171,6 @@ class MainWindow(MSFluentWindow):
         itemManager.onDiscard()
         logger.info("已撤销上一个值变更")
     
-    def __onUpdateFinished(self):
-        if getVersion() == VERSION:
-            InfoBar.success(
-                self.tr("更新成功"),
-                self.tr("启动器已是最新版本"),
-                parent=self.settingInterface
-            )
-            return
-        dialog = RestartDialog(
-            self.tr("更新完成"),
-            self.tr("是否重启启动器以应用更新？"),
-            self
-        )
-        if dialog.exec():
-            if itemManager.vDict != {}:
-                s = SaveDialog(
-                    self.tr("更新完成"),
-                    self.tr("即将重启启动器，但当前有未保存的配置, 是否保存当前配置到conf.yaml?"),
-                    self
-                )
-                if s.exec():
-                    saveConfig()
-                    logger.info("已保存配置")
-                
-            executable = sys.executable
-            if executable.endswith("python.exe"):
-                command = [executable, "main.py"]
-            elif executable == "lizhen.exe":
-                command = [executable]
-            logger.info(f"重启启动器: {command}")
-            subprocess.Popen(command)
-            sys.exit(0)
         
     
     def closeEvent(self, e):
