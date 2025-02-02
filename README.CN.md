@@ -54,10 +54,7 @@
 > - /launcher
 >   - /assets
 >   - /configs
->   - /interfaces
 >   - /logs
->   - /open_llm_vtuber #从项目中借来的一些代码
->   - /utils
 > - lizhen.exe
 > - updater.exe
 
@@ -65,10 +62,7 @@
 > - /launcher
 >   - /assets
 >   - /configs
->   - /interfaces
 >   - /logs
->   - /open_llm_vtuber #从项目中借来的一些代码
->   - /utils
 > - /Open-LLM-VTuber
 >   - ...
 > - lizhen.exe

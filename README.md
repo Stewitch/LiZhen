@@ -53,10 +53,7 @@ English README | [中文 README](./README.CN.md)
 > - /launcher
 >   - /assets
 >   - /configs
->   - /interfaces
 >   - /logs
->   - /open_llm_vtuber #Borrowed codes form Project
->   - /utils
 > - lizhen.exe
 > - updater.exe
 
@@ -64,10 +61,7 @@ English README | [中文 README](./README.CN.md)
 > - /launcher
 >   - /assets
 >   - /configs
->   - /interfaces
 >   - /logs
->   - /open_llm_vtuber #Borrowed codes form Project
->   - /utils
 > - /Open-LLM-VTuber
 >   - ...
 > - lizhen.exe
