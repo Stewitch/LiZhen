@@ -5,7 +5,7 @@ from PySide6.QtCore import Qt, Signal
 from typing import Dict
 from pathlib import Path
 
-import argparse, shutil, json, requests, threading, sys, zipfile
+import argparse, shutil, json, requests, threading, sys, zipfile, subprocess
 
 
 currentDir = Path.cwd()
@@ -359,7 +359,12 @@ class Updater(QWidget):
     def __onRemoveCompleted(self):
         self.progress.setText(self.tr("删除完成"))
         if not self.debug:
-            self.progress.setText(self.tr("更新完成，关闭更新器"))
+            self.progress.setText(self.tr("更新完成"))
+            self.progress.setText(self.tr("尝试运行启动器"))
+            if luancherExecutable.exists():
+                subprocess.Popen([str(luancherExecutable)])
+            elif launcherScript.exists():
+                subprocess.Popen(["python", str(launcherScript)])
             self.close()
         
         
