@@ -8,6 +8,7 @@ from .color import ansi_to_html
 from .configs import cfg
 from .bridge import port
 from .announce import broad
+from .enums import Signals
 
 import os, subprocess, shutil, tomlkit, re, chardet, winshell
 
@@ -150,7 +151,12 @@ def createShortcut():
 
     # 定义快捷方式的目标路径和名称
     target = str(cwd.joinpath("lizhen.exe").absolute())
-    shortcut_name = str(desktop / "离真启动器.lnk")
+    lnk = desktop.joinpath("离真启动器.lnk")
+    if lnk.exists():
+        logger.warning("快捷方式已存在")
+        broad.cast(Signals.showWarnBar, "快捷方式已存在")
+        return
+    shortcut_name = str(lnk)
 
     # 创建快捷方式
     with winshell.shortcut(shortcut_name) as link:

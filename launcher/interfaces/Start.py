@@ -2,7 +2,7 @@ from PySide6.QtWidgets import QWidget
 from qfluentwidgets import FluentIcon, MessageBox
 
 from .ui.Ui_Start import Ui_Start
-from .Widgets import FirstStartDialog
+from .Widgets import FirstStartDialog, SaveDialog
 
 from ..utils.enums import StyleSheet
 from ..utils.log import logger
@@ -68,6 +68,22 @@ class StartInterface(QWidget, Ui_Start):
         except KeyboardInterrupt:
             self.__updateButton(status)
     
+    
+    def __checkConfig(self):
+        if itemManager.vDict != {}:
+            s = SaveDialog(
+                self.tr("未保存配置"),
+                self.tr("当前有未保存的配置, 保存以继续启动或取消并返回修改"),
+                self
+            )
+            if s.exec():
+                itemManager.onSave()
+                return True
+            else:
+                return False
+        return True
+            
+    
     def __onProjectStart(self):
         if cfg.get(cfg.firstStart):
             dialog = FirstStartDialog(
@@ -85,8 +101,12 @@ class StartInterface(QWidget, Ui_Start):
                 return
             else:
                 cfg.set(cfg.firstStart, False)
+                if not self.__checkConfig():
+                    return
                 switchProjectState()
         else:
+            if not self.__checkConfig():
+                return
             switchProjectState()
     
     def __SSConnection(self):

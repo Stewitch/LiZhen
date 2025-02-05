@@ -37,7 +37,9 @@ from PySide6.QtWidgets import QApplication, QMessageBox
 from PySide6.QtGui import QFontDatabase
 
 from launcher.interfaces.MainWindow import MainWindow
+from launcher.interfaces.Widgets import StopDialog
 from launcher.utils.configs import cfg
+from launcher.utils.common import createShortcut
 from launcher.utils.log import logger
 from launcher.utils.paths import FONTS
 
@@ -91,6 +93,17 @@ def main():
         window.show()
         
         logger.info("进入主循环...")
+        if cfg.get(cfg.lFirtStart):
+            w = StopDialog(
+                window.tr("首次启动"),
+                window.tr("这是您第一次运行启动器，是否创建桌面快捷方式？\n随后您也可以在设置中手动选择创建"),
+                window
+            )
+            w.yesButton.setText(window.tr("创建"))
+            w.cancelButton.setText(window.tr("不创建"))
+            if w.exec():
+                createShortcut()
+            cfg.set(cfg.lFirtStart, False)
         return app.exec()
         
     except Exception as e:
