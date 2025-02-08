@@ -5,14 +5,12 @@ from .log import logger
 
 from ..interfaces.Widgets import RestartDialog
 
-import subprocess
-
 
 
 class Updater(QObject):
     
     showError = Signal(str)
-    terminate = Signal()
+    terminateToUpdate = Signal()
     
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -59,8 +57,7 @@ class Updater(QObject):
             w.yesButton.setText(self.tr("继续"))
             w.cancelButton.setText(self.tr("取消"))
             if w.exec():
-                subprocess.Popen([self.executable, *self.args])
-                self.terminate.emit()
+                self.terminateToUpdate.emit()
             else:
                 return
             

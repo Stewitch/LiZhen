@@ -1,6 +1,6 @@
 from qfluentwidgets import (SettingCardGroup, ComboBoxSettingCard, setTheme, 
                             setThemeColor, CustomColorSettingCard,
-                            HyperlinkCard, PrimaryPushSettingCard)
+                            HyperlinkCard, PrimaryPushSettingCard, PushSettingCard)
 from qfluentwidgets import FluentIcon as FIF
 from qfluentwidgets import InfoBar
 
@@ -8,6 +8,7 @@ from .Interfaces import ManagerInterface
 
 from ..utils.configs import cfg
 from ..utils.log import logger
+from ..utils.common import createShortcut
 from ..utils.upgrade import Updater
 from ..utils import VERSION
 
@@ -97,6 +98,13 @@ class SettingInterface(ManagerInterface):
             self.tr("本软件遵循 GPL-3.0 开源协议"),
             self.launcherGroup
         )
+        self.shortcutCard = PushSettingCard(
+            self.tr("创建快捷方式"),
+            FIF.LINK,
+            self.tr("快捷方式"),
+            self.tr("创建启动器的桌面快捷方式"),
+            self.launcherGroup
+        )
     
     
     def _addCards2Groups(self):
@@ -108,7 +116,8 @@ class SettingInterface(ManagerInterface):
         self.launcherGroup.addSettingCard(self.launcherInfoCard)
         self.launcherGroup.addSettingCard(self.launcherRepoCard)
         self.launcherGroup.addSettingCard(self.launcherLicenseCard)
-    
+        self.launcherGroup.addSettingCard(self.shortcutCard)
+         
     
     def _addGroups2Layout(self):
         super()._addGroups2Layout()
@@ -139,6 +148,7 @@ class SettingInterface(ManagerInterface):
         cfg.themeColorChanged.connect(lambda c: setThemeColor(c))
         cfg.themeColorChanged.connect(lambda c: logger.info(f"主题颜色更新：{c}"))
         cfg.updateSource.valueChanged.connect(self.updater.setRepo)
+        self.shortcutCard.button.clicked.connect(createShortcut)
         self.launcherInfoCard.button.clicked.connect(self.updater.exec)
         self.updater.showError.connect(self.__showErrorBar)
         

@@ -8,7 +8,7 @@ from .log import logger
 class Announcer(QObject):
     
     showErrBar = Signal(str)
-    showNoticeDialog = Signal(str)
+    showNoticeDialog = Signal(str, str)
     showWarnBar = Signal(str)
     showInfoBar = Signal(str)
     changeProjectFolder = Signal(str)

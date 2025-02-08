@@ -21,8 +21,8 @@ class SystemConfig(I18nMixin):
             en="Directory for alternative configurations", zh="备用配置目录"
         ),
         "tool_prompts": Description(
-            en="Tool prompts to be inserted into persona prompt", 
-            zh="要插入到角色提示词中的工具提示词"
+            en="Tool prompts to be inserted into persona prompt",
+            zh="要插入到角色提示词中的工具提示词",
         ),
     }
 

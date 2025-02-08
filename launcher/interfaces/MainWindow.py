@@ -1,7 +1,7 @@
 from PySide6.QtGui import QIcon
 from PySide6.QtWidgets import QApplication
 from PySide6.QtCore import QSize, QEventLoop, QTimer
-from qfluentwidgets import (FluentIcon, MSFluentWindow, NavigationItemPosition, SplashScreen, InfoBar)
+from qfluentwidgets import (FluentIcon, MSFluentWindow, NavigationItemPosition, SplashScreen, MessageBox)
 from typing import List
 
 from .Setting import SettingInterface
@@ -12,14 +12,12 @@ from .TTS import TTSInterface
 from .Character import CharacterInterface
 from .Project import ProjectInterface
 from .Console import ConsoleInterface
-from .Widgets import StopDialog, SaveDialog, RestartDialog
+from .Widgets import StopDialog, SaveDialog
 from .Interfaces import ManagerInterface
 
-from ..utils import VERSION, getVersion
 from ..utils.log import logger
 from ..utils.paths import IMAGES
-from ..utils.configs import cfg
-from ..utils.common import project, createShortcut
+from ..utils.common import project
 from ..utils.managers import itemManager
 from ..utils.announce import broad
 from ..utils.enums import Signals
@@ -134,14 +132,14 @@ class MainWindow(MSFluentWindow):
         self.startInterface.TTSCard.clicked.connect(lambda: self.switchTo(self.ttsInterface))
         self.startInterface.toConsoleButton.clicked.connect(lambda: self.switchTo(self.consoleInterface))
         self.startInterface.toSettingButton.clicked.connect(lambda: self.switchTo(self.settingInterface))
-        self.settingInterface.updater.terminate.connect(self.close)
+        self.settingInterface.updater.terminateToUpdate.connect(self.__onTerminateToUpdate)
         
         for interface in self.managerInterfaces:
             interface.configsSave.connect(self.__configSave)
             interface.configsDiscard.connect(self.__configDiscard)
         
         project.tryToStop.connect(self.__tryToStop)
-        
+        broad.showNoticeDialog.connect(self.__showNoticeDialog)
     
     def __tryToStop(self):
         stop = StopDialog(self.tr("项目正在启动！"), self.tr("是否停止项目运行？\n 可能需要重启启动器以再次启动项目！"), self)
@@ -171,10 +169,22 @@ class MainWindow(MSFluentWindow):
         itemManager.onDiscard()
         logger.info("已撤销上一个值变更")
     
-        
     
-    def closeEvent(self, e):
-        sys.stderr = sys.__stderr__
+    def __onTerminateToUpdate(self):
+        if not self.__checkProject():
+            return
+        if not self.__checkConfig():
+            return
+        executable = self.settingInterface.updater.executable
+        args = self.settingInterface.updater.args
+        if executable == "python":
+            subprocess.Popen([executable, *args])
+        else:
+            subprocess.Popen(args, executable=executable)
+        sys.exit(0)
+    
+    
+    def __checkConfig(self):
         if itemManager.vDict != {}:
             s = StopDialog(
                 self.tr("未保存配置"),
@@ -184,27 +194,40 @@ class MainWindow(MSFluentWindow):
             s.yesButton.setText(self.tr("取消关闭"))
             s.cancelButton.setText(self.tr("继续关闭"))
             if s.exec():
-                e.ignore()
-                return
+                return False
+        return True
+    
+            
+    def __checkProject(self):
         if project.isRunning() or project.isRunning() is None:
             stop = StopDialog(self.tr("项目正在运行！"), self.tr("如要退出启动器，请先停止项目运行！"), self)
             stop.yesButton.setText(self.tr("停止&退出"))
             if stop.exec():
                 project._forceStop()
-                e.accept()
-            else:
-                e.ignore()
-                return
+                return True
+            return False
+        return True
+    
+    def __showNoticeDialog(self, title, content):
+        w = MessageBox(
+            title,
+            content,
+            self
+        )
+        w.yesButton.setText(self.tr("确定"))
+        w.cancelButton.hide()
+        w.exec()
+    
+    
+    def closeEvent(self, e):
+        sys.stderr = sys.__stderr__
+        
+        if not self.__checkConfig():
+            e.ignore()
+            return
+        
+        if not self.__checkProject():
+            e.ignore()
+            return
             
-        if cfg.get(cfg.lFirtStart):
-            w = StopDialog(
-                self.tr("首次启动"),
-                self.tr("这是您第一次启动启动器，是否创建桌面快捷方式？\n随后您也可以手动创建"),
-                self
-            )
-            w.yesButton.setText(self.tr("创建"))
-            w.cancelButton.setText(self.tr("不创建"))
-            if w.exec():
-                createShortcut()
-            cfg.set(cfg.lFirtStart, False)
         logger.info("主窗口关闭")
