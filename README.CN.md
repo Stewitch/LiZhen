@@ -73,7 +73,8 @@
 ## ▶️ 快速开始
 
 #### Release
-1. **请确认下载并解压了项目文件，且配置了 FFMpeg (N卡用户还需配置 CUDA、CUDNN)**，可参考 [项目文档#环境准备](https://open-llm-vtuber.github.io/docs/quick-start/#%E7%8E%AF%E5%A2%83%E5%87%86%E5%A4%87)，Git 和 Python环境 可以不用管
+1. **请确认下载并完整解压了项目文件夹，且配置了 FFMpeg (N卡用户还需配置 CUDA、CUDNN)**，可参考 [项目文档#环境准备](https://open-llm-vtuber.github.io/docs/quick-start/#%E7%8E%AF%E5%A2%83%E5%87%86%E5%A4%87)，Git 和 Python环境 可以不用管
+> 如果你的项目文件夹名是 `Open-LLM-VTuber-vX.X.X`，记得把它重命名为 `Open-LLM-VTuber`
 2. 下载最新版本的启动器 Release 包 (.zip文件)
 3. 将其中文件完整解压到于项目文件夹同一级的文件夹中 (请参照 文件结构#包括 `Open-LLM-VTuber` 文件夹)
 4. 双击运行 `lizhen.exe`
