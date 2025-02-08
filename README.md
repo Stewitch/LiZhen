@@ -7,49 +7,50 @@
 
 [![Github License](https://img.shields.io/github/license/Stewitch/LiZhen?style=for-the-badge)](./LICENSE)
 [![GitHub Release](https://img.shields.io/github/v/release/Stewitch/LiZhen?include_prereleases&sort=date&display_name=tag&style=for-the-badge)](https://github.com/Stewitch/LiZhen/releases)
-[![GitHub Issues](https://img.shields.io/github/issues/Stewitch/LiZhen?style=for-the-badge)](https://github.com/Stewitch/LiZhen/issues)
-[![GitHub Pull Requests](https://img.shields.io/github/issues-pr/Stewitch/LiZhen?style=for-the-badge)](https://github.com/Stewitch/LiZhen/pulls)
+[![GitHub Issues or Pull Requests](https://img.shields.io/github/issues/Stewitch/LiZhen?style=for-the-badge)](https://github.com/Stewitch/LiZhen/issues)
+[![GitHub Issues or Pull Requests](https://img.shields.io/github/issues-pr/Stewitch/LiZhen?style=for-the-badge)](https://github.com/Stewitch/LiZhen/pulls)
 ![GitHub top language](https://img.shields.io/github/languages/top/Stewitch/LiZhen?style=for-the-badge)
 [![GitHub forks](https://img.shields.io/github/forks/Stewitch/LiZhen?style=for-the-badge)](https://github.com/Stewitch/LiZhen/forks)
 ![GitHub Repo stars](https://img.shields.io/github/stars/Stewitch/LiZhen?style=for-the-badge)
 
-English README | [中文 README](./README.CN.md)
+中文 README | [English README](./README.EN.md)
 
 </h3>
 
 ---
 
-## ❓ What is this project
+## ❓ 这是什么项目
 
-**Li Zhen** is a modern launcher designed for the [Open-LLM-VTuber](https://github.com/Open-LLM-VTuber/Open-LLM-VTuber) project. It is developed in Python, using the PySide6 UI framework and the [PySide6-Fluent-Widgets](https://github.com/zhiyiYo/PyQt-Fluent-Widgets/tree/PySide6) component library. It aims to provide services such as quick startup and visual configuration for the project. It is committed to creating a more comfortable experience for **Windows users**.
+**离真** 是为 [Open-LLM-VTuber](https://github.com/Open-LLM-VTuber/Open-LLM-VTuber) 项目所设计的一个现代化启动器。基于 Python 开发，使用 PySide6 UI框架和 [PySide6-Fluent-Widgets](https://github.com/zhiyiYo/PyQt-Fluent-Widgets/tree/PySide6) 组件库。旨在为项目提供快速启动、可视化配置等服务。致力于为 **Windows用户** 打造更加舒适的项目体验。
 
-**Note: The term "project" in the following text refers to the "Open-LLM-VTuber project"**
-
----
-
-## 🌟 Features
-
-- 🖱️ **One-click startup:** Just press the button, and the launcher will automatically enter the virtual environment and start the project without the need to manually enter commands.
-- ⚙️ **Visual configuration:** Tired of modifying configuration files? Confused about the relationships between different settings? The launcher separates the configurations and uses switches, drop-down boxes, and other controls to make configuration easier.
-- 📄 **Automatic virtual environment configuration:** Each time the project is started, the launcher will automatically execute the uv virtual environment commands to check the environment, ensuring it always meets the project's dependency requirements.
-- 📥 **Download dependencies:** The launcher can currently automatically configure the uv virtual environment tool, eliminating the need for manual download and installation.
-- 📓 **Information display:** The startup page shows the currently selected character, Live2D model, ASR/LLM/TTS provider, and model information, making it convenient for users to confirm.
-- 🎛️ **Project/Launcher Console:** View the runtime status of the project/launcher within the launcher and quickly export logs for easy issue submission.
+**注意: 本文后续以 ‘项目’ 代指 ‘Open-LLM-VTuber 项目’**
 
 ---
 
-## 🖥️ System Requirements
+## 🌟 特色
 
-- Windows 10/11 22H2 or later versions
-- Others are consistent with the project
+- 🖱️ **一键启动:** 仅需按下按钮，启动器会自动进入虚拟环境并启动项目，无需手动输入命令。
+- ⚙️ **可视化配置:** 修改配置文件太复杂？不知各项之间的联系？启动器将配置分开管理，并利用开关、下拉列表框等控件让配置更加容易。
+- 📄 **自动配置虚拟环境:** 每次启动项目时，启动器会自动执行 uv 虚拟环境的命令对环境进行检测，以使其时刻符合项目依赖要求。
+- 📥 **下载部分依赖:** 目前启动器可以自动配置 uv 虚拟环境工具，无需手动下载安装。
+- 📓 **信息展示:** 在启动页面展示当前选中的角色、Live2D模型、ASR/LLM/TTS提供者以及模型等信息，方便用户确认。
+- 🎛️ **项目/启动器 控制台:** 在启动器中查看 项目/启动器 的运行状态，并可快速导出日志，便于问题提交。
+...
 
 ---
 
-## ℹ️ File Structure
+## 🖥️ 系统需求
 
-**Note:** Based on Releases, some file structures are omitted.
+- Windows 10/11 22H2 或 更新版本
+- 其他与 项目 保持一致
 
-**Excluding the `Open-LLM-VTuber` folder**
+---
+
+## ℹ️ 文件结构
+
+**注意:** 以 Releases 为基础，省略了一些文件结构
+
+**不包括 `Open-LLM-VTuber` 文件夹**
 > - /launcher
 >   - /assets
 >   - /configs
@@ -57,7 +58,7 @@ English README | [中文 README](./README.CN.md)
 > - lizhen.exe
 > - updater.exe
 
-**Including the `Open-LLM-VTuber` folder**
+**包括 `Open-LLM-VTuber` 文件夹**
 > - /launcher
 >   - /assets
 >   - /configs
@@ -69,39 +70,38 @@ English README | [中文 README](./README.CN.md)
 
 ---
 
-## ▶️ Quick Start
-
+## ▶️ 快速开始
 
 #### Release
-1. **Make sure you have downloaded and extracted the project folder completely and configured FFMpeg (NVIDIA card users also need to configure CUDA and CUDNN)**. You can refer to the [Project Documentation#Environment Preparation](https://open-llm-vtuber.github.io/docs/quick-start/#%E7%8E%AF%E5%A2%83%E5%87%86%E5%A4%87).
-> If your project folder's name is `Open-LLM-VTuber-vx.x.x`, remember to rename it to `Open-LLM-VTuber`
-2. Download the latest version of the launcher Release package (.zip file).
-3. Extract the files to a folder at the same level as the project folder (refer to the File Structure#Including the `Open-LLM-VTuber` folder).
-4. Double-click to run `lizhen.exe`.
-5. When starting for the first time, you will be asked whether to create a desktop shortcut, or you can manually create one in `Settings(设置)`.
+1. **请确认下载并完整解压了项目文件夹，且配置了 FFMpeg (N卡用户还需配置 CUDA、CUDNN)**，可参考 [项目文档#环境准备](https://open-llm-vtuber.github.io/docs/quick-start/#%E7%8E%AF%E5%A2%83%E5%87%86%E5%A4%87)，Git 和 Python环境 可以不用管
+> 如果您的项目文件夹名是 `Open-LLM-VTuber-vX.X.X`，记得把它重命名为 `Open-LLM-VTuber`
+2. 下载最新版本的启动器 Release 包 (.zip文件)
+3. 将其中文件完整解压到于项目文件夹同一级的文件夹中 (请参照 文件结构#包括 `Open-LLM-VTuber` 文件夹)
+4. 双击运行 `lizhen.exe`
+5. 首次启动时会询问是否创建桌面快捷方式，您也可以在 `设置` 里手动创建快捷方式
 
 #### Source
-1. On the basis of step 1 in **Release**, install Python 3.12.x.
-2. Clone this repository using Git:
+1. 在 **Release** 的第 1 步的基础上安装 Python 3.12.x
+2. 使用 Git 克隆本仓库:
 ```batch
 git clone https://github.com/Stewitch/LiZhen.git
 ```
-3. Open the repository directory that was just cloned in the File Explorer, and copy the files to the directory at the same level as the project folder (refer to File Structure#Including the `Open-LLM-VTuber` folder).
-4. Install project dependencies:
+3. 在文件资源管理器中打开刚刚克隆下来的仓库目录，将其中文件复制到与项目文件夹同级目录下 (请参照 文件结构#包括 `Open-LLM-VTuber` 文件夹)
+4. 安装项目依赖:
 ```batch
 pip install -r requirements.txt
-rem For users in China: If the download speed is slow, you can try setting the Tsinghua source and reinstalling
+rem 对于国内用户：若下载速度较慢，可尝试设置清华源后重新安装
 pip config set global.index-url https://mirrors.tuna.tsinghua.edu.cn/pypi/web/simple
-rem After setting, run the first command again
+rem 设置完后再次执行第一条命令
 ```
-5. Start `main.py`. You can run it directly by double-clicking if the Python environment is properly configured, or use the command:
+5. 启动 main.py，在 Python环境 配置好的情况下可直接双击运行，或使用命令
 ```batch
 python main.py
 ```
 
 ---
 
-## 🫡 Credits
+## 🫡 致谢
 - **@t41372** [Open-LLM-VTuber](https://github.com/Open-LLM-VTuber/Open-LLM-VTuber)
 - **@zhiyiYo** [PySide6-Fluent-Widgets](https://github.com/zhiyiYo/PyQt-Fluent-Widgets/tree/PySide6)
 
