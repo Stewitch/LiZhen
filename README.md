@@ -78,7 +78,7 @@ English README | [中文 README](./README.CN.md)
 2. Download the latest version of the launcher Release package (.zip file).
 3. Extract the files to a folder at the same level as the project folder (refer to the File Structure#Including the `Open-LLM-VTuber` folder).
 4. Double-click to run `lizhen.exe`.
-5. When exiting for the first time, you will be asked whether to create a desktop shortcut, or you can manually create one.
+5. When starting for the first time, you will be asked whether to create a desktop shortcut, or you can manually create one in `Settings(设置)`.
 
 #### Source
 1. On the basis of step 1 in **Release**, install Python 3.12.x.
