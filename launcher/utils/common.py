@@ -93,53 +93,24 @@ class Status(QObject):
 
 
 def checkUV() -> bool:
-    """
-    检查系统是否安装了 UV 虚拟环境管理工具
-    
-    Returns:
-        bool: UV 是否存在
-    """
-    uv_path = shutil.which('uv')
-    if uv_path is not None:
-        logger.info(f"找到 UV 工具: {uv_path}")
+    """检查系统是否安装了 UV 虚拟环境管理工具"""
+    uvPath = shutil.which('uv')
+    if uvPath:
+        logger.info(f"找到 UV 工具: {uvPath}")
         return True
     
-    logger.warning("未找到 UV 工具，尝试安装")
-    try:
-        if SYSTEM == "Windows":
-            logger.info("Windows 系统，尝试通过 PowerShell 安装")
-            subprocess.Popen(["powershell", "-ExecutionPolicy", "ByPass", "-c", "irm https://astral.sh/uv/install.ps1 | iex"])
-        elif SYSTEM == "Linux" or SYSTEM == "Darwin":
-            logger.info("Linux 系统，尝试通过 Shell 安装")
-            subprocess.Popen(["sh", "-c", "$(curl -fsSL https://astral.sh/uv/install.sh)"])
-        else:
-            logger.error(f"未知系统：{SYSTEM}")
-            return False
-    except:
-        logger.error("安装失败")
-        return False
-    
-    return checkUV()
+    logger.warning("未找到 UV 工具")
+    return False
 
 
 def checkVenv() -> bool:
-    """
-    检查项目是否存在虚拟环境
-    
-    Returns:
-        bool: 虚拟环境是否存在
-    """
+    """检查项目是否存在虚拟环境"""
     if os.path.exists(VENV):
         logger.info(f"找到虚拟环境：{VENV}")
         return True
-    logger.warning("未找到虚拟环境, 尝试创建")
-    try:
-        subprocess.Popen(["uv", "venv"], cwd=PROJECT)
-    except:
-        logger.error("创建失败")
-        return False
     
-    return checkVenv()
+    logger.warning("未找到虚拟环境")
+    return False
 
 
 def createShortcut():
@@ -186,20 +157,26 @@ class Project(Status):
         "Windows": {
             "shell": "cmd",
             "arg": "/k",
-            "activate": f"call {VENV_ACTIVATE}"
+            "activate": f"call {VENV_ACTIVATE}",
+            "UVShell": "powershell",
+            "UVinstall": 'powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex";exit'
         },
         "Linux": {
             # 包括 macOS
             "shell": "sh",
             "arg": "-c",
-            "activate": f"source {VENV_ACTIVATE}"
+            "activate": f"source {VENV_ACTIVATE}",
+            "UVShell": "sh",
+            "UVinstall": "curl -fsSL https://astral.sh/uv/install.sh;exit"
         }
     }
+    SYS_SPECIFIED_COMMANDS["Darwin"] = SYS_SPECIFIED_COMMANDS["Linux"]
     
     def __init__(self):
         super().__init__()
         self.__uv = checkUV()
         self.__venv = checkVenv() if self.__uv else False
+        self.__startable = self.__uv and self.__venv
         self.__backend = QProcess()
         self.__serverPid = None
         self.__encoding = "gbk"
@@ -213,19 +190,18 @@ class Project(Status):
         self.__backend.readyReadStandardError.connect(self.__detectEncoding)
         self.__backend.readyReadStandardError.connect(self.__newStderr)
         self.__backend.readyReadStandardOutput.connect(self.__newStdout)
-        
-        
+          
     def __initCommands(self):
-        if not self.__venv:
-            logger.critical("虚拟环境未准备好，无法启动项目")
-            return
-
         self.__activate = self.SYS_SPECIFIED_COMMANDS[SYSTEM]["activate"]
-        
+        self.__installUV = self.SYS_SPECIFIED_COMMANDS[SYSTEM]["UVinstall"]
         self.__runServer = f"python {str(PROJECT.joinpath("run_server.py"))} {HF_MIRROR}"
         # self.__runProject = f"{self.__activate} && {self.__runServer}"
         self.__installReq = "uv sync"
-        self.__insAndRun = f"{self.__activate} && {self.__installReq} && {self.__runServer}"
+        self.__insAndRun = f"{self.__activate} && {self.__installReq} && {self.__runServer};exit"
+        
+        self.__shell = self.SYS_SPECIFIED_COMMANDS[SYSTEM]["shell"]
+        self.__arg = self.SYS_SPECIFIED_COMMANDS[SYSTEM]["arg"]
+    
         
     @logger.catch
     def __checkProjectReq(self):
@@ -241,14 +217,12 @@ class Project(Status):
             logger.warning("项目启动中，强制终止可能会导致一些问题")
             return
         
-        shell = self.SYS_SPECIFIED_COMMANDS[SYSTEM]["shell"]
-        arg = self.SYS_SPECIFIED_COMMANDS[SYSTEM]["arg"]
-        
         self.__checkProjectReq()
-        self.__backend.start(shell, [arg, self.__insAndRun])
+        self.__backend.start(self.__shell, [self.__arg, self.__insAndRun])
         
         self.changeTo("starting")
         self.shellNewText.connect(self.__stateUpdateByText)
+    
     
     def __killServer(self):
         try:
@@ -256,7 +230,6 @@ class Project(Status):
         except:
             logger.warning("终止服务器进程失败，可能是因为服务器未启动")
         
-    
     def stop(self):
         self._forceStop()
         self.changeTo("off")
@@ -269,9 +242,50 @@ class Project(Status):
     def uvAvailable(self):
         return self.__uv
     
-    
     def venvAvailable(self):
         return self.__venv
+    
+    def isStartable(self):
+        return self.__startable
+    
+    
+    def installUV(self):
+        self.__encoding = "utf-8"
+        shell = self.SYS_SPECIFIED_COMMANDS[SYSTEM]["UVShell"]
+        self.__backend.start(shell, [self.__installUV])
+        self.__backend.finished.connect(self.__uvInstalled)
+    
+    def __uvInstalled(self):
+        self.__uv = checkUV()
+        if self.__uv:
+            logger.info("UV 安装完成")
+            self.setVenv()
+        else:
+            broad.cast(Signals.showNoticeDialog, self.tr("UV 安装失败"), self.tr("请前往控制台查看详细信息"))
+        self.__backend.finished.disconnect(self.__uvInstalled)
+    
+    
+    def setVenv(self):
+        if not self.__uv:
+            logger.error("UV 未安装，无法创建虚拟环境")
+            return
+        self.__backend.start(self.__shell, [self.__arg, "uv venv && exit"])
+        self.__backend.finished.connect(self.__venvCreated)
+    
+    def __venvCreated(self):
+        self.__venv = checkVenv()
+        if self.__venv:
+            self.__startable = True
+            logger.info("虚拟环境创建完成")
+        else:
+            broad.cast(Signals.showNoticeDialog, self.tr("虚拟环境安装失败"), self.tr("请前往控制台查看详细信息"))
+        self.__backend.finished.disconnect(self.__venvCreated)
+        
+    def initUV(self):
+        if not self.__uv:
+            self.installUV()
+        elif not self.__venv:
+            self.setVenv()
     
     
     def __detectEncoding(self):
@@ -301,7 +315,6 @@ class Project(Status):
             self.__encoding, "replace"
         )
         self.__newText(msg)
-        
     
     def __stateUpdateByText(self, text: str):
         if "Started server process" in text:
@@ -338,8 +351,8 @@ def openFolder(folder: str):
 
 def onProjectStart():
     logger.debug(project.uvAvailable())
-    if project.uvAvailable():
-        logger.info("UV 已安装，启动项目")
+    if project.isStartable():
+        logger.info("UV 已安装，可以启动项目")
         project.start()
     logger.debug(f"当前项目状态：{project}")
     logger.info("项目启动中")

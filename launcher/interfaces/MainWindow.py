@@ -1,7 +1,7 @@
 from PySide6.QtGui import QIcon
 from PySide6.QtWidgets import QApplication
 from PySide6.QtCore import QSize, QEventLoop, QTimer
-from qfluentwidgets import (FluentIcon, MSFluentWindow, NavigationItemPosition, SplashScreen, InfoBar)
+from qfluentwidgets import (FluentIcon, MSFluentWindow, NavigationItemPosition, SplashScreen, MessageBox)
 from typing import List
 
 from .Setting import SettingInterface
@@ -139,7 +139,7 @@ class MainWindow(MSFluentWindow):
             interface.configsDiscard.connect(self.__configDiscard)
         
         project.tryToStop.connect(self.__tryToStop)
-        
+        broad.showNoticeDialog.connect(self.__showNoticeDialog)
     
     def __tryToStop(self):
         stop = StopDialog(self.tr("项目正在启动！"), self.tr("是否停止项目运行？\n 可能需要重启启动器以再次启动项目！"), self)
@@ -207,6 +207,16 @@ class MainWindow(MSFluentWindow):
                 return True
             return False
         return True
+    
+    def __showNoticeDialog(self, title, content):
+        w = MessageBox(
+            title,
+            content,
+            self
+        )
+        w.yesButton.setText(self.tr("确定"))
+        w.cancelButton.hide()
+        w.exec()
     
     
     def closeEvent(self, e):

@@ -23,6 +23,7 @@ class ConsoleInterface(QWidget, Ui_Console):
         self.__SSConnection()
         
         self.__updateStatus()
+        project.initUV()
         
         
     def __initWidgets(self):
