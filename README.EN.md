@@ -73,7 +73,7 @@
 
 
 #### Release
-1. **Make sure you have downloaded and extracted the project folder completely and configured FFMpeg (NVIDIA card users also need to configure CUDA and CUDNN)**. You can refer to the [Project Documentation#Environment Preparation](https://open-llm-vtuber.github.io/docs/quick-start/#%E7%8E%AF%E5%A2%83%E5%87%86%E5%A4%87).
+1. **Make sure you have downloaded and extracted the project folder completely and configured FFMpeg (NVIDIA card users also need to configure CUDA and CUDNN)**. You can refer to the [Project Documentation#Environment Preparation](https://open-llm-vtuber.github.io/en/docs/quick-start/#environment-preparation).
 > If your project folder's name is `Open-LLM-VTuber-vx.x.x`, remember to rename it to `Open-LLM-VTuber`
 2. Download the latest version of the launcher Release package (.zip file).
 3. Extract the files to a folder at the same level as the project folder (refer to the File Structure#Including the `Open-LLM-VTuber` folder).
