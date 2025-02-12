@@ -107,6 +107,12 @@ python main.py
 
 ---
 
+## ⚡️ 支持
+如果你想支持我更好地开发<del>（存疑）</del>，可以前往我的 [爱发电主页](https://afdian.com/a/Stewitch) 进行支持💖
+我会把国内的网盘下载链接贴在那里（公开的！不用支持也能下！）
+
+---
+
 ## ⭐ Star History
 
 [![Star History Chart](https://api.star-history.com/svg?repos=Stewitch/LiZhen&type=Date)](https://star-history.com/#Stewitch/LiZhen&Date)
