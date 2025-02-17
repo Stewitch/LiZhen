@@ -1,0 +1,16 @@
+[project]
+name = "LiZhen"
+version = "1.0.0"
+description = "A modern launcher for Open-LLM-VTuber."
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "chardet>=5.2.0",
+    "loguru>=0.7.3",
+    "pyside6>=6.8.2.1",
+    "pyside6-fluent-widgets>=1.7.5",
+    "requests>=2.32.3",
+    "ruamel-yaml>=0.18.10",
+    "tomlkit>=0.13.2",
+    "winshell>=0.6",
+]
