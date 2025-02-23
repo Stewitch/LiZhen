@@ -1,4 +1,5 @@
 from PySide6.QtCore import QObject, Signal, QProcess
+from qfluentwidgets import MessageBox
 from signal import SIGTERM, CTRL_C_EVENT
 from threading import Thread
 
@@ -6,11 +7,11 @@ from .log import logger, SYSTEM
 from .paths import PROJECT, VENV, VENV_ACTIVATE, UV_CONFIG
 from .color import ansi_to_html
 from .configs import cfg
-from .bridge import port
+from .bridge import host, port
 from .announce import broad
 from .enums import Signals
 
-import os, subprocess, shutil, tomlkit, re, chardet, winshell
+import os, subprocess, shutil, tomlkit, re, chardet, winshell, webbrowser
 
 FASTERINIT = 0
 
@@ -326,6 +327,13 @@ class Project(Status):
         if "Application startup complete." in text:
             self.changeTo("on")
             logger.info("项目启动完成")
+            link = f"http://{host}:{port}"
+            if not webbrowser.open(link):
+                w = MessageBox(
+                    self.tr("链接打开失败"),
+                    self.tr(f"请手动前往: {link}"),
+                    self
+                )
             self.shellNewText.disconnect(self.__stateUpdateByText)
         
 

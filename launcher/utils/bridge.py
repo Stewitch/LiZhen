@@ -23,6 +23,7 @@ except:
 pcfg = validate_config(read_yaml(str(PROJ_CFG)))
 
 systemConfig = pcfg.system_config
+host = systemConfig.host
 port = systemConfig.port
 characterConfig = pcfg.character_config
 agentConfig = characterConfig.agent_config

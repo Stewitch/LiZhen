@@ -7,34 +7,19 @@ from ..interfaces.Widgets import *
 
 ANSI_COLOR_MAP = {
     # 前景色
-    '30': 'color: black',
-    '31': 'color: red',
-    '32': 'color: #32CD32',
-    '33': 'color: #ffe644',
-    '34': 'color: #00CDCD',
-    '35': 'color: magenta',
-    '36': 'color: #008B8B',
-    '37': 'color: white',
+    '33': 'color: #F1BB00',  # Warning
+    '31': 'color: #FF0000',  # Error
+    '32': 'color: #32CD32',  # <green></green>
+    '36': 'color: #008B8B',  # <cyan></cyan>
     
     # 背景色
-    '40': 'background-color: black',
-    '41': 'background-color: red',
-    '42': 'background-color: green',
-    '43': 'background-color: yellow',
-    '44': 'background-color: blue',
-    '45': 'background-color: magenta',
-    '46': 'background-color: cyan',
-    '47': 'background-color: white',
+    '41': 'background-color: #FF5555',  # Critical
     
     # 文本样式
     '0': '',  # 重置
     '1': 'font-weight: bold',  # 粗体
-    '2': 'opacity: 0.8',  # 暗淡
     '3': 'font-style: italic',  # 斜体
     '4': 'text-decoration: underline',  # 下划线
-    '5': 'text-decoration: blink',  # 闪烁
-    '7': 'filter: invert(100%)',  # 反显
-    '8': 'opacity: 0',  # 隐藏
     '9': 'text-decoration: line-through',  # 删除线
 }
 

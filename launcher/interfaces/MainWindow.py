@@ -201,7 +201,7 @@ class MainWindow(MSFluentWindow):
     def __checkProject(self):
         if project.isRunning() or project.isRunning() is None:
             stop = StopDialog(self.tr("项目正在运行！"), self.tr("如要退出启动器，请先停止项目运行！"), self)
-            stop.yesButton.setText(self.tr("停止&退出"))
+            stop.yesButton.setText(self.tr("停止并退出"))
             if stop.exec():
                 project._forceStop()
                 return True
