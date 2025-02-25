@@ -110,6 +110,7 @@ class StartInterface(QWidget, Ui_Start):
             switchProjectState()
     
     def __SSConnection(self):
+        itemManager.saved.connect(self.__updateConfig)
         project.changed.connect(self.__updateButton)
         self.startButton.clicked.connect(self.__onProjectStart)
         self.ASRFolder.clicked.connect(openFolder)

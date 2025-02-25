@@ -7,6 +7,7 @@ from ..interfaces.Widgets import *
 
 ANSI_COLOR_MAP = {
     # 前景色
+    '34': 'color: #228FBD',  # Debug
     '33': 'color: #F1BB00',  # Warning
     '31': 'color: #FF0000',  # Error
     '32': 'color: #32CD32',  # <green></green>

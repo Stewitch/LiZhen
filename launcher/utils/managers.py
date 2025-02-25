@@ -9,6 +9,7 @@ from .log import logger
 class ItemManager(QObject):
     
     vDictChanged = Signal(dict)
+    saved = Signal()
     
     def __init__(self, parent=None):
         super().__init__(parent=parent)
@@ -75,6 +76,7 @@ class ItemManager(QObject):
             item.onSave()
         self.vDict = {}
         self.vDictChanged.emit(self.vDict)
+        self.saved.emit()
     
     def onDiscard(self):
         if self.vDict == {}:
