@@ -30,19 +30,14 @@ commands = {"Windows": f'netstat -aon|findstr "{port}"', "Linux": f'lsof -i tcp:
 
 def getPortOccupantPid() -> int | None:
     oid = None
-    def worker():
-        nonlocal oid
-        with os.popen(commands[SYSTEM]) as r:
-            try:
-                if SYSTEM == "Windows":
-                    oid = int(r.read().strip().split(" ")[-1])
-                else:
-                    oid = int(r.read().split("\n")[1].split("  ")[1])
-            except:
-                pass
-    wt = Thread(target=worker)
-    wt.start()
-    wt.join()
+    with os.popen(commands[SYSTEM]) as r:
+        try:
+            if SYSTEM == "Windows":
+                oid = int(r.read().strip().split(" ")[-1])
+            else:
+                oid = int(r.read().split("\n")[1].split("  ")[1])
+        except:
+            pass
     if oid is None:
         logger.info(f"未找到可能占用{port}端口的进程")
     return oid
@@ -251,7 +246,6 @@ class Project(Status):
     
     
     def installUV(self):
-        self.__encoding = "utf-8"
         shell = self.SYS_SPECIFIED_COMMANDS[SYSTEM]["UVShell"]
         self.__backend.start(shell, [self.__installUV])
         self.__backend.finished.connect(self.__uvInstalled)
@@ -291,9 +285,9 @@ class Project(Status):
     
     def __detectEncoding(self):
         data = self.__backend.readAllStandardError().data()
-        if len(data) >= 800:
-            charData = chardet.detect(data)
+        if len(data) >= 2000:
             logger.info(f"尝试从长度 {len(data)} 的数据中检测编码数据")
+            charData = chardet.detect(data)
             logger.info(f"结果：{charData}")
             if charData["encoding"] is not None and charData["confidence"] > 0.85:
                 self.__encoding = charData["encoding"]
