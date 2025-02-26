@@ -1,9 +1,9 @@
 {
     "version": "v0.5.7",
     "url": {
-        "GitHub": "https://api.github.com/repos/Stewitch/lz-update/releases/latest",
-        "Gitee": "https://gitee.com/api/v5/repos/Stewitch/lz-update/releases/latest",
-        "geSize": "https://gitee.com/api/v5/repos/Stewitch/lz-update/releases/{rid}/attach_files"
+        "GitHub": "https://api.github.com/repos/Stewitch/LiZhen/releases/latest",
+        "Gitee": "https://gitee.com/api/v5/repos/Stewitch/LiZhen/releases/latest",
+        "geSize": "https://gitee.com/api/v5/repos/Stewitch/LiZhen/releases/{rid}/attach_files"
     },
     "args": {
         "repo": {
