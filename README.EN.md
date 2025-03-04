@@ -20,7 +20,7 @@
 ---
 
 >[!NOTE]
->Currently, launcher is under refactoring at `next` branch
+>Currently, launcher is under refactoring at `next` branch.
 >If you have breaking ideas, please contribute to `next` branch.
 >`dev` branch is used to merge to `main` , it should be based on `main`.
 
