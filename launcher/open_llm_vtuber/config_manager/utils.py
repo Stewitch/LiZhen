@@ -1,6 +1,5 @@
 # config_manager/utils.py
-import ruamel.yaml as yaml
-from ruamel.yaml import CommentedMap
+import yaml
 from pathlib import Path
 from typing import Union, Dict, Any, TypeVar
 from pydantic import BaseModel, ValidationError
@@ -12,9 +11,7 @@ from loguru import logger
 from .main import Config
 
 T = TypeVar("T", bound=BaseModel)
-y = yaml.YAML(typ='rt')
-y.preserve_quotes = True
-y.width = 4096
+
 
 def read_yaml(config_path: str) -> Dict[str, Any]:
     """
@@ -49,7 +46,7 @@ def read_yaml(config_path: str) -> Dict[str, Any]:
     content = pattern.sub(replacer, content)
 
     try:
-        return y.load(content)
+        return yaml.safe_load(content)
     except yaml.YAMLError as e:
         logger.critical(f"Error parsing YAML file: {e}")
         raise e
@@ -87,7 +84,7 @@ def load_text_file_with_guess_encoding(file_path: str) -> str | None:
     Returns:
     - str: The content of the text file or None if an error occurred.
     """
-    encodings = ["utf-8", "utf-8-sig", "gbk", "gb2312", "ascii"]
+    encodings = ["utf-8", "utf-8-sig", "gbk", "gb2312", "ascii", "cp936"]
 
     for encoding in encodings:
         try:
@@ -107,22 +104,6 @@ def load_text_file_with_guess_encoding(file_path: str) -> str | None:
     return None
 
 
-def deep_update_with_comments(base: CommentedMap, update: dict) -> None:
-    """
-    递归地更新 CommentedMap，保留所有注释
-    
-    Args:
-        base: 原始的 CommentedMap 对象（包含注释）
-        update: 新的配置数据
-    """
-    for key, value in update.items():
-        if key not in base:
-            base[key] = value
-        elif isinstance(value, dict) and isinstance(base[key], CommentedMap):
-            deep_update_with_comments(base[key], value)
-        else:
-            base[key] = value
-
 def save_config(config: BaseModel, config_path: Union[str, Path]):
     """
     Saves a Pydantic model to a YAML configuration file.
@@ -135,20 +116,10 @@ def save_config(config: BaseModel, config_path: Union[str, Path]):
     config_data = config.model_dump(
         by_alias=True, exclude_unset=True, exclude_none=True
     )
-    
-    if config_file.exists():
-        try:
-            with open(config_file, 'r', encoding='utf-8') as f:
-                original = y.load(f)
-                if isinstance(original, CommentedMap):
-                    deep_update_with_comments(original, config_data)
-                    config_data = original
-        except Exception as e:
-            logger.warning(f"无法读取原有配置文件的注释: {e}")
 
     try:
         with open(config_file, "w", encoding="utf-8") as f:
-            y.dump(config_data, f)
+            yaml.dump(config_data, f, allow_unicode=True)
     except yaml.YAMLError as e:
         raise yaml.YAMLError(f"Error writing YAML file: {e}")
 

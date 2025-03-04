@@ -1,10 +1,28 @@
 # config_manager/llm.py
-from typing import ClassVar
+from typing import ClassVar, Literal
 from pydantic import BaseModel, Field
 from .i18n import I18nMixin, Description
 
 
-class OpenAICompatibleConfig(I18nMixin):
+class StatelessLLMBaseConfig(I18nMixin):
+    """Base configuration for StatelessLLM."""
+
+    # interrupt_method. If the provider supports inserting system prompt anywhere in the chat memory, use "system". Otherwise, use "user".
+    interrupt_method: Literal["system", "user"] = Field(
+        "user", alias="interrupt_method"
+    )
+    DESCRIPTIONS: ClassVar[dict[str, Description]] = {
+        "interrupt_method": Description(
+            en="""The method to use for prompting the interruption signal.
+            If the provider supports inserting system prompt anywhere in the chat memory, use "system". 
+            Otherwise, use "user". You don't need to change this setting.""",
+            zh="""用于表示中断信号的方法(提示词模式)。如果LLM支持在聊天记忆中的任何位置插入系统提示词，请使用“system”。
+            否则，请使用“user”。您不需要更改此设置。""",
+        ),
+    }
+
+
+class OpenAICompatibleConfig(StatelessLLMBaseConfig):
     """Configuration for OpenAI-compatible LLM providers."""
 
     base_url: str = Field(..., alias="base_url")
@@ -14,7 +32,7 @@ class OpenAICompatibleConfig(I18nMixin):
     project_id: str | None = Field(None, alias="project_id")
     temperature: float = Field(1.0, alias="temperature")
 
-    DESCRIPTIONS: ClassVar[dict[str, Description]] = {
+    _OPENAI_COMPATIBLE_DESCRIPTIONS: ClassVar[dict[str, Description]] = {
         "base_url": Description(en="Base URL for the API endpoint", zh="API的URL端点"),
         "llm_api_key": Description(en="API key for authentication", zh="API 认证密钥"),
         "organization_id": Description(
@@ -30,6 +48,11 @@ class OpenAICompatibleConfig(I18nMixin):
         ),
     }
 
+    DESCRIPTIONS: ClassVar[dict[str, Description]] = {
+        **StatelessLLMBaseConfig.DESCRIPTIONS,
+        **_OPENAI_COMPATIBLE_DESCRIPTIONS,
+    }
+
 
 # Ollama config is completely the same as OpenAICompatibleConfig
 
@@ -40,6 +63,9 @@ class OllamaConfig(OpenAICompatibleConfig):
     llm_api_key: str = Field("default_api_key", alias="llm_api_key")
     keep_alive: float = Field(-1, alias="keep_alive")
     unload_at_exit: bool = Field(True, alias="unload_at_exit")
+    interrupt_method: Literal["system", "user"] = Field(
+        "system", alias="interrupt_method"
+    )
 
     # Ollama-specific descriptions
     _OLLAMA_DESCRIPTIONS: ClassVar[dict[str, Description]] = {
@@ -68,6 +94,9 @@ class OpenAIConfig(OpenAICompatibleConfig):
     """Configuration for Official OpenAI API."""
 
     base_url: str = Field("https://api.openai.com/v1", alias="base_url")
+    interrupt_method: Literal["system", "user"] = Field(
+        "system", alias="interrupt_method"
+    )
 
 
 class GeminiConfig(OpenAICompatibleConfig):
@@ -76,12 +105,18 @@ class GeminiConfig(OpenAICompatibleConfig):
     base_url: str = Field(
         "https://generativelanguage.googleapis.com/v1beta/openai/", alias="base_url"
     )
+    interrupt_method: Literal["system", "user"] = Field(
+        "user", alias="interrupt_method"
+    )
 
 
 class MistralConfig(OpenAICompatibleConfig):
     """Configuration for Mistral API."""
 
     base_url: str = Field("https://api.mistral.ai/v1", alias="base_url")
+    interrupt_method: Literal["system", "user"] = Field(
+        "user", alias="interrupt_method"
+    )
 
 
 class ZhipuConfig(OpenAICompatibleConfig):
@@ -100,16 +135,22 @@ class GroqConfig(OpenAICompatibleConfig):
     """Configuration for Groq API."""
 
     base_url: str = Field("https://api.groq.com/openai/v1", alias="base_url")
+    interrupt_method: Literal["system", "user"] = Field(
+        "system", alias="interrupt_method"
+    )
 
 
-class ClaudeConfig(I18nMixin):
+class ClaudeConfig(StatelessLLMBaseConfig):
     """Configuration for OpenAI Official API."""
 
     base_url: str = Field("https://api.anthropic.com", alias="base_url")
     llm_api_key: str = Field(..., alias="llm_api_key")
     model: str = Field(..., alias="model")
+    interrupt_method: Literal["system", "user"] = Field(
+        "user", alias="interrupt_method"
+    )
 
-    DESCRIPTIONS: ClassVar[dict[str, Description]] = {
+    _CLAUDE_DESCRIPTIONS: ClassVar[dict[str, Description]] = {
         "base_url": Description(
             en="Base URL for Claude API", zh="Claude API 的API端点"
         ),
@@ -119,16 +160,29 @@ class ClaudeConfig(I18nMixin):
         ),
     }
 
+    DESCRIPTIONS: ClassVar[dict[str, Description]] = {
+        **StatelessLLMBaseConfig.DESCRIPTIONS,
+        **_CLAUDE_DESCRIPTIONS,
+    }
 
-class LlamaCppConfig(I18nMixin):
+
+class LlamaCppConfig(StatelessLLMBaseConfig):
     """Configuration for LlamaCpp."""
 
     model_path: str = Field(..., alias="model_path")
+    interrupt_method: Literal["system", "user"] = Field(
+        "system", alias="interrupt_method"
+    )
 
-    DESCRIPTIONS: ClassVar[dict[str, Description]] = {
+    _LLAMA_DESCRIPTIONS: ClassVar[dict[str, Description]] = {
         "model_path": Description(
             en="Path to the GGUF model file", zh="GGUF 模型文件路径"
         ),
+    }
+
+    DESCRIPTIONS: ClassVar[dict[str, Description]] = {
+        **StatelessLLMBaseConfig.DESCRIPTIONS,
+        **_LLAMA_DESCRIPTIONS,
     }
 
 
