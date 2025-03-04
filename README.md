@@ -19,6 +19,11 @@
 
 ---
 
+>[!NOTE]
+>当前为 `Next` 分支，即重构代码提交分支
+
+---
+
 ## ❓ 这是什么项目
 
 **离真** 是为 [Open-LLM-VTuber](https://github.com/Open-LLM-VTuber/Open-LLM-VTuber) 项目所设计的一个现代化启动器。基于 Python 开发，使用 PySide6 UI框架和 [PySide6-Fluent-Widgets](https://github.com/zhiyiYo/PyQt-Fluent-Widgets/tree/PySide6) 组件库。旨在为项目提供快速启动、可视化配置等服务。致力于为 **Windows用户** 打造更加舒适的项目体验。

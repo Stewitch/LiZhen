@@ -9,16 +9,17 @@ import re, queue, sys
 ANSI_ESCAPE_PATTERN = re.compile(r'\x1b\[([0-9;]+)m')
 
 ANSI_COLOR_MAP = {
-    # 前景色
+    # 前景色 (仅使用的颜色)
+    '34': 'color: #1E90FF',  # Debug
     '33': 'color: #F1BB00',  # Warning
     '31': 'color: #FF0000',  # Error
     '32': 'color: #32CD32',  # <green></green>
     '36': 'color: #008B8B',  # <cyan></cyan>
     
-    # 背景色
+    # 背景色 (仅使用的颜色)
     '41': 'background-color: #FF5555',  # Critical
     
-    # 文本样式
+    # 文本样式 (仅使用的样式)
     '0': '',  # 重置
     '1': 'font-weight: bold',  # 粗体
     '3': 'font-style: italic',  # 斜体
@@ -66,13 +67,28 @@ def ANSIToHtml(text: str) -> str:
 
 
 class StandardStream(Enum):
-    """标准流"""
+    
+    """标准流枚举
+    
+    用于保留标准输出和标准错误流的引用
+    """
+    
     STDOUT = sys.stdout
     STDERR = sys.stderr
 
 
 
 class QueuedStream:
+    
+    """队列流
+    用于将标准输出和标准错误重定向到队列中，便于在 Qt 线程中处理
+    
+    使用方法:
+    ```python
+    sys.stdout = QueuedStream(StandardStream.STDOUT)
+    ```
+    建议使用 `QMsgThread` 类来处理队列中的消息
+    """
     
     def __init__(self, stdStream: StandardStream):
         self.stdStream = stdStream
@@ -113,11 +129,42 @@ class Receiver(QObject):
 
 class QMsgThread(QThread):
     
+    """消息线程
+    用于将标准输出和标准错误重定向到 Qt 线程中
+    
+    使用方法:
+    ```python
+    sys.stdout = QueuedStream(StandardStream.STDOUT)
+    msgThread = QMsgThread.fromQueueStream(sys.stdout)
+    msgThread.bind(textEdit.append)
+    msgThread.start()
+    ```
+    关闭方法:
+    ```python
+    msgThread.quit()
+    msgThread.wait() # 等待线程结束
+    ```
+    """
+    
     def __init__(self, receiver: Receiver):
+        """请使用 `QMsgThread.fromQueuedStream()` 构造方法"""
         super().__init__()
         self.receiver = receiver
         self.receiver.moveToThread(self)
         self.started.connect(self.receiver.listen)
+    
+    def quit(self) -> None:
+        if self.isRunning() and self.receiver:
+            self.receiver.stream.close()
+        return super().quit()
+    
+    @classmethod
+    def fromQueuedStream(cls, stream: QueuedStream) -> 'QMsgThread':
+        receiver = Receiver(stream)
+        return cls(receiver)
+    
+    def bind(self, func) -> None:
+        self.receiver.newText.connect(func)
 
 
 
@@ -132,7 +179,6 @@ sys.stderr = stderr_
 if __name__ == "__main__":
     
     from PySide6.QtWidgets import QApplication, QTextEdit
-    from log import logger, fmt
     
     app = QApplication(sys.argv)
     textEdit = QTextEdit()
@@ -141,9 +187,8 @@ if __name__ == "__main__":
     
     # 替换标准输出
     sys.stdout = QueuedStream(StandardStream.STDOUT)
-    stdoutReceiver = Receiver(sys.stdout)
-    stdoutReceiver.newText.connect(textEdit.append)
-    msgThread = QMsgThread(stdoutReceiver)
+    msgThread = QMsgThread.fromQueuedStream(sys.stdout)
+    msgThread.bind(textEdit.append)
     msgThread.start()
     textEdit.setStyleSheet("""
     QTextEdit {
@@ -154,23 +199,17 @@ if __name__ == "__main__":
     textEdit.show()
     
     # 重定向 stdout 和 ANSI 样式转换测试
-    print('\033[1;30mH\033[1;31me\033[1;32ml\033[1;33ml\033[1;36mo, \033[1;41m\033[1;37mWorld!\033[0m')
+    print('\033[1;30mH\033[1;31me\033[1;32ml\033[1;33ml\033[1;36mo, \033[1;41m\033[1;34mWorld!\033[0m')
     print('\033[0mHello World!')
     print('\033[1mHello World!')
     print('\033[3mHello World!')
     print('\033[4mHello World!')
     print('\033[9mHello World!')
-    logger.add(sys.stdout, format=fmt, colorize=True, backtrace=True, diagnose=True)
-    logger.info("Hello, World!")
-    logger.warning("Hello, World!")
-    logger.error("Hello, World!")
-    logger.critical("Hello, World!")
-    sys.stdout.close()
     
     # 等待线程结束
     msgThread.quit()
     msgThread.wait()
     
     # 恢复原始输出
-    print('End')
+    print('End of QueueStream Test')
     sys.exit(app.exec())
