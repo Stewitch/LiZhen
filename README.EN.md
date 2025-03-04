@@ -19,6 +19,13 @@
 
 ---
 
+>[!NOTE]
+>Currently, launcher is under refactoring at `next` branch
+>If you have breaking ideas, please contribute to `next` branch.
+>`dev` branch is used to merge to `main` , it should be based on `main`.
+
+---
+
 ## ❓ What is this project
 
 **Li Zhen** is a modern launcher designed for the [Open-LLM-VTuber](https://github.com/Open-LLM-VTuber/Open-LLM-VTuber) project. It is developed in Python, using the PySide6 UI framework and the [PySide6-Fluent-Widgets](https://github.com/zhiyiYo/PyQt-Fluent-Widgets/tree/PySide6) component library. It aims to provide services such as quick startup and visual configuration for the project. It is committed to creating a more comfortable experience for **Windows users**.
