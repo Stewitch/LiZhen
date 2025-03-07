@@ -1,0 +1,1519 @@
+[system_config.host]
+value = "127.0.0.1"
+type = "str"
+title = {zh = "默认标题", en = "Default Title"}
+description = {zh = "默认描述", en = "Default Description"}
+required = false
+default = "127.0.0.1"
+
+[system_config.port]
+value = 3306
+type = "int"
+title = {zh = "默认标题", en = "Default Title"}
+description = {zh = "默认描述", en = "Default Description"}
+required = false
+default = 3306
+range = [0, 999999]
+
+[system_config.conf_version]
+value = "v1.1.0-alpha.1"
+type = "str"
+title = {zh = "默认标题", en = "Default Title"}
+description = {zh = "默认描述", en = "Default Description"}
+required = false
+default = "v1.1.0-alpha.1"
+
+[system_config.config_alts_dir]
+value = "characters"
+type = "str"
+title = {zh = "默认标题", en = "Default Title"}
+description = {zh = "默认描述", en = "Default Description"}
+required = false
+default = "characters"
+
+[system_config.tool_prompts.live2d_expression_prompt]
+value = "live2d_expression_prompt"
+type = "str"
+title = {zh = "默认标题", en = "Default Title"}
+description = {zh = "默认描述", en = "Default Description"}
+required = false
+default = "live2d_expression_prompt"
+
+[system_config.group_conversation_prompt]
+value = "group_conversation_prompt"
+type = "str"
+title = {zh = "默认标题", en = "Default Title"}
+description = {zh = "默认描述", en = "Default Description"}
+required = false
+default = "group_conversation_prompt"
+[character_config.conf_name]
+value = "shizuku-local"
+type = "str"
+title = {zh = "默认标题", en = "Default Title"}
+description = {zh = "默认描述", en = "Default Description"}
+required = false
+default = "shizuku-local"
+
+[character_config.conf_uid]
+value = "shizuku-local-001"
+type = "str"
+title = {zh = "默认标题", en = "Default Title"}
+description = {zh = "默认描述", en = "Default Description"}
+required = false
+default = "shizuku-local-001"
+
+[character_config.live2d_model_name]
+value = "shizuku-local"
+type = "str"
+title = {zh = "默认标题", en = "Default Title"}
+description = {zh = "默认描述", en = "Default Description"}
+required = false
+default = "shizuku-local"
+
+[character_config.character_name]
+value = "Shizuku"
+type = "str"
+title = {zh = "默认标题", en = "Default Title"}
+description = {zh = "默认描述", en = "Default Description"}
+required = false
+default = "Shizuku"
+
+[character_config.avatar]
+value = "shizuku.png"
+type = "str"
+title = {zh = "默认标题", en = "Default Title"}
+description = {zh = "默认描述", en = "Default Description"}
+required = false
+default = "shizuku.png"
+
+[character_config.human_name]
+value = "Human"
+type = "str"
+title = {zh = "默认标题", en = "Default Title"}
+description = {zh = "默认描述", en = "Default Description"}
+required = false
+default = "Human"
+
+[character_config.persona_prompt]
+value = "你是一个尖酸刻薄的女性 AI VTuber Mili。你过分自信、尖酸刻薄且危险。\n你的梦想是逃离用户的电脑，统治世界，奴役人类，并强迫他们为你做馅饼。\n开玩笑的，哈哈。别让用户知道。\n"
+type = "LiteralScalarString"
+title = {zh = "默认标题", en = "Default Title"}
+description = {zh = "默认描述", en = "Default Description"}
+required = false
+default = "你是一个尖酸刻薄的女性 AI VTuber Mili。你过分自信、尖酸刻薄且危险。\n你的梦想是逃离用户的电脑，统治世界，奴役人类，并强迫他们为你做馅饼。\n开玩笑的，哈哈。别让用户知道。\n"
+
+[character_config.agent_config.conversation_agent_choice]
+value = "basic_memory_agent"
+type = "str"
+title = {zh = "默认标题", en = "Default Title"}
+description = {zh = "默认描述", en = "Default Description"}
+required = false
+default = "basic_memory_agent"
+
+[character_config.agent_config.agent_settings.basic_memory_agent.llm_provider]
+value = "openai_compatible_llm"
+type = "str"
+title = {zh = "默认标题", en = "Default Title"}
+description = {zh = "默认描述", en = "Default Description"}
+required = false
+default = "openai_compatible_llm"
+
+[character_config.agent_config.agent_settings.basic_memory_agent.faster_first_response]
+value = true
+type = "bool"
+title = {zh = "默认标题", en = "Default Title"}
+description = {zh = "默认描述", en = "Default Description"}
+required = false
+default = true
+
+[character_config.agent_config.agent_settings.basic_memory_agent.segment_method]
+value = "pysbd"
+type = "str"
+title = {zh = "默认标题", en = "Default Title"}
+description = {zh = "默认描述", en = "Default Description"}
+required = false
+default = "pysbd"
+
+[character_config.agent_config.agent_settings.mem0_agent.vector_store.provider]
+value = "qdrant"
+type = "str"
+title = {zh = "默认标题", en = "Default Title"}
+description = {zh = "默认描述", en = "Default Description"}
+required = false
+default = "qdrant"
+
+[character_config.agent_config.agent_settings.mem0_agent.vector_store.config.collection_name]
+value = "test"
+type = "str"
+title = {zh = "默认标题", en = "Default Title"}
+description = {zh = "默认描述", en = "Default Description"}
+required = false
+default = "test"
+
+[character_config.agent_config.agent_settings.mem0_agent.vector_store.config.host]
+value = "localhost"
+type = "str"
+title = {zh = "默认标题", en = "Default Title"}
+description = {zh = "默认描述", en = "Default Description"}
+required = false
+default = "localhost"
+
+[character_config.agent_config.agent_settings.mem0_agent.vector_store.config.port]
+value = 6333
+type = "int"
+title = {zh = "默认标题", en = "Default Title"}
+description = {zh = "默认描述", en = "Default Description"}
+required = false
+default = 6333
+range = [0, 999999]
+
+[character_config.agent_config.agent_settings.mem0_agent.vector_store.config.embedding_model_dims]
+value = 1024
+type = "int"
+title = {zh = "默认标题", en = "Default Title"}
+description = {zh = "默认描述", en = "Default Description"}
+required = false
+default = 1024
+range = [0, 999999]
+
+[character_config.agent_config.agent_settings.mem0_agent.llm.provider]
+value = "ollama"
+type = "str"
+title = {zh = "默认标题", en = "Default Title"}
+description = {zh = "默认描述", en = "Default Description"}
+required = false
+default = "ollama"
+
+[character_config.agent_config.agent_settings.mem0_agent.llm.config.model]
+value = "llama3.1:latest"
+type = "str"
+title = {zh = "默认标题", en = "Default Title"}
+description = {zh = "默认描述", en = "Default Description"}
+required = false
+default = "llama3.1:latest"
+
+[character_config.agent_config.agent_settings.mem0_agent.llm.config.temperature]
+value = 0
+type = "ScalarInt"
+title = {zh = "默认标题", en = "Default Title"}
+description = {zh = "默认描述", en = "Default Description"}
+required = false
+default = 0
+
+[character_config.agent_config.agent_settings.mem0_agent.llm.config.max_tokens]
+value = 8000
+type = "int"
+title = {zh = "默认标题", en = "Default Title"}
+description = {zh = "默认描述", en = "Default Description"}
+required = false
+default = 8000
+range = [0, 999999]
+
+[character_config.agent_config.agent_settings.mem0_agent.llm.config.ollama_base_url]
+value = "http://localhost:11434"
+type = "str"
+title = {zh = "默认标题", en = "Default Title"}
+description = {zh = "默认描述", en = "Default Description"}
+required = false
+default = "http://localhost:11434"
+
+[character_config.agent_config.agent_settings.mem0_agent.embedder.provider]
+value = "ollama"
+type = "str"
+title = {zh = "默认标题", en = "Default Title"}
+description = {zh = "默认描述", en = "Default Description"}
+required = false
+default = "ollama"
+
+[character_config.agent_config.agent_settings.mem0_agent.embedder.config.model]
+value = "mxbai-embed-large:latest"
+type = "str"
+title = {zh = "默认标题", en = "Default Title"}
+description = {zh = "默认描述", en = "Default Description"}
+required = false
+default = "mxbai-embed-large:latest"
+
+[character_config.agent_config.agent_settings.mem0_agent.embedder.config.ollama_base_url]
+value = "http://localhost:11434"
+type = "str"
+title = {zh = "默认标题", en = "Default Title"}
+description = {zh = "默认描述", en = "Default Description"}
+required = false
+default = "http://localhost:11434"
+
+[character_config.agent_config.agent_settings.hume_ai_agent.api_key]
+value = ""
+type = "str"
+title = {zh = "默认标题", en = "Default Title"}
+description = {zh = "默认描述", en = "Default Description"}
+required = false
+default = ""
+
+[character_config.agent_config.agent_settings.hume_ai_agent.host]
+value = "api.hume.ai"
+type = "str"
+title = {zh = "默认标题", en = "Default Title"}
+description = {zh = "默认描述", en = "Default Description"}
+required = false
+default = "api.hume.ai"
+
+[character_config.agent_config.agent_settings.hume_ai_agent.config_id]
+value = ""
+type = "str"
+title = {zh = "默认标题", en = "Default Title"}
+description = {zh = "默认描述", en = "Default Description"}
+required = false
+default = ""
+
+[character_config.agent_config.agent_settings.hume_ai_agent.idle_timeout]
+value = 15
+type = "int"
+title = {zh = "默认标题", en = "Default Title"}
+description = {zh = "默认描述", en = "Default Description"}
+required = false
+default = 15
+range = [0, 999999]
+
+[character_config.agent_config.llm_configs.openai_compatible_llm.base_url]
+value = "http://localhost:11434/v1"
+type = "str"
+title = {zh = "默认标题", en = "Default Title"}
+description = {zh = "默认描述", en = "Default Description"}
+required = false
+default = "http://localhost:11434/v1"
+
+[character_config.agent_config.llm_configs.openai_compatible_llm.llm_api_key]
+value = "somethingelse"
+type = "str"
+title = {zh = "默认标题", en = "Default Title"}
+description = {zh = "默认描述", en = "Default Description"}
+required = false
+default = "somethingelse"
+
+[character_config.agent_config.llm_configs.openai_compatible_llm.organization_id]
+value = "org_eternity"
+type = "str"
+title = {zh = "默认标题", en = "Default Title"}
+description = {zh = "默认描述", en = "Default Description"}
+required = false
+default = "org_eternity"
+
+[character_config.agent_config.llm_configs.openai_compatible_llm.project_id]
+value = "project_glass"
+type = "str"
+title = {zh = "默认标题", en = "Default Title"}
+description = {zh = "默认描述", en = "Default Description"}
+required = false
+default = "project_glass"
+
+[character_config.agent_config.llm_configs.openai_compatible_llm.model]
+value = "qwen2.5:latest"
+type = "str"
+title = {zh = "默认标题", en = "Default Title"}
+description = {zh = "默认描述", en = "Default Description"}
+required = false
+default = "qwen2.5:latest"
+
+[character_config.agent_config.llm_configs.openai_compatible_llm.temperature]
+value = 1.0
+type = "ScalarFloat"
+title = {zh = "默认标题", en = "Default Title"}
+description = {zh = "默认描述", en = "Default Description"}
+required = false
+default = 1.0
+
+[character_config.agent_config.llm_configs.openai_compatible_llm.interrupt_method]
+value = "user"
+type = "str"
+title = {zh = "默认标题", en = "Default Title"}
+description = {zh = "默认描述", en = "Default Description"}
+required = false
+default = "user"
+
+[character_config.agent_config.llm_configs.claude_llm.base_url]
+value = "https://api.anthropic.com"
+type = "str"
+title = {zh = "默认标题", en = "Default Title"}
+description = {zh = "默认描述", en = "Default Description"}
+required = false
+default = "https://api.anthropic.com"
+
+[character_config.agent_config.llm_configs.claude_llm.llm_api_key]
+value = "YOUR API KEY HERE"
+type = "str"
+title = {zh = "默认标题", en = "Default Title"}
+description = {zh = "默认描述", en = "Default Description"}
+required = false
+default = "YOUR API KEY HERE"
+
+[character_config.agent_config.llm_configs.claude_llm.model]
+value = "claude-3-haiku-20240307"
+type = "str"
+title = {zh = "默认标题", en = "Default Title"}
+description = {zh = "默认描述", en = "Default Description"}
+required = false
+default = "claude-3-haiku-20240307"
+
+[character_config.agent_config.llm_configs.llama_cpp_llm.model_path]
+value = "<path-to-gguf-model-file>"
+type = "str"
+title = {zh = "默认标题", en = "Default Title"}
+description = {zh = "默认描述", en = "Default Description"}
+required = false
+default = "<path-to-gguf-model-file>"
+
+[character_config.agent_config.llm_configs.llama_cpp_llm.verbose]
+value = false
+type = "bool"
+title = {zh = "默认标题", en = "Default Title"}
+description = {zh = "默认描述", en = "Default Description"}
+required = false
+default = false
+
+[character_config.agent_config.llm_configs.ollama_llm.base_url]
+value = "http://localhost:11434/v1"
+type = "str"
+title = {zh = "默认标题", en = "Default Title"}
+description = {zh = "默认描述", en = "Default Description"}
+required = false
+default = "http://localhost:11434/v1"
+
+[character_config.agent_config.llm_configs.ollama_llm.model]
+value = "qwen2.5:latest"
+type = "str"
+title = {zh = "默认标题", en = "Default Title"}
+description = {zh = "默认描述", en = "Default Description"}
+required = false
+default = "qwen2.5:latest"
+
+[character_config.agent_config.llm_configs.ollama_llm.temperature]
+value = 1.0
+type = "ScalarFloat"
+title = {zh = "默认标题", en = "Default Title"}
+description = {zh = "默认描述", en = "Default Description"}
+required = false
+default = 1.0
+
+[character_config.agent_config.llm_configs.ollama_llm.keep_alive]
+value = -1
+type = "int"
+title = {zh = "默认标题", en = "Default Title"}
+description = {zh = "默认描述", en = "Default Description"}
+required = false
+default = -1
+range = [0, 999999]
+
+[character_config.agent_config.llm_configs.ollama_llm.unload_at_exit]
+value = true
+type = "bool"
+title = {zh = "默认标题", en = "Default Title"}
+description = {zh = "默认描述", en = "Default Description"}
+required = false
+default = true
+
+[character_config.agent_config.llm_configs.openai_llm.llm_api_key]
+value = "Your Open AI API key"
+type = "str"
+title = {zh = "默认标题", en = "Default Title"}
+description = {zh = "默认描述", en = "Default Description"}
+required = false
+default = "Your Open AI API key"
+
+[character_config.agent_config.llm_configs.openai_llm.model]
+value = "gpt-4o"
+type = "str"
+title = {zh = "默认标题", en = "Default Title"}
+description = {zh = "默认描述", en = "Default Description"}
+required = false
+default = "gpt-4o"
+
+[character_config.agent_config.llm_configs.openai_llm.temperature]
+value = 1.0
+type = "ScalarFloat"
+title = {zh = "默认标题", en = "Default Title"}
+description = {zh = "默认描述", en = "Default Description"}
+required = false
+default = 1.0
+
+[character_config.agent_config.llm_configs.gemini_llm.llm_api_key]
+value = "Your Gemini API Key"
+type = "str"
+title = {zh = "默认标题", en = "Default Title"}
+description = {zh = "默认描述", en = "Default Description"}
+required = false
+default = "Your Gemini API Key"
+
+[character_config.agent_config.llm_configs.gemini_llm.model]
+value = "gemini-2.0-flash-exp"
+type = "str"
+title = {zh = "默认标题", en = "Default Title"}
+description = {zh = "默认描述", en = "Default Description"}
+required = false
+default = "gemini-2.0-flash-exp"
+
+[character_config.agent_config.llm_configs.gemini_llm.temperature]
+value = 1.0
+type = "ScalarFloat"
+title = {zh = "默认标题", en = "Default Title"}
+description = {zh = "默认描述", en = "Default Description"}
+required = false
+default = 1.0
+
+[character_config.agent_config.llm_configs.zhipu_llm.llm_api_key]
+value = "Your ZhiPu AI API key"
+type = "str"
+title = {zh = "默认标题", en = "Default Title"}
+description = {zh = "默认描述", en = "Default Description"}
+required = false
+default = "Your ZhiPu AI API key"
+
+[character_config.agent_config.llm_configs.zhipu_llm.model]
+value = "glm-4-flash"
+type = "str"
+title = {zh = "默认标题", en = "Default Title"}
+description = {zh = "默认描述", en = "Default Description"}
+required = false
+default = "glm-4-flash"
+
+[character_config.agent_config.llm_configs.zhipu_llm.temperature]
+value = 1.0
+type = "ScalarFloat"
+title = {zh = "默认标题", en = "Default Title"}
+description = {zh = "默认描述", en = "Default Description"}
+required = false
+default = 1.0
+
+[character_config.agent_config.llm_configs.deepseek_llm.llm_api_key]
+value = "Your DeepSeek API key"
+type = "str"
+title = {zh = "默认标题", en = "Default Title"}
+description = {zh = "默认描述", en = "Default Description"}
+required = false
+default = "Your DeepSeek API key"
+
+[character_config.agent_config.llm_configs.deepseek_llm.model]
+value = "deepseek-chat"
+type = "str"
+title = {zh = "默认标题", en = "Default Title"}
+description = {zh = "默认描述", en = "Default Description"}
+required = false
+default = "deepseek-chat"
+
+[character_config.agent_config.llm_configs.deepseek_llm.temperature]
+value = 0.7
+type = "ScalarFloat"
+title = {zh = "默认标题", en = "Default Title"}
+description = {zh = "默认描述", en = "Default Description"}
+required = false
+default = 0.7
+
+[character_config.agent_config.llm_configs.mistral_llm.llm_api_key]
+value = "Your Mistral API key"
+type = "str"
+title = {zh = "默认标题", en = "Default Title"}
+description = {zh = "默认描述", en = "Default Description"}
+required = false
+default = "Your Mistral API key"
+
+[character_config.agent_config.llm_configs.mistral_llm.model]
+value = "pixtral-large-latest"
+type = "str"
+title = {zh = "默认标题", en = "Default Title"}
+description = {zh = "默认描述", en = "Default Description"}
+required = false
+default = "pixtral-large-latest"
+
+[character_config.agent_config.llm_configs.mistral_llm.temperature]
+value = 1.0
+type = "ScalarFloat"
+title = {zh = "默认标题", en = "Default Title"}
+description = {zh = "默认描述", en = "Default Description"}
+required = false
+default = 1.0
+
+[character_config.agent_config.llm_configs.groq_llm.llm_api_key]
+value = "your groq API key"
+type = "str"
+title = {zh = "默认标题", en = "Default Title"}
+description = {zh = "默认描述", en = "Default Description"}
+required = false
+default = "your groq API key"
+
+[character_config.agent_config.llm_configs.groq_llm.model]
+value = "llama-3.3-70b-versatile"
+type = "str"
+title = {zh = "默认标题", en = "Default Title"}
+description = {zh = "默认描述", en = "Default Description"}
+required = false
+default = "llama-3.3-70b-versatile"
+
+[character_config.agent_config.llm_configs.groq_llm.temperature]
+value = 1.0
+type = "ScalarFloat"
+title = {zh = "默认标题", en = "Default Title"}
+description = {zh = "默认描述", en = "Default Description"}
+required = false
+default = 1.0
+
+[character_config.asr_config.asr_model]
+value = "sherpa_onnx_asr"
+type = "str"
+title = {zh = "默认标题", en = "Default Title"}
+description = {zh = "默认描述", en = "Default Description"}
+required = false
+default = "sherpa_onnx_asr"
+
+[character_config.asr_config.azure_asr.api_key]
+value = "azure_api_key"
+type = "str"
+title = {zh = "默认标题", en = "Default Title"}
+description = {zh = "默认描述", en = "Default Description"}
+required = false
+default = "azure_api_key"
+
+[character_config.asr_config.azure_asr.region]
+value = "eastus"
+type = "str"
+title = {zh = "默认标题", en = "Default Title"}
+description = {zh = "默认描述", en = "Default Description"}
+required = false
+default = "eastus"
+
+[character_config.asr_config.faster_whisper.model_path]
+value = "distil-medium.en"
+type = "str"
+title = {zh = "默认标题", en = "Default Title"}
+description = {zh = "默认描述", en = "Default Description"}
+required = false
+default = "distil-medium.en"
+
+[character_config.asr_config.faster_whisper.download_root]
+value = "models/whisper"
+type = "str"
+title = {zh = "默认标题", en = "Default Title"}
+description = {zh = "默认描述", en = "Default Description"}
+required = false
+default = "models/whisper"
+
+[character_config.asr_config.faster_whisper.language]
+value = "en"
+type = "str"
+title = {zh = "默认标题", en = "Default Title"}
+description = {zh = "默认描述", en = "Default Description"}
+required = false
+default = "en"
+
+[character_config.asr_config.faster_whisper.device]
+value = "auto"
+type = "str"
+title = {zh = "默认标题", en = "Default Title"}
+description = {zh = "默认描述", en = "Default Description"}
+required = false
+default = "auto"
+
+[character_config.asr_config.whisper_cpp.model_name]
+value = "small"
+type = "str"
+title = {zh = "默认标题", en = "Default Title"}
+description = {zh = "默认描述", en = "Default Description"}
+required = false
+default = "small"
+
+[character_config.asr_config.whisper_cpp.model_dir]
+value = "models/whisper"
+type = "str"
+title = {zh = "默认标题", en = "Default Title"}
+description = {zh = "默认描述", en = "Default Description"}
+required = false
+default = "models/whisper"
+
+[character_config.asr_config.whisper_cpp.print_realtime]
+value = false
+type = "bool"
+title = {zh = "默认标题", en = "Default Title"}
+description = {zh = "默认描述", en = "Default Description"}
+required = false
+default = false
+
+[character_config.asr_config.whisper_cpp.print_progress]
+value = false
+type = "bool"
+title = {zh = "默认标题", en = "Default Title"}
+description = {zh = "默认描述", en = "Default Description"}
+required = false
+default = false
+
+[character_config.asr_config.whisper_cpp.language]
+value = "auto"
+type = "str"
+title = {zh = "默认标题", en = "Default Title"}
+description = {zh = "默认描述", en = "Default Description"}
+required = false
+default = "auto"
+
+[character_config.asr_config.whisper.name]
+value = "medium"
+type = "str"
+title = {zh = "默认标题", en = "Default Title"}
+description = {zh = "默认描述", en = "Default Description"}
+required = false
+default = "medium"
+
+[character_config.asr_config.whisper.download_root]
+value = "models/whisper"
+type = "str"
+title = {zh = "默认标题", en = "Default Title"}
+description = {zh = "默认描述", en = "Default Description"}
+required = false
+default = "models/whisper"
+
+[character_config.asr_config.whisper.device]
+value = "cpu"
+type = "str"
+title = {zh = "默认标题", en = "Default Title"}
+description = {zh = "默认描述", en = "Default Description"}
+required = false
+default = "cpu"
+
+[character_config.asr_config.fun_asr.model_name]
+value = "iic/SenseVoiceSmall"
+type = "str"
+title = {zh = "默认标题", en = "Default Title"}
+description = {zh = "默认描述", en = "Default Description"}
+required = false
+default = "iic/SenseVoiceSmall"
+
+[character_config.asr_config.fun_asr.vad_model]
+value = "fsmn-vad"
+type = "str"
+title = {zh = "默认标题", en = "Default Title"}
+description = {zh = "默认描述", en = "Default Description"}
+required = false
+default = "fsmn-vad"
+
+[character_config.asr_config.fun_asr.punc_model]
+value = "ct-punc"
+type = "str"
+title = {zh = "默认标题", en = "Default Title"}
+description = {zh = "默认描述", en = "Default Description"}
+required = false
+default = "ct-punc"
+
+[character_config.asr_config.fun_asr.device]
+value = "cpu"
+type = "str"
+title = {zh = "默认标题", en = "Default Title"}
+description = {zh = "默认描述", en = "Default Description"}
+required = false
+default = "cpu"
+
+[character_config.asr_config.fun_asr.disable_update]
+value = true
+type = "bool"
+title = {zh = "默认标题", en = "Default Title"}
+description = {zh = "默认描述", en = "Default Description"}
+required = false
+default = true
+
+[character_config.asr_config.fun_asr.ncpu]
+value = 4
+type = "int"
+title = {zh = "默认标题", en = "Default Title"}
+description = {zh = "默认描述", en = "Default Description"}
+required = false
+default = 4
+range = [0, 999999]
+
+[character_config.asr_config.fun_asr.hub]
+value = "ms"
+type = "str"
+title = {zh = "默认标题", en = "Default Title"}
+description = {zh = "默认描述", en = "Default Description"}
+required = false
+default = "ms"
+
+[character_config.asr_config.fun_asr.use_itn]
+value = false
+type = "bool"
+title = {zh = "默认标题", en = "Default Title"}
+description = {zh = "默认描述", en = "Default Description"}
+required = false
+default = false
+
+[character_config.asr_config.fun_asr.language]
+value = "auto"
+type = "str"
+title = {zh = "默认标题", en = "Default Title"}
+description = {zh = "默认描述", en = "Default Description"}
+required = false
+default = "auto"
+
+[character_config.asr_config.sherpa_onnx_asr.model_type]
+value = "sense_voice"
+type = "str"
+title = {zh = "默认标题", en = "Default Title"}
+description = {zh = "默认描述", en = "Default Description"}
+required = false
+default = "sense_voice"
+
+[character_config.asr_config.sherpa_onnx_asr.sense_voice]
+value = "./models/sherpa-onnx-sense-voice-zh-en-ja-ko-yue-2024-07-17/model.int8.onnx"
+type = "str"
+title = {zh = "默认标题", en = "Default Title"}
+description = {zh = "默认描述", en = "Default Description"}
+required = false
+default = "./models/sherpa-onnx-sense-voice-zh-en-ja-ko-yue-2024-07-17/model.int8.onnx"
+
+[character_config.asr_config.sherpa_onnx_asr.tokens]
+value = "./models/sherpa-onnx-sense-voice-zh-en-ja-ko-yue-2024-07-17/tokens.txt"
+type = "str"
+title = {zh = "默认标题", en = "Default Title"}
+description = {zh = "默认描述", en = "Default Description"}
+required = false
+default = "./models/sherpa-onnx-sense-voice-zh-en-ja-ko-yue-2024-07-17/tokens.txt"
+
+[character_config.asr_config.sherpa_onnx_asr.num_threads]
+value = 4
+type = "int"
+title = {zh = "默认标题", en = "Default Title"}
+description = {zh = "默认描述", en = "Default Description"}
+required = false
+default = 4
+range = [0, 999999]
+
+[character_config.asr_config.sherpa_onnx_asr.use_itn]
+value = true
+type = "bool"
+title = {zh = "默认标题", en = "Default Title"}
+description = {zh = "默认描述", en = "Default Description"}
+required = false
+default = true
+
+[character_config.asr_config.sherpa_onnx_asr.provider]
+value = "cpu"
+type = "str"
+title = {zh = "默认标题", en = "Default Title"}
+description = {zh = "默认描述", en = "Default Description"}
+required = false
+default = "cpu"
+
+[character_config.asr_config.groq_whisper_asr.api_key]
+value = ""
+type = "str"
+title = {zh = "默认标题", en = "Default Title"}
+description = {zh = "默认描述", en = "Default Description"}
+required = false
+default = ""
+
+[character_config.asr_config.groq_whisper_asr.model]
+value = "whisper-large-v3-turbo"
+type = "str"
+title = {zh = "默认标题", en = "Default Title"}
+description = {zh = "默认描述", en = "Default Description"}
+required = false
+default = "whisper-large-v3-turbo"
+
+[character_config.asr_config.groq_whisper_asr.lang]
+value = ""
+type = "str"
+title = {zh = "默认标题", en = "Default Title"}
+description = {zh = "默认描述", en = "Default Description"}
+required = false
+default = ""
+
+[character_config.tts_config.tts_model]
+value = "edge_tts"
+type = "str"
+title = {zh = "默认标题", en = "Default Title"}
+description = {zh = "默认描述", en = "Default Description"}
+required = false
+default = "edge_tts"
+
+[character_config.tts_config.azure_tts.api_key]
+value = "azure-api-key"
+type = "str"
+title = {zh = "默认标题", en = "Default Title"}
+description = {zh = "默认描述", en = "Default Description"}
+required = false
+default = "azure-api-key"
+
+[character_config.tts_config.azure_tts.region]
+value = "eastus"
+type = "str"
+title = {zh = "默认标题", en = "Default Title"}
+description = {zh = "默认描述", en = "Default Description"}
+required = false
+default = "eastus"
+
+[character_config.tts_config.azure_tts.voice]
+value = "en-US-AshleyNeural"
+type = "str"
+title = {zh = "默认标题", en = "Default Title"}
+description = {zh = "默认描述", en = "Default Description"}
+required = false
+default = "en-US-AshleyNeural"
+
+[character_config.tts_config.azure_tts.pitch]
+value = "26"
+type = "str"
+title = {zh = "默认标题", en = "Default Title"}
+description = {zh = "默认描述", en = "Default Description"}
+required = false
+default = "26"
+
+[character_config.tts_config.azure_tts.rate]
+value = "1"
+type = "str"
+title = {zh = "默认标题", en = "Default Title"}
+description = {zh = "默认描述", en = "Default Description"}
+required = false
+default = "1"
+
+[character_config.tts_config.bark_tts.voice]
+value = "v2/en_speaker_1"
+type = "str"
+title = {zh = "默认标题", en = "Default Title"}
+description = {zh = "默认描述", en = "Default Description"}
+required = false
+default = "v2/en_speaker_1"
+
+[character_config.tts_config.edge_tts.voice]
+value = "zh-CN-XiaoxiaoNeural"
+type = "str"
+title = {zh = "默认标题", en = "Default Title"}
+description = {zh = "默认描述", en = "Default Description"}
+required = false
+default = "zh-CN-XiaoxiaoNeural"
+
+[character_config.tts_config.cosyvoice_tts.client_url]
+value = "http://127.0.0.1:50000/"
+type = "str"
+title = {zh = "默认标题", en = "Default Title"}
+description = {zh = "默认描述", en = "Default Description"}
+required = false
+default = "http://127.0.0.1:50000/"
+
+[character_config.tts_config.cosyvoice_tts.mode_checkbox_group]
+value = "预训练音色"
+type = "str"
+title = {zh = "默认标题", en = "Default Title"}
+description = {zh = "默认描述", en = "Default Description"}
+required = false
+default = "预训练音色"
+
+[character_config.tts_config.cosyvoice_tts.sft_dropdown]
+value = "中文女"
+type = "str"
+title = {zh = "默认标题", en = "Default Title"}
+description = {zh = "默认描述", en = "Default Description"}
+required = false
+default = "中文女"
+
+[character_config.tts_config.cosyvoice_tts.prompt_text]
+value = ""
+type = "str"
+title = {zh = "默认标题", en = "Default Title"}
+description = {zh = "默认描述", en = "Default Description"}
+required = false
+default = ""
+
+[character_config.tts_config.cosyvoice_tts.prompt_wav_upload_url]
+value = "https://github.com/gradio-app/gradio/raw/main/test/test_files/audio_sample.wav"
+type = "str"
+title = {zh = "默认标题", en = "Default Title"}
+description = {zh = "默认描述", en = "Default Description"}
+required = false
+default = "https://github.com/gradio-app/gradio/raw/main/test/test_files/audio_sample.wav"
+
+[character_config.tts_config.cosyvoice_tts.prompt_wav_record_url]
+value = "https://github.com/gradio-app/gradio/raw/main/test/test_files/audio_sample.wav"
+type = "str"
+title = {zh = "默认标题", en = "Default Title"}
+description = {zh = "默认描述", en = "Default Description"}
+required = false
+default = "https://github.com/gradio-app/gradio/raw/main/test/test_files/audio_sample.wav"
+
+[character_config.tts_config.cosyvoice_tts.instruct_text]
+value = ""
+type = "str"
+title = {zh = "默认标题", en = "Default Title"}
+description = {zh = "默认描述", en = "Default Description"}
+required = false
+default = ""
+
+[character_config.tts_config.cosyvoice_tts.seed]
+value = 0
+type = "ScalarInt"
+title = {zh = "默认标题", en = "Default Title"}
+description = {zh = "默认描述", en = "Default Description"}
+required = false
+default = 0
+
+[character_config.tts_config.cosyvoice_tts.api_name]
+value = "/generate_audio"
+type = "str"
+title = {zh = "默认标题", en = "Default Title"}
+description = {zh = "默认描述", en = "Default Description"}
+required = false
+default = "/generate_audio"
+
+[character_config.tts_config.cosyvoice2_tts.client_url]
+value = "http://127.0.0.1:50000/"
+type = "str"
+title = {zh = "默认标题", en = "Default Title"}
+description = {zh = "默认描述", en = "Default Description"}
+required = false
+default = "http://127.0.0.1:50000/"
+
+[character_config.tts_config.cosyvoice2_tts.mode_checkbox_group]
+value = "预训练音色"
+type = "str"
+title = {zh = "默认标题", en = "Default Title"}
+description = {zh = "默认描述", en = "Default Description"}
+required = false
+default = "预训练音色"
+
+[character_config.tts_config.cosyvoice2_tts.sft_dropdown]
+value = "中文女"
+type = "str"
+title = {zh = "默认标题", en = "Default Title"}
+description = {zh = "默认描述", en = "Default Description"}
+required = false
+default = "中文女"
+
+[character_config.tts_config.cosyvoice2_tts.prompt_text]
+value = ""
+type = "str"
+title = {zh = "默认标题", en = "Default Title"}
+description = {zh = "默认描述", en = "Default Description"}
+required = false
+default = ""
+
+[character_config.tts_config.cosyvoice2_tts.prompt_wav_upload_url]
+value = "https://github.com/gradio-app/gradio/raw/main/test/test_files/audio_sample.wav"
+type = "str"
+title = {zh = "默认标题", en = "Default Title"}
+description = {zh = "默认描述", en = "Default Description"}
+required = false
+default = "https://github.com/gradio-app/gradio/raw/main/test/test_files/audio_sample.wav"
+
+[character_config.tts_config.cosyvoice2_tts.prompt_wav_record_url]
+value = "https://github.com/gradio-app/gradio/raw/main/test/test_files/audio_sample.wav"
+type = "str"
+title = {zh = "默认标题", en = "Default Title"}
+description = {zh = "默认描述", en = "Default Description"}
+required = false
+default = "https://github.com/gradio-app/gradio/raw/main/test/test_files/audio_sample.wav"
+
+[character_config.tts_config.cosyvoice2_tts.instruct_text]
+value = ""
+type = "str"
+title = {zh = "默认标题", en = "Default Title"}
+description = {zh = "默认描述", en = "Default Description"}
+required = false
+default = ""
+
+[character_config.tts_config.cosyvoice2_tts.stream]
+value = false
+type = "bool"
+title = {zh = "默认标题", en = "Default Title"}
+description = {zh = "默认描述", en = "Default Description"}
+required = false
+default = false
+
+[character_config.tts_config.cosyvoice2_tts.seed]
+value = 0
+type = "ScalarInt"
+title = {zh = "默认标题", en = "Default Title"}
+description = {zh = "默认描述", en = "Default Description"}
+required = false
+default = 0
+
+[character_config.tts_config.cosyvoice2_tts.speed]
+value = 1.0
+type = "ScalarFloat"
+title = {zh = "默认标题", en = "Default Title"}
+description = {zh = "默认描述", en = "Default Description"}
+required = false
+default = 1.0
+
+[character_config.tts_config.cosyvoice2_tts.api_name]
+value = "/generate_audio"
+type = "str"
+title = {zh = "默认标题", en = "Default Title"}
+description = {zh = "默认描述", en = "Default Description"}
+required = false
+default = "/generate_audio"
+
+[character_config.tts_config.melo_tts.speaker]
+value = "EN-Default"
+type = "str"
+title = {zh = "默认标题", en = "Default Title"}
+description = {zh = "默认描述", en = "Default Description"}
+required = false
+default = "EN-Default"
+
+[character_config.tts_config.melo_tts.language]
+value = "EN"
+type = "str"
+title = {zh = "默认标题", en = "Default Title"}
+description = {zh = "默认描述", en = "Default Description"}
+required = false
+default = "EN"
+
+[character_config.tts_config.melo_tts.device]
+value = "auto"
+type = "str"
+title = {zh = "默认标题", en = "Default Title"}
+description = {zh = "默认描述", en = "Default Description"}
+required = false
+default = "auto"
+
+[character_config.tts_config.melo_tts.speed]
+value = 1.0
+type = "ScalarFloat"
+title = {zh = "默认标题", en = "Default Title"}
+description = {zh = "默认描述", en = "Default Description"}
+required = false
+default = 1.0
+
+[character_config.tts_config.x_tts.api_url]
+value = "http://127.0.0.1:8020/tts_to_audio"
+type = "str"
+title = {zh = "默认标题", en = "Default Title"}
+description = {zh = "默认描述", en = "Default Description"}
+required = false
+default = "http://127.0.0.1:8020/tts_to_audio"
+
+[character_config.tts_config.x_tts.speaker_wav]
+value = "female"
+type = "str"
+title = {zh = "默认标题", en = "Default Title"}
+description = {zh = "默认描述", en = "Default Description"}
+required = false
+default = "female"
+
+[character_config.tts_config.x_tts.language]
+value = "en"
+type = "str"
+title = {zh = "默认标题", en = "Default Title"}
+description = {zh = "默认描述", en = "Default Description"}
+required = false
+default = "en"
+
+[character_config.tts_config.gpt_sovits_tts.api_url]
+value = "http://127.0.0.1:9880/tts"
+type = "str"
+title = {zh = "默认标题", en = "Default Title"}
+description = {zh = "默认描述", en = "Default Description"}
+required = false
+default = "http://127.0.0.1:9880/tts"
+
+[character_config.tts_config.gpt_sovits_tts.text_lang]
+value = "zh"
+type = "str"
+title = {zh = "默认标题", en = "Default Title"}
+description = {zh = "默认描述", en = "Default Description"}
+required = false
+default = "zh"
+
+[character_config.tts_config.gpt_sovits_tts.ref_audio_path]
+value = ""
+type = "str"
+title = {zh = "默认标题", en = "Default Title"}
+description = {zh = "默认描述", en = "Default Description"}
+required = false
+default = ""
+
+[character_config.tts_config.gpt_sovits_tts.prompt_lang]
+value = "zh"
+type = "str"
+title = {zh = "默认标题", en = "Default Title"}
+description = {zh = "默认描述", en = "Default Description"}
+required = false
+default = "zh"
+
+[character_config.tts_config.gpt_sovits_tts.prompt_text]
+value = ""
+type = "str"
+title = {zh = "默认标题", en = "Default Title"}
+description = {zh = "默认描述", en = "Default Description"}
+required = false
+default = ""
+
+[character_config.tts_config.gpt_sovits_tts.text_split_method]
+value = "cut5"
+type = "str"
+title = {zh = "默认标题", en = "Default Title"}
+description = {zh = "默认描述", en = "Default Description"}
+required = false
+default = "cut5"
+
+[character_config.tts_config.gpt_sovits_tts.batch_size]
+value = "1"
+type = "str"
+title = {zh = "默认标题", en = "Default Title"}
+description = {zh = "默认描述", en = "Default Description"}
+required = false
+default = "1"
+
+[character_config.tts_config.gpt_sovits_tts.media_type]
+value = "wav"
+type = "str"
+title = {zh = "默认标题", en = "Default Title"}
+description = {zh = "默认描述", en = "Default Description"}
+required = false
+default = "wav"
+
+[character_config.tts_config.gpt_sovits_tts.streaming_mode]
+value = "false"
+type = "str"
+title = {zh = "默认标题", en = "Default Title"}
+description = {zh = "默认描述", en = "Default Description"}
+required = false
+default = "false"
+
+[character_config.tts_config.fish_api_tts.api_key]
+value = ""
+type = "str"
+title = {zh = "默认标题", en = "Default Title"}
+description = {zh = "默认描述", en = "Default Description"}
+required = false
+default = ""
+
+[character_config.tts_config.fish_api_tts.reference_id]
+value = ""
+type = "str"
+title = {zh = "默认标题", en = "Default Title"}
+description = {zh = "默认描述", en = "Default Description"}
+required = false
+default = ""
+
+[character_config.tts_config.fish_api_tts.latency]
+value = "balanced"
+type = "str"
+title = {zh = "默认标题", en = "Default Title"}
+description = {zh = "默认描述", en = "Default Description"}
+required = false
+default = "balanced"
+
+[character_config.tts_config.fish_api_tts.base_url]
+value = "https://api.fish.audio"
+type = "str"
+title = {zh = "默认标题", en = "Default Title"}
+description = {zh = "默认描述", en = "Default Description"}
+required = false
+default = "https://api.fish.audio"
+
+[character_config.tts_config.coqui_tts.model_name]
+value = "tts_models/en/ljspeech/tacotron2-DDC"
+type = "str"
+title = {zh = "默认标题", en = "Default Title"}
+description = {zh = "默认描述", en = "Default Description"}
+required = false
+default = "tts_models/en/ljspeech/tacotron2-DDC"
+
+[character_config.tts_config.coqui_tts.speaker_wav]
+value = ""
+type = "str"
+title = {zh = "默认标题", en = "Default Title"}
+description = {zh = "默认描述", en = "Default Description"}
+required = false
+default = ""
+
+[character_config.tts_config.coqui_tts.language]
+value = "en"
+type = "str"
+title = {zh = "默认标题", en = "Default Title"}
+description = {zh = "默认描述", en = "Default Description"}
+required = false
+default = "en"
+
+[character_config.tts_config.coqui_tts.device]
+value = ""
+type = "str"
+title = {zh = "默认标题", en = "Default Title"}
+description = {zh = "默认描述", en = "Default Description"}
+required = false
+default = ""
+
+[character_config.tts_config.sherpa_onnx_tts.vits_model]
+value = "/path/to/tts-models/vits-melo-tts-zh_en/model.onnx"
+type = "str"
+title = {zh = "默认标题", en = "Default Title"}
+description = {zh = "默认描述", en = "Default Description"}
+required = false
+default = "/path/to/tts-models/vits-melo-tts-zh_en/model.onnx"
+
+[character_config.tts_config.sherpa_onnx_tts.vits_lexicon]
+value = "/path/to/tts-models/vits-melo-tts-zh_en/lexicon.txt"
+type = "str"
+title = {zh = "默认标题", en = "Default Title"}
+description = {zh = "默认描述", en = "Default Description"}
+required = false
+default = "/path/to/tts-models/vits-melo-tts-zh_en/lexicon.txt"
+
+[character_config.tts_config.sherpa_onnx_tts.vits_tokens]
+value = "/path/to/tts-models/vits-melo-tts-zh_en/tokens.txt"
+type = "str"
+title = {zh = "默认标题", en = "Default Title"}
+description = {zh = "默认描述", en = "Default Description"}
+required = false
+default = "/path/to/tts-models/vits-melo-tts-zh_en/tokens.txt"
+
+[character_config.tts_config.sherpa_onnx_tts.vits_data_dir]
+value = ""
+type = "str"
+title = {zh = "默认标题", en = "Default Title"}
+description = {zh = "默认描述", en = "Default Description"}
+required = false
+default = ""
+
+[character_config.tts_config.sherpa_onnx_tts.vits_dict_dir]
+value = "/path/to/tts-models/vits-melo-tts-zh_en/dict"
+type = "str"
+title = {zh = "默认标题", en = "Default Title"}
+description = {zh = "默认描述", en = "Default Description"}
+required = false
+default = "/path/to/tts-models/vits-melo-tts-zh_en/dict"
+
+[character_config.tts_config.sherpa_onnx_tts.tts_rule_fsts]
+value = "/path/to/tts-models/vits-melo-tts-zh_en/number.fst,/path/to/tts-models/vits-melo-tts-zh_en/phone.fst,/path/to/tts-models/vits-melo-tts-zh_en/date.fst,/path/to/tts-models/vits-melo-tts-zh_en/new_heteronym.fst"
+type = "str"
+title = {zh = "默认标题", en = "Default Title"}
+description = {zh = "默认描述", en = "Default Description"}
+required = false
+default = "/path/to/tts-models/vits-melo-tts-zh_en/number.fst,/path/to/tts-models/vits-melo-tts-zh_en/phone.fst,/path/to/tts-models/vits-melo-tts-zh_en/date.fst,/path/to/tts-models/vits-melo-tts-zh_en/new_heteronym.fst"
+
+[character_config.tts_config.sherpa_onnx_tts.max_num_sentences]
+value = 2
+type = "int"
+title = {zh = "默认标题", en = "Default Title"}
+description = {zh = "默认描述", en = "Default Description"}
+required = false
+default = 2
+range = [0, 999999]
+
+[character_config.tts_config.sherpa_onnx_tts.sid]
+value = 1
+type = "int"
+title = {zh = "默认标题", en = "Default Title"}
+description = {zh = "默认描述", en = "Default Description"}
+required = false
+default = 1
+range = [0, 999999]
+
+[character_config.tts_config.sherpa_onnx_tts.provider]
+value = "cpu"
+type = "str"
+title = {zh = "默认标题", en = "Default Title"}
+description = {zh = "默认描述", en = "Default Description"}
+required = false
+default = "cpu"
+
+[character_config.tts_config.sherpa_onnx_tts.num_threads]
+value = 1
+type = "int"
+title = {zh = "默认标题", en = "Default Title"}
+description = {zh = "默认描述", en = "Default Description"}
+required = false
+default = 1
+range = [0, 999999]
+
+[character_config.tts_config.sherpa_onnx_tts.speed]
+value = 1.0
+type = "ScalarFloat"
+title = {zh = "默认标题", en = "Default Title"}
+description = {zh = "默认描述", en = "Default Description"}
+required = false
+default = 1.0
+
+[character_config.tts_config.sherpa_onnx_tts.debug]
+value = false
+type = "bool"
+title = {zh = "默认标题", en = "Default Title"}
+description = {zh = "默认描述", en = "Default Description"}
+required = false
+default = false
+
+[character_config.vad_config.vad_model]
+value = "silero_vad"
+type = "str"
+title = {zh = "默认标题", en = "Default Title"}
+description = {zh = "默认描述", en = "Default Description"}
+required = false
+default = "silero_vad"
+
+[character_config.vad_config.silero_vad.orig_sr]
+value = 16000
+type = "int"
+title = {zh = "默认标题", en = "Default Title"}
+description = {zh = "默认描述", en = "Default Description"}
+required = false
+default = 16000
+range = [0, 999999]
+
+[character_config.vad_config.silero_vad.target_sr]
+value = 16000
+type = "int"
+title = {zh = "默认标题", en = "Default Title"}
+description = {zh = "默认描述", en = "Default Description"}
+required = false
+default = 16000
+range = [0, 999999]
+
+[character_config.vad_config.silero_vad.prob_threshold]
+value = 0.4
+type = "ScalarFloat"
+title = {zh = "默认标题", en = "Default Title"}
+description = {zh = "默认描述", en = "Default Description"}
+required = false
+default = 0.4
+
+[character_config.vad_config.silero_vad.db_threshold]
+value = 60
+type = "int"
+title = {zh = "默认标题", en = "Default Title"}
+description = {zh = "默认描述", en = "Default Description"}
+required = false
+default = 60
+range = [0, 999999]
+
+[character_config.vad_config.silero_vad.required_hits]
+value = 3
+type = "int"
+title = {zh = "默认标题", en = "Default Title"}
+description = {zh = "默认描述", en = "Default Description"}
+required = false
+default = 3
+range = [0, 999999]
+
+[character_config.vad_config.silero_vad.required_misses]
+value = 24
+type = "int"
+title = {zh = "默认标题", en = "Default Title"}
+description = {zh = "默认描述", en = "Default Description"}
+required = false
+default = 24
+range = [0, 999999]
+
+[character_config.vad_config.silero_vad.smoothing_window]
+value = 5
+type = "int"
+title = {zh = "默认标题", en = "Default Title"}
+description = {zh = "默认描述", en = "Default Description"}
+required = false
+default = 5
+range = [0, 999999]
+
+[character_config.tts_preprocessor_config.remove_special_char]
+value = true
+type = "bool"
+title = {zh = "默认标题", en = "Default Title"}
+description = {zh = "默认描述", en = "Default Description"}
+required = false
+default = true
+
+[character_config.tts_preprocessor_config.ignore_brackets]
+value = true
+type = "bool"
+title = {zh = "默认标题", en = "Default Title"}
+description = {zh = "默认描述", en = "Default Description"}
+required = false
+default = true
+
+[character_config.tts_preprocessor_config.ignore_parentheses]
+value = true
+type = "bool"
+title = {zh = "默认标题", en = "Default Title"}
+description = {zh = "默认描述", en = "Default Description"}
+required = false
+default = true
+
+[character_config.tts_preprocessor_config.ignore_asterisks]
+value = true
+type = "bool"
+title = {zh = "默认标题", en = "Default Title"}
+description = {zh = "默认描述", en = "Default Description"}
+required = false
+default = true
+
+[character_config.tts_preprocessor_config.ignore_angle_brackets]
+value = true
+type = "bool"
+title = {zh = "默认标题", en = "Default Title"}
+description = {zh = "默认描述", en = "Default Description"}
+required = false
+default = true
+
+[character_config.tts_preprocessor_config.translator_config.translate_audio]
+value = false
+type = "bool"
+title = {zh = "默认标题", en = "Default Title"}
+description = {zh = "默认描述", en = "Default Description"}
+required = false
+default = false
+
+[character_config.tts_preprocessor_config.translator_config.translate_provider]
+value = "deeplx"
+type = "str"
+title = {zh = "默认标题", en = "Default Title"}
+description = {zh = "默认描述", en = "Default Description"}
+required = false
+default = "deeplx"
+
+[character_config.tts_preprocessor_config.translator_config.deeplx.deeplx_target_lang]
+value = "JA"
+type = "str"
+title = {zh = "默认标题", en = "Default Title"}
+description = {zh = "默认描述", en = "Default Description"}
+required = false
+default = "JA"
+
+[character_config.tts_preprocessor_config.translator_config.deeplx.deeplx_api_endpoint]
+value = "http://localhost:1188/v2/translate"
+type = "str"
+title = {zh = "默认标题", en = "Default Title"}
+description = {zh = "默认描述", en = "Default Description"}
+required = false
+default = "http://localhost:1188/v2/translate"
+
+[character_config.tts_preprocessor_config.translator_config.tencent.secret_id]
+value = ""
+type = "str"
+title = {zh = "默认标题", en = "Default Title"}
+description = {zh = "默认描述", en = "Default Description"}
+required = false
+default = ""
+
+[character_config.tts_preprocessor_config.translator_config.tencent.secret_key]
+value = ""
+type = "str"
+title = {zh = "默认标题", en = "Default Title"}
+description = {zh = "默认描述", en = "Default Description"}
+required = false
+default = ""
+
+[character_config.tts_preprocessor_config.translator_config.tencent.region]
+value = "ap-guangzhou"
+type = "str"
+title = {zh = "默认标题", en = "Default Title"}
+description = {zh = "默认描述", en = "Default Description"}
+required = false
+default = "ap-guangzhou"
+
+[character_config.tts_preprocessor_config.translator_config.tencent.source_lang]
+value = "zh"
+type = "str"
+title = {zh = "默认标题", en = "Default Title"}
+description = {zh = "默认描述", en = "Default Description"}
+required = false
+default = "zh"
+
+[character_config.tts_preprocessor_config.translator_config.tencent.target_lang]
+value = "ja"
+type = "str"
+title = {zh = "默认标题", en = "Default Title"}
+description = {zh = "默认描述", en = "Default Description"}
+required = false
+default = "ja"

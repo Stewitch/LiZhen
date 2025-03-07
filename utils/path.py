@@ -32,8 +32,8 @@ class UnchangablePaths(Enum):
     
     # 特定配置文件路径
     LAUNCHER_CFG = CONFIGS / 'launcher.json'
-    PROJECT_CFG = CWD / 'conf.yaml'
-    
+    PROJECT_TOML = CONFIGS / 'project.toml'
+    PROJECT_YAML = CWD / 'conf.yaml'
     
     @classmethod
     def get(cls, name: str) -> 'UnchangablePaths':
@@ -45,9 +45,17 @@ class UnchangablePaths(Enum):
         """通过给定 `name: str` 获取对应的 `Path` 对象"""
         return cls.get(name).value
     
+    @classmethod
+    def list(cls) -> list[str]:
+        """获取所有路径名称"""
+        all_ = list(cls.__dict__.keys())
+        return [name for name in all_ if name.isupper()]
 
 
-# 测试
+
+# 单测
 if __name__ == "__main__":
     print(UnchangablePaths.CWD)
     print(UnchangablePaths.path('CWD'))
+    print(UnchangablePaths.get('CWD'))
+    print(UnchangablePaths.list())

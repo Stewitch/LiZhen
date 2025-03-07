@@ -30,6 +30,13 @@ ANSI_COLOR_MAP = {
 
 
 def ANSIToHtml(text: str) -> str:
+    
+    """ANSI 转 HTML
+    给定含有 ANSI 样式的文本，将其转换为 Html 样式
+    
+    适用于 Qt 的 `QTextEdit` 或其他能解析 Html 的控件
+    """
+    
     isProgress = ('Downloading' in text or 'sherpa-onnx' in text) and '%' in text
     if isProgress:
         text = text.rstrip() + '\r'
@@ -86,28 +93,37 @@ class QueuedStream:
     使用方法:
     ```python
     sys.stdout = QueuedStream(StandardStream.STDOUT)
+    # 或更便于其他模块引用单例 ↓
+    stderr = QueuedStream(StandardStream.STDERR)
+    sys.stderr = stderr # 可以引用单例并写在需要的地方
     ```
     建议使用 `QMsgThread` 类来处理队列中的消息
     """
     
     def __init__(self, stdStream: StandardStream):
-        self.stdStream = stdStream
+        self.__std = stdStream
         self.queue = queue.Queue()
-        self.flush = self.stdStream.value.flush
+        self.flush = self.__std.value.flush
         
     def write(self, text: str):
         self.queue.put(text)
     
     def close(self):
-        if self.stdStream is StandardStream.STDOUT:
-            sys.stdout = self.stdStream.value
-        elif self.stdStream is StandardStream.STDERR:
-            sys.stderr = self.stdStream.value
+        if self.__std is StandardStream.STDOUT:
+            sys.stdout = self.__std.value
+        elif self.__std is StandardStream.STDERR:
+            sys.stderr = self.__std.value
         self.queue.put("__TERM__")
 
 
 
 class Receiver(QObject):
+    
+    """消息接收器
+    用于监听队列流中的消息，并发送信号
+    
+    **仅作为中间件，不建议直接使用**
+    """
     
     newText = Signal(str)
     
@@ -136,14 +152,20 @@ class QMsgThread(QThread):
     ```python
     sys.stdout = QueuedStream(StandardStream.STDOUT)
     msgThread = QMsgThread.fromQueueStream(sys.stdout)
+    # 可以绑定任意支持 str 参数的函数
+    # 注：`QMsgThread.bind()` 会自动启动线程
     msgThread.bind(textEdit.append)
-    msgThread.start()
+    # 如单纯绑定，请使用 `QMsgThread._bind()`，并手动启动，如下
+    msgThread._bind(textEdit.append)
+    msgThread.start() # 可以在任何时候启动(保留消息)
     ```
     关闭方法:
     ```python
-    msgThread.quit()
-    msgThread.wait() # 等待线程结束
+    msgThread.close()
     ```
+    关于消息保留:
+    1. 由于 `queue.Queue` 的特性，消息会被保留，直到被处理
+    2. 消息处理开始于 `QMsgThread.start()`，结束于 `QMsgThread.close()`
     """
     
     def __init__(self, receiver: Receiver):
@@ -153,32 +175,40 @@ class QMsgThread(QThread):
         self.receiver.moveToThread(self)
         self.started.connect(self.receiver.listen)
     
-    def quit(self) -> None:
-        if self.isRunning() and self.receiver:
-            self.receiver.stream.close()
-        return super().quit()
-    
     @classmethod
     def fromQueuedStream(cls, stream: QueuedStream) -> 'QMsgThread':
         receiver = Receiver(stream)
         return cls(receiver)
     
-    def bind(self, func) -> None:
+    def _bind(self, func) -> None:
         self.receiver.newText.connect(func)
+    
+    def bind(self, func) -> None:
+        self._bind(func)
+        self.start()
+    
+    def close(self) -> None:
+        if self.isRunning() and self.receiver:
+            self.receiver.stream.close()
+            self.quit()
+            self.wait(3000)
+        else:
+            self.terminate()
 
 
 
-# 全局替换标准错误(loguru默认使用sys.stderr)
-stderr_ = QueuedStream(StandardStream.STDERR)
-stderrReceiver = Receiver(stderr_)
-sys.stderr = stderr_
-
-
+# 作为主程序模块导入时
+if __name__ == "utils.stream":
+    # 全局替换标准错误(loguru默认使用sys.stderr)
+    stderr = QueuedStream(StandardStream.STDERR)
+    errThread = QMsgThread.fromQueuedStream(stderr)
+    # 等待其他控件绑定并启动
 
 # 测试
 if __name__ == "__main__":
     
     from PySide6.QtWidgets import QApplication, QTextEdit
+    from log import logger, logfmt
     
     app = QApplication(sys.argv)
     textEdit = QTextEdit()
@@ -188,27 +218,33 @@ if __name__ == "__main__":
     # 替换标准输出
     sys.stdout = QueuedStream(StandardStream.STDOUT)
     msgThread = QMsgThread.fromQueuedStream(sys.stdout)
-    msgThread.bind(textEdit.append)
-    msgThread.start()
+    msgThread._bind(textEdit.append)
+    
+    logger.add(sys.stdout, format=logfmt, level="DEBUG", colorize=True)
+    
+    # 更优雅的换行
     textEdit.setStyleSheet("""
     QTextEdit {
         white-space: pre-wrap;
     }
     """)
-    
     textEdit.show()
     
-    # 重定向 stdout 和 ANSI 样式转换测试
+    # 重定向 stdout、ANSI 样式转换和消息保留测试
     print('\033[1;30mH\033[1;31me\033[1;32ml\033[1;33ml\033[1;36mo, \033[1;41m\033[1;34mWorld!\033[0m')
+    logger.debug('Debug')
+    logger.info('Info')
+    logger.warning('Warning')
+    logger.error('Error')
+    logger.critical('Critical')
+    msgThread.start()
     print('\033[0mHello World!')
     print('\033[1mHello World!')
     print('\033[3mHello World!')
     print('\033[4mHello World!')
     print('\033[9mHello World!')
-    
-    # 等待线程结束
-    msgThread.quit()
-    msgThread.wait()
+    # 结束消息线程
+    msgThread.close()
     
     # 恢复原始输出
     print('End of QueueStream Test')
