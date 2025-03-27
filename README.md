@@ -1,4 +1,4 @@
-![Banner](./assets/imgs/banner.png)
+![Banner](./assets/github/banner.png)
 <h1 align="center">离真 - Li Zhen</h1>
 
 ---
@@ -16,6 +16,11 @@
 中文 README | [English README](./README.EN.md)
 
 </h3>
+
+---
+
+>[!NOTE]
+>当前为 `next` 分支，即重构代码提交分支
 
 ---
 

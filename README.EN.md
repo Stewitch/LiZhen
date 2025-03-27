@@ -1,4 +1,4 @@
-![Banner](./assets/imgs/banner.png)
+![Banner](./assets/github/banner.png)
 <h1 align="center">离真 - Li Zhen</h1>
 
 ---
