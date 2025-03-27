@@ -11,31 +11,59 @@ logfmt = "<green>{time:"+ timefmt +"}</green> |[<level>{level}</level>]| <cyan>{
 
 # 作为主程序模块导入时
 if __name__ == "utils.log":
-    from .path import UnchangablePaths
+    
+    from .path import UnchangeablePaths as UP
     from .stream import stderr
+    
     logger.add(
-        UnchangablePaths.path("LOGS") / "launcher.log",
+        UP.LOGS / "launcher.log",
+        mode="a",
+        encoding="utf-8",
         rotation="00:00",
         format=logfmt,
         level="DEBUG",
         enqueue=True,
         retention="3 days"
     )
-    logger.add(
+    
+    consoleHandler = logger.add(
         stderr,
         format=logfmt,
         level="DEBUG",
         colorize=True,
         enqueue=True
     )
+    
+    def switchConsoleLogLevel(level: str) -> int:
+        
+        """切换控制台日志等级"""
+        
+        global consoleHandler
+        
+        logger.remove(consoleHandler)
+        
+        consoleHandler = logger.add(
+            stderr,
+            format=logfmt,
+            level=level,
+            colorize=True,
+            enqueue=True
+        )
+
 
 # 作为同级模块导入时
 if __name__ == "log":
-    pass
+    
+    import sys
+    
+    logger.add(sys.stderr, format=logfmt, level="DEBUG", colorize=True)
+
 
 # 单测
 if __name__ == "__main__":
+    
     import sys
+    
     logger.add(sys.stderr, format=logfmt, level="DEBUG", colorize=True)
     logger.debug("Debug")
     logger.info("Info")

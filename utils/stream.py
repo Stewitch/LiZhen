@@ -151,7 +151,7 @@ class QMsgThread(QThread):
     使用方法:
     ```python
     sys.stdout = QueuedStream(StandardStream.STDOUT)
-    msgThread = QMsgThread.fromQueueStream(sys.stdout)
+    msgThread = QMsgThread.fromQueuedStream(sys.stdout)
     # 可以绑定任意支持 str 参数的函数
     # 注：`QMsgThread.bind()` 会自动启动线程
     msgThread.bind(textEdit.append)
@@ -199,10 +199,14 @@ class QMsgThread(QThread):
 
 # 作为主程序模块导入时
 if __name__ == "utils.stream":
+    
     # 全局替换标准错误(loguru默认使用sys.stderr)
     stderr = QueuedStream(StandardStream.STDERR)
     errThread = QMsgThread.fromQueuedStream(stderr)
     # 等待其他控件绑定并启动
+    # errThread._bind(textEdit.append)
+    # errThread.start()
+
 
 # 测试
 if __name__ == "__main__":
